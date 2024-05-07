@@ -1,0 +1,31 @@
+.container {
+  background-color: #8ea05d;
+  position: relative;
+}
+.APBgImg {
+  width: 100%;
+  //   height: calc(100vh - 6.25rem);
+  height: auto;
+}
+.makeBtn {
+  font-family: 'Jua', serif;
+  font-size: 28px;
+  width: 15rem;
+  height: 3.8125rem;
+  border-radius: 1.25rem;
+  border: none;
+  cursor: pointer;
+  background-color: #ffffff;
+
+  position: absolute; /* 위치를 상대적으로 조정하기 위해 절대 위치 지정 */
+  bottom: 38%; /* 아래쪽 여백 */
+  left: 13%; /* 오른쪽 여백 */
+  z-index: 1; /* 다른 요소 위로 올리기 */
+
+  @media (max-width: 768px) {
+    /* 화면 너비가 768px 이하인 경우 */
+    font-size: 18px;
+    width: 180px;
+    height: 45px;
+  }
+}
