@@ -1,0 +1,22 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 0 8px 0 8px;
+  cursor: pointer;
+}
+.selected {
+  border: 2px solid #8ea05d;
+}
+.regionImg {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: #d9d9d9;
+  margin-bottom: 5px;
+}
+.regionName {
+  font-family: 'Jua', serif;
+  font-size: 15px;
+}

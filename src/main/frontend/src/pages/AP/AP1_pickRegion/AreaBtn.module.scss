@@ -1,0 +1,21 @@
+.container {
+  background-color: #ffffff;
+  border: 1px solid #000000;
+  border-radius: 0.625rem;
+  font-family: 'Jua', serif;
+  font-size: 1rem;
+  margin: 0 0.5rem;
+  width: 4.875rem;
+  height: 2rem;
+}
+.selected {
+  background-color: #8ea05d;
+  color: #ffffff;
+  border: none;
+}
+@media screen and (max-width: 768px) {
+  .container {
+    width: 50%; /* 화면 너비가 768px 이하일 때 버튼 너비를 50%로 설정 */
+    max-width: 150px; /* 최대 너비 설정 */
+  }
+}
