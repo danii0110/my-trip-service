@@ -2,7 +2,7 @@ import styles from './APMain.module.scss';
 import Layout from '../../../components/layouts/Layout';
 import APBgImg from '../../../assets/APBg.svg';
 import { useState } from 'react';
-import PageModal from '../AP1_pickRegion/PageModal';
+import PickRegionModal from '../AP1_pickRegion/PickRegionModal';
 
 const APMain = () => {
   const [showModal, setShowModal] = useState(false);
@@ -17,7 +17,8 @@ const APMain = () => {
           </button>
         </div>
       </Layout>
-      <PageModal show={showModal} onHide={() => setShowModal(false)} />
+      {/* <PickRegionModal show={showModal} onHide={() => setShowModal(false)} /> */}
+      <PickRegionModal show={showModal} onHide={() => setShowModal(false)} />
     </>
   );
 };

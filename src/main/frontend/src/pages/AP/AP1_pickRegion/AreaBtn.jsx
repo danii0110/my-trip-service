@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import styles from './AreaBtn.module.scss';
 
-const AreaBtn = (props) => {
+const AreaBtn = () => {
   const [selected, setSelected] = useState(false);
 
   const handleRegionClick = () => {
