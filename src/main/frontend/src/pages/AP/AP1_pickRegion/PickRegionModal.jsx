@@ -1,12 +1,23 @@
-import styles from './PageModal.module.scss';
+import styles from './PickRegionModal.module.scss';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Button, Modal } from 'react-bootstrap';
 import Region from './Region';
 import LeftArrow from '../../../assets/leftArrow.svg';
 import RightArrow from '../../../assets/rightArrow.svg';
 import AreaBtn from './AreaBtn';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import DatePickerModal from '../AP2_datePicker/DatePickerModal';
 
-const PageModal = ({ show, onHide }) => {
+const PickRegionModal = ({ show, onHide }) => {
+  const navigate = useNavigate();
+  const [showDatePickerModal, setShowDatePickerModal] = useState(false);
+
+  // 다음 버튼 클릭 시 DatePickerModal 페이지로 이동하는 함수
+  const goToDatePicker = () => {
+    onHide();
+    setShowDatePickerModal(true);
+  };
   return (
     <div className={styles.container}>
       <Modal show={show} onHide={onHide} size='lg' aria-labelledby='contained-modal-title-vcenter' centered>
@@ -34,12 +45,13 @@ const PageModal = ({ show, onHide }) => {
             <AreaBtn />
             <AreaBtn />
           </div>
-          <Button id={styles.nextBtn} className={styles.nextBtn} onClick={onHide}>
+          <Button id={styles.nextBtn} className={styles.nextBtn} onClick={goToDatePicker}>
             다음 &gt;
           </Button>
         </Modal.Body>
       </Modal>
+      <DatePickerModal show={showDatePickerModal} onHide={() => setShowDatePickerModal(false)} />
     </div>
   );
 };
-export default PageModal;
+export default PickRegionModal;
