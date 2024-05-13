@@ -5,19 +5,17 @@ import Region from './Region';
 import LeftArrow from '../../../assets/leftArrow.svg';
 import RightArrow from '../../../assets/rightArrow.svg';
 import AreaBtn from './AreaBtn';
-import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import DatePickerModal from '../AP2_datePicker/DatePickerModal';
 
 const PickRegionModal = ({ show, onHide }) => {
   const navigate = useNavigate();
-  const [showDatePickerModal, setShowDatePickerModal] = useState(false);
+  // const [showDatePickerModal, setShowDatePickerModal] = useState(false);
 
   // 다음 버튼 클릭 시 DatePickerModal 페이지로 이동하는 함수
-  const goToDatePicker = () => {
+  const goToAP2 = () => {
     onHide();
     navigate('/ai-planner/areaName');
-    setShowDatePickerModal(true);
+    // setShowDatePickerModal(true);
   };
   return (
     <div className={styles.container}>
@@ -46,12 +44,12 @@ const PickRegionModal = ({ show, onHide }) => {
             <AreaBtn />
             <AreaBtn />
           </div>
-          <Button id={styles.nextBtn} className={styles.nextBtn} onClick={goToDatePicker}>
+          <Button id={styles.nextBtn} className={styles.nextBtn} onClick={goToAP2}>
             다음 &gt;
           </Button>
         </Modal.Body>
       </Modal>
-      <DatePickerModal show={showDatePickerModal} onHide={() => setShowDatePickerModal(false)} />
+      {/* <DatePickerModal show={showDatePickerModal} onHide={() => setShowDatePickerModal(false)} /> */}
     </div>
   );
 };

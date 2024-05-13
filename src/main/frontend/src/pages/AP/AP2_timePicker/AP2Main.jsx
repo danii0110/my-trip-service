@@ -1,14 +1,16 @@
-import styles from './AP3Main.module.scss';
+import styles from './AP2Main.module.scss';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import AP3Left from './AP3Left';
+import AP2Left from './AP2Left';
 import { Button } from 'react-bootstrap';
 import AP4Left from '../AP4_placePicker/AP4Left';
 import AP5Left from '../AP5_hotelPicker/AP5Left';
 import { useState } from 'react';
 import ShowPlacePicker from '../AP4_placePicker/ShowPlacePicker';
+import DatePickerModal from './DatePicker/DatePickerModal';
 
-const AP3Main = () => {
-  const [currentLeftComponent, setCurrentLeftComponent] = useState(<AP3Left />);
+const AP2Main = () => {
+  const [showDatePickerModal, setShowDatePickerModal] = useState(true);
+  const [currentLeftComponent, setCurrentLeftComponent] = useState(<AP2Left />);
   // const [showPlacePicker, setShowPlacePicker] = useState(false);
 
   // ShowPlacePicker 표시 상태를 토글하는 함수
@@ -18,7 +20,7 @@ const AP3Main = () => {
 
   const handleNextButtonClick = () => {
     switch (currentLeftComponent.type) {
-      case AP3Left:
+      case AP2Left:
         setCurrentLeftComponent(
           // <AP4Left showPlacePicker={showPlacePicker} toggleShowPlacePicker={toggleShowPlacePicker} />
           <AP4Left />
@@ -28,7 +30,7 @@ const AP3Main = () => {
         setCurrentLeftComponent(<AP5Left />);
         break;
       default:
-        setCurrentLeftComponent(<AP3Left />);
+        setCurrentLeftComponent(<AP2Left />);
     }
   };
 
@@ -42,7 +44,8 @@ const AP3Main = () => {
       </div>
       {/* {showPlacePicker && <ShowPlacePicker showPlacePicker={showPlacePicker} />} */}
       <div className={styles.rightCont}>Map</div>
+      <DatePickerModal show={showDatePickerModal} onHide={() => setShowDatePickerModal(false)} />
     </div>
   );
 };
-export default AP3Main;
+export default AP2Main;

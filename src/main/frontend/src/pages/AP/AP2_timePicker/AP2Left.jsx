@@ -1,4 +1,4 @@
-import styles from './AP3Left.module.scss';
+import styles from './AP2Left.module.scss';
 import { Button } from 'react-bootstrap';
 import TrainIcon from '../../../assets/trainIcon.svg';
 import CalendarIcon from '../../../assets/calendarIcon.svg';
@@ -6,7 +6,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import CheckHeader from '../../../components/CheckHeader/CheckHeader';
 import TimeTable from './TimeTable';
 
-const AP3Left = () => {
+const AP2Left = () => {
   return (
     <>
       <CheckHeader progress={33} firstColor='#000000' secondColor='#aab1b8' thirdColor='#aab1b8' />
@@ -41,4 +41,4 @@ const AP3Left = () => {
     </>
   );
 };
-export default AP3Left;
+export default AP2Left;

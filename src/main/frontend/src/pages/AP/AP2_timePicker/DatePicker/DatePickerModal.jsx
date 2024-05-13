@@ -2,15 +2,10 @@ import styles from './DatePickerModal.module.scss';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Button, Modal } from 'react-bootstrap';
 import Calendar from './Calendar';
-import { useNavigate } from 'react-router-dom';
-import AP3Main from '../AP3_timePicker/AP3Main';
 
 const DatePickerModal = ({ show, onHide }) => {
-  const navigate = useNavigate();
-
   const goToDatePicker = () => {
     onHide(); //Modal 닫기
-    navigate('areaName/checker'); //TODO 경로 수정
   };
   return (
     <div className={styles.container}>
