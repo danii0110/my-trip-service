@@ -1,0 +1,16 @@
+.button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 28px;
+  height: 48px;
+  border-radius: 5px;
+  background-color: #f4f6f7;
+  border: none;
+  cursor: pointer;
+  margin-right: 21px;
+}
+
+.button.checked {
+  background-color: #8ea05d;
+}
