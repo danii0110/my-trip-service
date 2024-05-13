@@ -18,7 +18,6 @@ const APMain = () => {
           </button>
         </div>
       </Layout>
-      {/* <PickRegionModal show={showModal} onHide={() => setShowModal(false)} /> */}
       <PickRegionModal show={showModal} onHide={() => setShowModal(false)} />
       <Outlet />
     </>
