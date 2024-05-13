@@ -1,4 +1,3 @@
-import { Outlet } from 'react-router-dom';
 import Layout from '../components/layouts/Layout';
 
 function MainPage() {

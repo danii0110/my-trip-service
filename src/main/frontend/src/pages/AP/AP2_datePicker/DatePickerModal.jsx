@@ -2,8 +2,15 @@ import styles from './DatePickerModal.module.scss';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Button, Modal } from 'react-bootstrap';
 import Calendar from './Calendar';
+import { useNavigate } from 'react-router-dom';
 
 const DatePickerModal = ({ show, onHide }) => {
+  const navigate = useNavigate();
+
+  const goToDatePicker = () => {
+    onHide(); //Modal 닫기
+    navigate('areaName/time-checker');
+  };
   return (
     <div className={styles.container}>
       <Modal show={show} onHide={onHide} size='lg' aria-labelledby='contained-modal-title-vcenter' centered>
@@ -16,7 +23,7 @@ const DatePickerModal = ({ show, onHide }) => {
           <div className={styles.mainCont}>
             <Calendar />
           </div>
-          <Button id={styles.nextBtn} className={styles.nextBtn} onClick={onHide}>
+          <Button id={styles.nextBtn} className={styles.nextBtn} onClick={goToDatePicker}>
             다음 &gt;
           </Button>
         </Modal.Body>
