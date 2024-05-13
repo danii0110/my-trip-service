@@ -2,11 +2,12 @@ import styles from './AP2Main.module.scss';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import AP2Left from './AP2Left';
 import { Button } from 'react-bootstrap';
-import AP4Left from '../AP4_placePicker/AP4Left';
-import AP5Left from '../AP5_hotelPicker/AP5Left';
+import AP3Left from '../AP3_placePicker/AP3Left';
+import AP4Left from '../AP4_hotelPicker/AP4Left';
 import { useState } from 'react';
-import ShowPlacePicker from '../AP4_placePicker/ShowPlacePicker';
+import ShowPlacePicker from '../AP3_placePicker/ShowPlacePicker';
 import DatePickerModal from './DatePicker/DatePickerModal';
+import KakakoMap from '../../../modules/api/KakaoMap/KakaoMap';
 
 const AP2Main = () => {
   const [showDatePickerModal, setShowDatePickerModal] = useState(true);
@@ -23,11 +24,11 @@ const AP2Main = () => {
       case AP2Left:
         setCurrentLeftComponent(
           // <AP4Left showPlacePicker={showPlacePicker} toggleShowPlacePicker={toggleShowPlacePicker} />
-          <AP4Left />
+          <AP3Left />
         );
         break;
-      case AP4Left:
-        setCurrentLeftComponent(<AP5Left />);
+      case AP3Left:
+        setCurrentLeftComponent(<AP4Left />);
         break;
       default:
         setCurrentLeftComponent(<AP2Left />);
@@ -43,7 +44,9 @@ const AP2Main = () => {
         </Button>
       </div>
       {/* {showPlacePicker && <ShowPlacePicker showPlacePicker={showPlacePicker} />} */}
-      <div className={styles.rightCont}>Map</div>
+      <div className={styles.rightCont}>
+        <KakakoMap />
+      </div>
       <DatePickerModal show={showDatePickerModal} onHide={() => setShowDatePickerModal(false)} />
     </div>
   );

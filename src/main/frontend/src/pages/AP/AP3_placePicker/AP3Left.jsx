@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import CheckHeader from '../../../components/CheckHeader/CheckHeader';
-import styles from './AP4Left.module.scss';
+import styles from './AP3Left.module.scss';
 import CategoryBtn from './CategoryBtn';
 import SearchBar from './SearchBar';
 import PlaceBox from './PlaceBox';
 import ShowPlacePicker from './ShowPlacePicker';
 
-const AP4Left = ({ showPlacePicker, toggleShowPlacePicker }) => {
+const AP3Left = ({ showPlacePicker, toggleShowPlacePicker }) => {
   const [selectedCategory, setSelectedCategory] = useState('추천 장소'); // 기본 선택 카테고리
 
   return (
@@ -49,4 +49,4 @@ const AP4Left = ({ showPlacePicker, toggleShowPlacePicker }) => {
     </div>
   );
 };
-export default AP4Left;
+export default AP3Left;
