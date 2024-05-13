@@ -6,12 +6,6 @@ const Calendar = () => {
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(null);
 
-  // const addDays = (date, days) => {
-  //   const result = new Date(date);
-  //   result.setDate(result.getDate() + days);
-  //   return result;
-  // };
-
   const onChange = (dates) => {
     const [start, end] = dates;
     setStartDate(start);
@@ -61,7 +55,6 @@ const Calendar = () => {
         onChange={onChange}
         startDate={startDate} //시작 날짜 설정
         endDate={endDate} //끝나는 날짜 설정
-        // excludeDates={[addDays(new Date(), 1), addDays(new Date(), 5)]}
         selectsRange //범위 선택 활성화
         selectsDisabledDaysInRange
         inline

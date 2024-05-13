@@ -3,7 +3,8 @@ import Layout from '../../../components/layouts/Layout';
 import APBgImg from '../../../assets/APBg.svg';
 import { useState } from 'react';
 import PickRegionModal from '../AP1_pickRegion/PickRegionModal';
-import { Outlet } from 'react-router-dom';
+import { Outlet, Route, Routes } from 'react-router-dom';
+import DatePickerModal from '../AP2_datePicker/DatePickerModal';
 
 const APMain = () => {
   const [showModal, setShowModal] = useState(false);
@@ -19,7 +20,10 @@ const APMain = () => {
         </div>
       </Layout>
       <PickRegionModal show={showModal} onHide={() => setShowModal(false)} />
-      <Outlet />
+      {/* <Outlet /> */}
+      {/* <Routes>
+        <Route path='areaName' element={<DatePickerModal />}></Route>
+      </Routes> */}
     </>
   );
 };
