@@ -1,5 +1,5 @@
 import styles from './SearchBar.module.scss';
-import SearchIcon from '../../../assets/searchIcon.svg';
+import SearchIcon from '../../../../assets/searchIcon.svg';
 const SearchBar = ({ onChange }) => {
   return (
     <div className={styles.search}>

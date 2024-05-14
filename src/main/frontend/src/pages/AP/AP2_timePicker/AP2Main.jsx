@@ -8,6 +8,8 @@ import { useState } from 'react';
 import ShowPlacePicker from '../AP3_placePicker/ShowPlacePicker';
 import DatePickerModal from './DatePicker/DatePickerModal';
 import KakakoMap from '../../../modules/api/KakaoMap/KakaoMap';
+import PlaceModal from '../AP3_placePicker/PlaceModal/PlaceModalBox';
+import PlaceModalBox from '../AP3_placePicker/PlaceModal/PlaceModalBox';
 
 const AP2Main = () => {
   const [showDatePickerModal, setShowDatePickerModal] = useState(true);
@@ -45,6 +47,7 @@ const AP2Main = () => {
       </div>
       {/* {showPlacePicker && <ShowPlacePicker showPlacePicker={showPlacePicker} />} */}
       <div className={styles.rightCont}>
+        <PlaceModalBox />
         <KakakoMap />
       </div>
       <DatePickerModal show={showDatePickerModal} onHide={() => setShowDatePickerModal(false)} />

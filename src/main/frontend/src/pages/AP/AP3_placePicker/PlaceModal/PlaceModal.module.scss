@@ -1,0 +1,34 @@
+.container {
+  width: 100%;
+  height: 100%;
+  background-color: #ffffff;
+}
+.header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin: 1.875rem 1.25rem 1.5625rem 1.25rem;
+}
+.arrowIcon {
+  width: 2.1875rem;
+}
+.headerCenter {
+  display: flex;
+  flex-direction: row;
+}
+.headerCenter > p {
+  font-size: 1.5625rem;
+  margin: 0 0 0 0.4375rem;
+}
+.subHeader {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin: 0 1.5625rem 1.375rem 1.5625rem;
+  font-size: 1.125rem;
+}
+.main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
