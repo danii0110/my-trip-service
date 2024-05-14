@@ -1,13 +1,13 @@
 import { useState } from 'react';
-import CheckHeader from '../../../components/CheckHeader/CheckHeader';
+import CheckHeader from '../AP2_timePicker/CheckHeader/CheckHeader';
 import styles from './AP3Left.module.scss';
 import CategoryBtn from './CategoryBtn';
-import SearchBar from './SearchBar';
+import SearchBar from './SearchBar/SearchBar';
 import PlaceBox from './PlaceBox';
 import ShowPlacePicker from './ShowPlacePicker';
 
 const AP3Left = ({ showPlacePicker, toggleShowPlacePicker }) => {
-  const [selectedCategory, setSelectedCategory] = useState('추천 장소'); // 기본 선택 카테고리
+  const [selectedCategory, setSelectedCategory] = useState('추천 장소');
 
   return (
     <div className={styles.container}>

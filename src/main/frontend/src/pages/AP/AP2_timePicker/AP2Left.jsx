@@ -3,7 +3,7 @@ import { Button } from 'react-bootstrap';
 import TrainIcon from '../../../assets/trainIcon.svg';
 import CalendarIcon from '../../../assets/calendarIcon.svg';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import CheckHeader from '../../../components/CheckHeader/CheckHeader';
+import CheckHeader from './CheckHeader/CheckHeader';
 import TimeTable from './TimeTable';
 
 const AP2Left = () => {
