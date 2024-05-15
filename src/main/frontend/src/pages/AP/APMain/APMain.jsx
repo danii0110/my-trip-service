@@ -15,9 +15,7 @@ const APMain = () => {
       <Layout>
         <div className={styles.container}>
           <img className={styles.APBgImg} src={APBgImg} alt='ai-planner background'></img>
-          <button className={styles.makeBtn} type='button' onClick={() => setShowModal(true)}>
-            플랜 생성하기 -&gt;
-          </button>
+          <button className={styles.makeBtn}>플랜 생성하기 -&gt;</button>
         </div>
       </Layout>
       <PickRegionModal show={showModal} onHide={() => setShowModal(false)} />

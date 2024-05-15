@@ -16,7 +16,7 @@ const Header = () => {
             <Link to='/trip-plan'>여행지</Link>
           </li>
           <li>
-            <Link to='/ai-planner'>AI플래너</Link>
+            <Link to='/planning'>AI플래너</Link>
           </li>
           <li>
             <Link to='/ai-chat'>AI Chat</Link>
