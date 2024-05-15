@@ -1,0 +1,82 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 90%;
+  min-height: 80%;
+  background-color: #f4f6f7;
+  border-radius: 0.625rem;
+  padding-left: 7%;
+  position: relative;
+}
+.tripNameCont {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-top: 1.875rem;
+}
+.tripName {
+  font-size: 1.4375rem;
+}
+.editText {
+  font-size: 0.8125rem;
+  color: #8ea05d;
+  margin-left: 0.3125rem;
+}
+.durationCont {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-top: 1.0625rem;
+}
+.duration {
+  font-size: 1.125rem;
+}
+.pickedPlaceCont {
+  display: flex;
+  flex-direction: column;
+  margin-top: 0.625rem;
+}
+.pickedPlaceTextCont {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.pickedPlace {
+  font-size: 1.125rem;
+}
+.placeImgCont {
+  display: flex;
+  flex-direction: row;
+  margin-top: 0.3125rem;
+}
+
+.pickedHotelCont {
+  display: flex;
+  flex-direction: column;
+  margin-top: 0.625rem;
+}
+.pickedHotelTextCont {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.pickedHotel {
+  font-size: 1.125rem;
+}
+.HotelImgCont {
+  display: flex;
+  flex-direction: row;
+  margin-top: 0.3125rem;
+}
+.makePlanBtn {
+  background-color: #8ea05d;
+  color: #ffffff;
+  border: none;
+  border-radius: 0.625rem;
+  font-size: 1.125rem;
+  width: 8.75rem;
+  height: 2.1875rem;
+  position: absolute;
+  bottom: 1.25rem;
+  right: 1.25rem;
+}

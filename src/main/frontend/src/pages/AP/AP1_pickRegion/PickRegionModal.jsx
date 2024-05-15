@@ -14,7 +14,7 @@ const PickRegionModal = ({ show, onHide }) => {
   // 다음 버튼 클릭 시 DatePickerModal 페이지로 이동하는 함수
   const goToAP2 = () => {
     onHide();
-    navigate('/ai-planner/areaName');
+    navigate('/planning/areaName');
     // setShowDatePickerModal(true);
   };
   return (

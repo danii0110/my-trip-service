@@ -1,0 +1,82 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+}
+.customModalBody {
+  display: flex;
+  flex-direction: column;
+}
+.title {
+  font-family: 'Jua', serif;
+  font-size: 1.875rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  padding: 0;
+  margin: 2.125rem 0 20px 0;
+}
+.subTitle {
+  font-size: 20px;
+  color: #aab1b8;
+  font-family: 'Jua', serif;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+.transportCont {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin: 60px 0;
+}
+.transportBtn {
+  width: 11.875rem;
+  height: 15.125rem;
+  background-color: #8ea05d;
+  border-radius: 0.625rem;
+  border: none;
+  color: #ffffff;
+  font-family: 'Jua', serif;
+  font-size: 1.5625rem;
+  margin: 0 1.25rem;
+  transition: background-color 0.3s, color 0.3s;
+}
+.transportBtn.selected {
+  background-color: #8ea05d;
+  color: #ffffff;
+}
+
+.transportBtn:not(.selected) {
+  background-color: #d3d3d3;
+  color: #000000;
+}
+.btns {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-bottom: 2.5rem;
+}
+.cancleBtn {
+  background-color: #d3d3d3;
+  color: #000000;
+  border: none;
+  border-radius: 1.25rem;
+  font-family: 'Jua', serif;
+  font-size: 1.4375rem;
+  width: 12.5rem;
+  height: 2.75rem;
+  margin: 0 1.8125rem;
+}
+.makePlanBtn {
+  background-color: #8ea05d;
+  color: #ffffff;
+  border: none;
+  border-radius: 1.25rem;
+  font-family: 'Jua', serif;
+  font-size: 1.4375rem;
+  width: 12.5rem;
+  height: 2.75rem;
+  margin: 0 1.8125rem;
+}

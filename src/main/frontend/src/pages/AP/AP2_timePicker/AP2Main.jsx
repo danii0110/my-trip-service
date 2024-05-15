@@ -10,10 +10,12 @@ import DatePickerModal from './DatePicker/DatePickerModal';
 import KakakoMap from '../../../modules/api/KakaoMap/KakaoMap';
 import PlaceModal from '../AP3_placePicker/PlaceModal/PlaceModalBox';
 import PlaceModalBox from '../AP3_placePicker/PlaceModal/PlaceModalBox';
+import { useNavigate } from 'react-router-dom';
 
 const AP2Main = () => {
   const [showDatePickerModal, setShowDatePickerModal] = useState(true);
   const [currentLeftComponent, setCurrentLeftComponent] = useState(<AP2Left />);
+  const navigate = useNavigate();
   // const [showPlacePicker, setShowPlacePicker] = useState(false);
 
   // ShowPlacePicker 표시 상태를 토글하는 함수
@@ -31,6 +33,9 @@ const AP2Main = () => {
         break;
       case AP3Left:
         setCurrentLeftComponent(<AP4Left />);
+        break;
+      case AP4Left:
+        navigate('/plan-list/areaName');
         break;
       default:
         setCurrentLeftComponent(<AP2Left />);
