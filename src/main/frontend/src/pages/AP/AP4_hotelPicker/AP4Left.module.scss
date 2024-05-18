@@ -4,9 +4,6 @@
 .left {
   flex: 1;
 }
-.right {
-  flex: 0 0 300px;
-}
 .leftHeader {
   display: flex;
   flex-direction: row;
@@ -19,8 +16,6 @@
 #btnCommon {
   border-radius: 0.625rem;
   font-family: 'Jua', serif;
-  //   width: 4.875rem;
-  //   height: 2rem;
   background-color: #8ea05d;
   color: #ffffff;
   border: none;

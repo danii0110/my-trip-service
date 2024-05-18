@@ -10,12 +10,18 @@ import AP2Main from '../AP2_timePicker/AP2Main';
 const APMain = () => {
   const [showModal, setShowModal] = useState(false);
 
+  const handleButtonClick = () => {
+    setShowModal(true);
+  };
+
   return (
     <>
       <Layout>
         <div className={styles.container}>
           <img className={styles.APBgImg} src={APBgImg} alt='ai-planner background'></img>
-          <button className={styles.makeBtn}>플랜 생성하기 -&gt;</button>
+          <button className={styles.makeBtn} onClick={handleButtonClick}>
+            플랜 생성하기 -&gt;
+          </button>
         </div>
       </Layout>
       <PickRegionModal show={showModal} onHide={() => setShowModal(false)} />

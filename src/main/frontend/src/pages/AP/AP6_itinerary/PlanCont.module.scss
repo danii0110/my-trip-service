@@ -1,0 +1,27 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 90%;
+  min-height: 80%;
+  background-color: #f4f6f7;
+  border-radius: 0.625rem;
+  padding-left: 7%;
+  position: relative;
+}
+.mainCont {
+  display: flex;
+  flex-direction: row;
+  margin-top: 30px;
+}
+.makePlanBtn {
+  background-color: #8ea05d;
+  color: #ffffff;
+  border: none;
+  border-radius: 0.625rem;
+  font-size: 18px;
+  width: 59px;
+  height: 35px;
+  position: absolute;
+  bottom: 1.25rem;
+  right: 1.25rem;
+}
