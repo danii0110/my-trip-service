@@ -8,9 +8,9 @@ const TransportModal = ({ show, onHide }) => {
   const navigate = useNavigate();
   const [selectedTransport, setSelectedTransport] = useState('public');
 
-  const goToAP2 = () => {
+  const goToAP6 = () => {
     onHide();
-    // navigate('/planning/areaName');
+    navigate('/itinerary/areaName');
   };
 
   const handleTransportClick = (transport) => {
@@ -43,7 +43,7 @@ const TransportModal = ({ show, onHide }) => {
             <button className={styles.cancleBtn} type='button' onClick={onHide}>
               닫기
             </button>
-            <button className={styles.makePlanBtn} type='button'>
+            <button className={styles.makePlanBtn} type='button' onClick={goToAP6}>
               일정생성
             </button>
           </div>
