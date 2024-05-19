@@ -1,0 +1,60 @@
+.searchBtn {
+  position: relative;
+  width: 850px;
+  margin: 0 auto;
+  text-align: right;
+}
+
+.searchBtn > button {
+  color: #bbbbbb;
+  background-color: transparent;
+  border: transparent;
+  padding: 15px 20px 0 20px;
+  font-size: 23px;
+  z-index: 999;
+}
+
+.selectedButton {
+  color: black !important;
+}
+
+.searchList {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  width: 1035px;
+  margin: 0 auto;
+  padding-bottom: 30px;
+  justify-content: center;
+  align-items: center;
+}
+
+.searchHeader {
+  position: relative;
+  width: 820px;
+  margin: 0 auto;
+
+}
+
+.searchHeader hr {
+  z-index: 999;
+  border: none;
+  border-top: 1.2px solid #000;
+  margin-top: 3px;
+  margin-bottom: 5px;
+}
+
+.tree {
+  float: left;
+  height: 45px;
+  width: 45px;
+  margin-top: 5px;
+  margin-right: 10px;
+}
+
+.searchHeader p {
+  font-size: 30px;
+  margin-top: 15px;
+  margin-bottom: 0px;
+}
+
