@@ -1,0 +1,25 @@
+.container {
+  margin: 27px 0 27px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.pCont {
+  display: flex;
+  flex-direction: row;
+  font-size: 18px;
+}
+.pCont > p {
+  text-align: center;
+}
+.second {
+  margin: 0 70px;
+}
+.progressBar {
+  width: calc(300px + 10rem);
+  height: 10px;
+}
+.bg-custom {
+  background-color: purple;
+  color: white;
+}

@@ -1,0 +1,21 @@
+.container {
+  background-color: #ffffff;
+  border: 1px solid #000000;
+  border-radius: 0.625rem;
+  font-family: 'Jua', serif;
+  font-size: 1rem;
+  margin: 0 0.5rem;
+  width: 4.875rem;
+  height: 2rem;
+}
+.selected {
+  background-color: #8ea05d;
+  color: #ffffff;
+  border: none;
+}
+@media screen and (max-width: 768px) {
+  .container {
+    width: 50%;
+    max-width: 150px;
+  }
+}

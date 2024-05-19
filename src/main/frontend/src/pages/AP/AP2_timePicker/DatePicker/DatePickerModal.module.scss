@@ -1,0 +1,44 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  // justify-content: flex-end;
+}
+.customModalBody {
+  display: flex;
+  flex-direction: column;
+}
+.title {
+  font-family: 'Jua', serif;
+  font-size: 1.875rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+
+  padding: 0;
+  margin: 2.125rem 0 1.688rem 0;
+}
+.subCont {
+  font-family: 'Jua', serif;
+  font-size: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 27px;
+}
+.subCont > p {
+  margin-bottom: 0;
+}
+.mainCont {
+  display: flex;
+  justify-content: center;
+}
+#nextBtn {
+  background-color: #8ea05d;
+  border: none;
+  font-family: 'Jua', serif;
+  font-size: 1.125rem;
+  margin: 0 0.7rem 1.5rem 0;
+  width: 4.375rem;
+  align-self: flex-end;
+}

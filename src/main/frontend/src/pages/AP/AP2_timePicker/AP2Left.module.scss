@@ -1,0 +1,67 @@
+.titleArea {
+  font-size: 1.75rem;
+  margin: 0 0 1.5625rem 0.8125rem;
+  padding-left: 3.875rem;
+}
+.reserveTransportation {
+  display: flex;
+  flex-direction: column;
+  margin-left: 0.875rem;
+  padding-left: 3.875rem;
+}
+.subTitle {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  font-size: 1.4375rem;
+  margin-bottom: 0.75rem;
+}
+.trainIcon {
+  margin-right: 0.9375rem;
+  width: 1.875rem;
+}
+.buttons {
+  display: flex;
+  flex-direction: column;
+  margin-left: 2.25rem;
+}
+#reserveBtn {
+  background-color: #8ea05d;
+  border: none;
+  font-family: 'Jua', serif;
+  font-size: 1.125rem;
+  margin: 0 0 0.81rem 0;
+  width: 9.13rem;
+}
+.dateChecker {
+  margin-left: 0.875rem;
+  padding-left: 3.875rem;
+}
+.calendarIcon {
+  margin-right: 0.9375rem;
+  width: 1.375rem;
+}
+.timeCont {
+  font-size: 0.9375rem;
+  margin: 0 0 1.0625rem 0.875rem;
+  display: flex;
+  flex-direction: row;
+}
+.totalTime {
+  margin-left: 1.0625rem;
+  color: #0064ff;
+}
+.timeExp {
+  font-size: 0.8125rem;
+  margin: 0 0 1.25rem 0.875rem;
+  color: #aab1b8;
+}
+#nextBtn {
+  background-color: #8ea05d;
+  border: none;
+  font-family: 'Jua', serif;
+  font-size: 1.125rem;
+  margin: 1.875rem 4.0625rem 0.9375rem 0;
+  width: 4.375rem;
+  align-self: flex-end;
+}

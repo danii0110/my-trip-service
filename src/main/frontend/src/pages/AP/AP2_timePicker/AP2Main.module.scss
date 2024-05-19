@@ -1,0 +1,28 @@
+.container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: row;
+}
+.leftCont {
+  width: 40rem;
+  min-height: 100%;
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: column;
+}
+#nextBtn {
+  background-color: #8ea05d;
+  border: none;
+  font-family: 'Jua', serif;
+  font-size: 1.125rem;
+  margin: 1.875rem 4.0625rem 0.9375rem 0;
+  width: 4.375rem;
+  align-self: flex-end;
+}
+.rightCont {
+  width: calc(100% - 40rem);
+  min-height: 100%;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
