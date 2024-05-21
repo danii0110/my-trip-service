@@ -9,18 +9,20 @@ import TripPlanPage from "./pages/TripPlan/TripPlanPage";
 import AIChatPage from "./pages/AIChat/AIChatPage";
 import LocationPage from "./pages/TripPlan/LocationPage";
 import SearchPage from "./pages/Search/SearchPage";
+import OAuth2Redirection from './modules/api/Login/OAuth2Redirection';
 
 function App() {
   return (
     <div className='App'>
       <Routes>
-          <Route path='/' element={<MainPage />} />
-          <Route path='/planning' element={<APMain />}>
-              {/* <Route path='/ai-planner/areaName' element={<AP2Main />} /> */}
-          </Route>
-          <Route path='planning/areaName' element={<AP2Main />}></Route>
-          <Route path='plan-list/areaName' element={<AP5Main />}></Route>
-          <Route path='itinerary/areaName' element={<AP6Main />}></Route>
+        <Route path='/' element={<MainPage />} />
+        <Route path='/planning' element={<APMain />}>
+          {/* <Route path='/ai-planner/areaName' element={<AP2Main />} /> */}
+        </Route>
+        <Route path='planning/areaName' element={<AP2Main />}></Route>
+        <Route path='plan-list/areaName' element={<AP5Main />}></Route>
+        <Route path='itinerary/areaName' element={<AP6Main />}></Route>
+        <Route path='callback/kakao' element={<OAuth2Redirection />} />
           <Route path='/trip-plan' element={<TripPlanPage />}></Route>
           <Route path='/search' element={<SearchPage />}></Route>
           <Route path='/ai-chat' element={<AIChatPage />}></Route>
