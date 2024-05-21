@@ -1,0 +1,53 @@
+.search > p{
+  position: absolute;
+  left: 50%;
+  top: 20%;
+  transform: translate(-50%, -50%);
+  height: 24px;
+
+  font-style: normal;
+  font-weight: 400;
+  font-size: 30px;
+  line-height: 24px;
+}
+
+.searchbar {
+  position: absolute;
+  width: 500px;
+  height: 50px;
+  left: 50%;
+  top: 60%;
+  transform: translate(-50%, -50%);
+
+  display: flex;
+  padding: 2px;
+}
+
+.searchbar > input[type="button"]{
+  position: absolute;
+  top: 20%;
+  border: 1px solid transparent;
+
+  width: 24px;
+  height: 24px;
+}
+
+.searchImg {
+  background: url('../../assets/search.svg') no-repeat;
+  left: 10px;
+}
+
+.searchCancel {
+  background: url('../../assets/searchCancel.svg') no-repeat;
+  right: 10px;
+}
+
+.searchbar > input[type="text"]{
+  width: 100%;
+  height: 50%;
+  border: 1px solid #bbb;
+  display: block;
+  padding: 9px 40px 9px 40px;
+  border-radius: 8px;
+  font-size: 14px;
+}

@@ -1,0 +1,50 @@
+.container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 22.8%;
+  height: 300px;
+  border: solid 1px #bbbbbb;
+  border-radius: 8px;
+  margin: 8px;
+  z-index: 999;
+}
+
+.imageContainer {
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+}
+
+.imageContainer > img {
+  width: 100%;
+  height: 100%;
+}
+
+.defaultImage {
+  width:80% !important;
+  height: 80% !important;
+  top: 50%;
+  right: 50%;
+}
+
+.textContainer {
+  background-color: #bbbbbb;
+  width: 100%;
+  height: 100px;
+  text-align: center;
+}
+
+.textContainer h3 {
+  font-size: 23px;
+  margin-top: 23px;
+  margin-bottom: 10px;
+}
+
+.textContainer p {
+  font-size: 16px;
+  margin-top: 0;
+}
+
+
