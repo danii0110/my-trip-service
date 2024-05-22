@@ -7,19 +7,19 @@ import AP5Main from './pages/AP/AP5_planList/AP5Main';
 import AP6Main from './pages/AP/AP6_itinerary/AP6Main';
 import SearchPage from './pages/Search/SearchPage';
 import OAuth2Redirection from './modules/api/Login/OAuth2Redirection';
+import MyTripMain from './pages/MyTrip/MyTripMain';
 
 function App() {
   return (
     <div className='App'>
       <Routes>
         <Route path='/' element={<MainPage />} />
-        <Route path='/planning' element={<APMain />}>
-          {/* <Route path='/ai-planner/areaName' element={<AP2Main />} /> */}
-        </Route>
-        <Route path='planning/areaName' element={<AP2Main />}></Route>
-        <Route path='plan-list/areaName' element={<AP5Main />}></Route>
-        <Route path='itinerary/areaName' element={<AP6Main />}></Route>
+        <Route path='/planning' element={<APMain />} />
+        <Route path='planning/areaName' element={<AP2Main />} />
+        <Route path='plan-list/areaName' element={<AP5Main />} />
+        <Route path='itinerary/areaName' element={<AP6Main />} />
         <Route path='callback/kakao' element={<OAuth2Redirection />} />
+        <Route path='my-info' element={<MyTripMain />} />
         <Route path='/search' element={<SearchPage />}></Route>
       </Routes>
     </div>
