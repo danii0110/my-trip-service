@@ -41,7 +41,7 @@ const Header = () => {
             <Link to='/ai-chat'>AI Chat</Link>
           </li>
           <li>
-            <Link to='/mytrip'>MyTrip</Link>
+            <Link to='/my-info'>MyTrip</Link>
           </li>
           <li>
             <Link to='/community'>커뮤니티</Link>
