@@ -1,0 +1,95 @@
+.container {
+  width: 80vw;
+  height: 225px;
+  border-radius: 10px;
+  margin-bottom: 45px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.tripImg {
+  width: 170px;
+  height: 170px;
+  background-color: #d9d9d9;
+  border-radius: 10px;
+  margin: 0 27px;
+}
+.main {
+  display: flex;
+  flex-direction: column;
+}
+.top {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 25px;
+}
+.dDayCont {
+  width: 58px;
+  height: 24px;
+  border-radius: 20px;
+  background-color: #8ea05d;
+  color: #ffffff;
+  font-size: 15px;
+  display: flex;
+  justify-content: center;
+}
+.areaName {
+  font-size: 23px;
+  margin-left: 23px;
+}
+.tripTitleCont {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 25px;
+}
+.tripTitle {
+  font-size: 18px;
+}
+.edit {
+  font-size: 13px;
+  color: #8ea05d;
+  margin-left: 8px;
+}
+.duration {
+  font-size: 15px;
+  margin-bottom: 5px;
+}
+.shareCont {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.hostCont {
+  width: 50px;
+  height: 25px;
+  border-radius: 5px;
+  background-color: #8ea05d;
+  color: #ffffff;
+  font-size: 15px;
+  margin-right: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.checkCont {
+  color: #8ea05d;
+  font-size: 15px;
+  margin-right: 10px;
+}
+.partyCont {
+  font-size: 15px;
+}
+.editDateCont {
+  font-size: 15px;
+  color: #aab1b8;
+  margin: 30px 40px auto auto;
+}
+.dotsIcon {
+  display: flex;
+  align-items: center;
+  margin: 0 30px 0 0;
+  border: none;
+  background-color: transparent;
+}

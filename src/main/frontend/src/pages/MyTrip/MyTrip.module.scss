@@ -1,0 +1,46 @@
+.container {
+  display: flex;
+  flex-direction: column;
+}
+.main {
+  padding-left: 8rem;
+}
+.title {
+  font-size: 1.875rem;
+  margin: 1.25rem 0;
+}
+.subCont {
+  display: flex;
+  flex-direction: column;
+}
+.subtitleCont {
+  display: flex;
+  flex-direction: row;
+}
+.subtitle {
+  font-size: 25px;
+}
+.questionIcon {
+  margin-left: 0.3125rem;
+  border: none;
+  background-color: transparent;
+  padding: 0;
+  display: flex;
+  align-items: center;
+}
+.scheduleCont {
+  display: flex;
+  flex-direction: row;
+  font-size: 20px;
+  margin: 10px 0;
+}
+.scheduleBtn {
+  border: none;
+  background-color: transparent;
+  padding: 0;
+  margin-right: 18px;
+  color: #aab1b8;
+}
+.selected {
+  color: #000000;
+}
