@@ -1,95 +1,110 @@
 .container {
   width: 80vw;
-  height: 225px;
-  border-radius: 10px;
-  margin-bottom: 45px;
+  height: 14.0625rem;
+  border-radius: 0.625rem;
+  margin-bottom: 2.8125rem;
   display: flex;
   flex-direction: row;
   align-items: center;
 }
+
 .tripImg {
-  width: 170px;
-  height: 170px;
+  width: 10.625rem;
+  height: 10.625rem;
   background-color: #d9d9d9;
-  border-radius: 10px;
-  margin: 0 27px;
+  border-radius: 0.625rem;
+  margin: 0 1.6875rem;
 }
+
 .main {
   display: flex;
   flex-direction: column;
 }
+
 .top {
   display: flex;
   flex-direction: row;
   align-items: center;
-  margin-bottom: 25px;
+  margin-bottom: 1.5625rem;
 }
+
 .dDayCont {
-  width: 58px;
-  height: 24px;
-  border-radius: 20px;
+  width: 3.625rem;
+  height: 1.5rem;
+  border-radius: 1.25rem;
   background-color: #8ea05d;
   color: #ffffff;
-  font-size: 15px;
+  font-size: 0.9375rem;
   display: flex;
   justify-content: center;
 }
+
 .areaName {
-  font-size: 23px;
-  margin-left: 23px;
+  font-size: 1.4375rem;
+  margin-left: 1.4375rem;
 }
+
 .tripTitleCont {
   display: flex;
   flex-direction: row;
   align-items: center;
-  margin-bottom: 25px;
+  margin-bottom: 1.5625rem;
 }
+
 .tripTitle {
-  font-size: 18px;
+  font-size: 1.125rem;
 }
+
 .edit {
-  font-size: 13px;
+  font-size: 0.8125rem;
   color: #8ea05d;
-  margin-left: 8px;
+  margin-left: 0.5rem;
 }
+
 .duration {
-  font-size: 15px;
-  margin-bottom: 5px;
+  font-size: 0.9375rem;
+  margin-bottom: 0.3125rem;
 }
+
 .shareCont {
   display: flex;
   flex-direction: row;
   align-items: center;
 }
+
 .hostCont {
-  width: 50px;
-  height: 25px;
-  border-radius: 5px;
+  width: 3.125rem;
+  height: 1.5625rem;
+  border-radius: 0.3125rem;
   background-color: #8ea05d;
   color: #ffffff;
-  font-size: 15px;
-  margin-right: 10px;
+  font-size: 0.9375rem;
+  margin-right: 0.625rem;
   display: flex;
   justify-content: center;
   align-items: center;
 }
+
 .checkCont {
   color: #8ea05d;
-  font-size: 15px;
-  margin-right: 10px;
+  font-size: 0.9375rem;
+  margin-right: 0.625rem;
 }
+
 .partyCont {
-  font-size: 15px;
+  font-size: 0.9375rem;
 }
+
 .editDateCont {
-  font-size: 15px;
+  font-size: 0.9375rem;
   color: #aab1b8;
-  margin: 30px 40px auto auto;
+  margin: 1.875rem 2.5rem auto auto;
 }
+
 .dotsIcon {
   display: flex;
   align-items: center;
-  margin: 0 30px 0 0;
+  margin: 0 1.875rem 0 0;
   border: none;
   background-color: transparent;
 }
