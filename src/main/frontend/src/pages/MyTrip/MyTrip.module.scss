@@ -18,7 +18,7 @@
   flex-direction: row;
 }
 .subtitle {
-  font-size: 25px;
+  font-size: 1.5625rem;
 }
 .questionIcon {
   margin-left: 0.3125rem;
@@ -31,14 +31,14 @@
 .scheduleCont {
   display: flex;
   flex-direction: row;
-  font-size: 20px;
-  margin: 10px 0;
+  font-size: 1.25rem;
+  margin: 0.625rem 0;
 }
 .scheduleBtn {
   border: none;
   background-color: transparent;
   padding: 0;
-  margin-right: 18px;
+  margin-right: 1.125rem;
   color: #aab1b8;
 }
 .selected {
