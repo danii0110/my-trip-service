@@ -3,7 +3,9 @@ import Layout from '../../components/layouts/Layout';
 import MyTripHeader from './MyTripHeader';
 import MyTrip from './MyTrip';
 import { useState } from 'react';
+import Cart from './Cart';
 const MyTripMain = () => {
+  const [view, setView] = useState('mytrip');
   const [selected, setSelected] = useState('myTrip');
   return (
     <Layout>
@@ -14,18 +16,23 @@ const MyTripMain = () => {
             className={`${styles.headerSub} ${selected === 'myTrip' ? styles.selected : ''}`}
             onClick={() => setSelected('myTrip')}
           >
-            <button type='button'>My Trip</button>
+            <button type='button' onClick={() => setView('mytrip')}>
+              My Trip
+            </button>
             {selected === 'myTrip' && <hr className={styles.selectedHr} />}
           </div>
           <div
             className={`${styles.headerSub} ${selected === 'cart' ? styles.selected : ''}`}
             onClick={() => setSelected('cart')}
           >
-            <button type='button'>장바구니</button>
+            <button type='button' onClick={() => setView('cart')}>
+              나의 여행 도시 목록
+            </button>
             {selected === 'cart' && <hr className={styles.selectedHr} />}
           </div>
         </div>
-        <MyTrip />
+        {view === 'mytrip' && <MyTrip />}
+        {view === 'cart' && <Cart />}
       </div>
     </Layout>
   );
