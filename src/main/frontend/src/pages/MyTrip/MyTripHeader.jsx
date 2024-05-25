@@ -7,13 +7,13 @@ const MyTripHeader = () => {
     <div className={styles.container}>
       <div className={styles.title}>MyTrip</div>
       <div className={styles.profileCont}>
-        <div>프로필 관리</div>
+        <div className={styles.subTitle}>프로필 관리</div>
         <button className={styles.btn}>
           <img src={ConfigurationIcon} alt='configuration-icon' />
         </button>
       </div>
       <div className={styles.scrapCont}>
-        <div>스크랩</div>
+        <div className={styles.subTitle}>스크랩</div>
         <button className={styles.btn}>
           <img src={BookmarkIcon} alt='bookmark-icon' />
         </button>
