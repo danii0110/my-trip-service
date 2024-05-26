@@ -1,7 +1,6 @@
 import styles from './Cart.module.scss';
 import QuestionIcon from '../../assets/questionIcon.svg';
 import Plan from './Plan';
-import { useState } from 'react';
 
 const Cart = () => {
   const plansData = [
