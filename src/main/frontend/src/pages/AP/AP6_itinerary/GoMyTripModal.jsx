@@ -11,7 +11,7 @@ const GoMyTripModal = ({ show, onHide }) => {
 
   const goToMyTrip = () => {
     onHide();
-    navigate('/my-info');
+    navigate('/my-trip');
   };
   return (
     <div className={styles.container}>
