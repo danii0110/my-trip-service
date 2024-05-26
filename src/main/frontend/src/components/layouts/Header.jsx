@@ -1,7 +1,7 @@
 import styles from './Header.module.scss';
 import logoImg from '../../assets/logo.svg';
 import alarmImg from '../../assets/alarm.svg';
-import profileImg from '../../assets/profile.svg';
+import profileIcon from '../../assets/profileIcon.svg';
 import kakaoLoginImg from '../../assets/kakao_login_medium.png';
 import { Link } from 'react-router-dom';
 import { KAKAO_AUTH_URL } from '../../modules/api/Login/OAuth';
@@ -41,7 +41,7 @@ const Header = () => {
             <Link to='/ai-chat'>AI Chat</Link>
           </li>
           <li>
-            <Link to='/my-info'>MyTrip</Link>
+            <Link to='/my-trip'>MyTrip</Link>
           </li>
           <li>
             <Link to='/community'>커뮤니티</Link>
@@ -52,7 +52,7 @@ const Header = () => {
         {isLoggedIn ? (
           <>
             <img className={styles.alarmIcon} src={alarmImg} alt='alarm-icon' />
-            <img className={styles.profileIcon} src={profileImg} alt='profile-icon' />
+            <img className={styles.profileIcon} src={profileIcon} alt='profile-icon' />
             <button onClick={handleLogout}>로그아웃</button>
           </>
         ) : (
