@@ -1,28 +1,33 @@
 package com.mytrip.mytripservice.controller;
 
 import com.mytrip.mytripservice.model.DataRequest;
+import com.mytrip.mytripservice.model.LocationDetail;
 import com.mytrip.mytripservice.model.LocationOverview;
-import com.mytrip.mytripservice.service.DataPortalRequest;
+import com.mytrip.mytripservice.service.DataPortalService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/data")
 public class DataPortalController {
 
-    @Autowired
-    private DataPortalRequest dataPortalRequest;
+    private final DataPortalService dataPortalService;
 
-    @GetMapping("/data")
+    @GetMapping("/list")
     public Object getListData(@ModelAttribute DataRequest request) throws UnsupportedEncodingException {
-        String url = dataPortalRequest.makeDataUrl(request);
-        Object data = dataPortalRequest.fetchData(url, LocationOverview.class);
+        String url = dataPortalService.makeDataUrl(request);
+        Object data = dataPortalService.fetchData(url, LocationOverview.class);
         return data;
     }
+
+    @GetMapping("/dataDetail")
+    public Object getDataDetail(@ModelAttribute DataRequest request) throws UnsupportedEncodingException {
+        String url = dataPortalService.makeDataUrl(request);
+        Object data = dataPortalService.fetchData(url, LocationDetail.class);
+        return data;
+    }
+
 }
