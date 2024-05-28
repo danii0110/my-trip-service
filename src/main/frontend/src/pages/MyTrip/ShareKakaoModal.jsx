@@ -90,31 +90,37 @@ const ShareKakaoModal = ({ show, onHide }) => {
               <div className={styles.mainTitleExplain}>공유된 친구</div>
               <div className={styles.shareNum}>{friends.length}</div>
             </div>
-            <div className={friends.length > 3 ? styles.tableContainerScroll : styles.tableContainer}>
-              <table className={styles.friendsTable}>
-                <thead>
-                  <tr>
-                    <th>닉네임</th>
-                    <th>관리</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {friends.map((friend) => (
-                    <tr key={friend.nickname}>
-                      <td>{friend.nickname}</td>
-                      <td>
-                        <button className={styles.deleteBtn} onClick={() => handleDelete(friend.nickname)}>
-                          삭제
-                        </button>
-                      </td>
+            {friends.length > 0 ? (
+              <div className={friends.length > 3 ? styles.tableContainerScroll : styles.tableContainer}>
+                <table className={styles.friendsTable}>
+                  <thead>
+                    <tr>
+                      <th>닉네임</th>
+                      <th>관리</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+                  </thead>
+                  <tbody>
+                    {friends.map((friend) => (
+                      <tr key={friend.nickname}>
+                        <td>{friend.nickname}</td>
+                        <td>
+                          <button className={styles.deleteBtn} onClick={() => handleDelete(friend.nickname)}>
+                            삭제
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            ) : (
+              <div className={styles.noFriendsBox}>일정을 공유한 친구가 없습니다.</div>
+            )}
           </div>
           <div className={styles.btnCont}>
-            <button className={styles.okBtn}>확인</button>
+            <button className={styles.okBtn} onClick={onHide}>
+              확인
+            </button>
           </div>
         </Modal.Body>
       </Modal>
