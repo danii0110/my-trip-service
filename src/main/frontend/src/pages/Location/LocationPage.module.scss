@@ -1,0 +1,94 @@
+.content {
+  width: 70%;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.title {
+  margin-top: 50px;
+}
+
+h1 {
+  font-size: 38px;
+  font-weight: 600;
+}
+
+h2 {
+  font-size: 28px;
+  font-weight: 600;
+  text-align: left;
+  margin-left: 5px;
+}
+
+h3 {
+  font-size: 23px;
+  font-weight: 400;
+}
+
+.image {
+  position: relative;
+  height: 450px;
+  width: 100%;
+}
+
+.image > img{
+  margin-top: 25px;
+  max-height: 400px;
+  max-width: 500px;
+}
+
+.summary {
+  text-align: left;
+}
+
+.summary h2 {
+  margin-top: 15px;
+}
+
+.summary p {
+  white-space: pre-line;
+  font-size: 20px;
+}
+
+.recommendContainer {
+  display: flex;
+  flex-direction: row;
+}
+
+.location {
+  display: flex;
+  flex-wrap: wrap;
+  width: 70%;
+  margin: 0 auto;
+  padding-bottom: 30px;
+  justify-content: center;
+}
+
+.course {
+  display: flex;
+  flex-direction: column;
+  width: 30%;
+  height: 411px;
+  justify-content: center;
+  align-items: center;
+  background-color: #8ea05d;
+  color: white;
+  border-radius: 8px;
+}
+
+.course p {
+  font-size: 18px;
+}
+
+.course button {
+  display: flex;
+  background-color: white;
+  border: transparent;
+  border-radius: 8px;
+  margin-top: 5px;
+  width: 180px;
+  height: 50px;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+}

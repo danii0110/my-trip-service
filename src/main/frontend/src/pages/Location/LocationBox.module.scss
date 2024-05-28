@@ -3,16 +3,17 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  width: 23.4%;
-  height: 300px;
+  width: 45%;
+  height: 200px;
   border: solid 1px #bbbbbb;
   border-radius: 8px;
-  margin: 8px;
+  margin-right: 15px;
+  margin-bottom: 10px;
   z-index: 999;
 }
 
 .imageContainer {
+  position: absolute;
   width: 100%;
   height: 200px;
   overflow: hidden;
@@ -31,27 +32,27 @@
 }
 
 .textContainer {
+  position: absolute;
+  bottom: 0;
   display: flex;
-  background-color: #8ea05d;
+  background-color: transparent;
+  color: white;
   width: 100%;
   height: 100px;
   justify-content: center;
   align-items: center;
   flex-direction: column;
   word-break: keep-all;
+  margin: 0;
 }
 
 .textContainer h3 {
   font-size: 23px;
   margin-top: 23px;
-  margin-bottom: 0;
   text-align: center;
-  word-break: break-all;
 }
 
 .textContainer p {
   font-size: 16px;
-  margin-top: 0;
+  margin: 0;
 }
-
-

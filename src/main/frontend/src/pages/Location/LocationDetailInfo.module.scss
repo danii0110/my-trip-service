@@ -1,0 +1,8 @@
+.grid{
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, max(calc(50% - 10px))); /* 두 개의 열로 설정 */
+  list-style: none; /* 기본 list 스타일 제거 */
+  padding: 0;
+  margin: 0;
+}
