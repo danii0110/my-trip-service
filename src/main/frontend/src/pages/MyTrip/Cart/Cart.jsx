@@ -1,6 +1,7 @@
 import styles from './Cart.module.scss';
-import QuestionIcon from '../../assets/questionIcon.svg';
+import QuestionIcon from '../../../assets/questionIcon.svg';
 import Plan from './Plan';
+import { useState } from 'react';
 
 const Cart = () => {
   const plansData = [
@@ -14,9 +15,15 @@ const Cart = () => {
     { date: '24.11.22-24.11.27', areaName: '대전 유성구', planNum: 8 },
   ];
 
-  const plans = plansData
-    .slice(0, 8)
-    .map((plan, index) => <Plan key={index} date={plan.date} areaName={plan.areaName} planNum={plan.planNum} />);
+  const [plans, setPlans] = useState(plansData);
+
+  const handleDelete = (index) => {
+    const newPlans = plans.filter((_, i) => i !== index);
+    setPlans(newPlans);
+  };
+  // const plans = plansData
+  //   .slice(0, 8)
+  //   .map((plan, index) => <Plan key={index} date={plan.date} areaName={plan.areaName} planNum={plan.planNum} />);
 
   return (
     <div className={styles.container}>
@@ -30,7 +37,17 @@ const Cart = () => {
         </button>
       </div>
       <div className={styles.mainCont}>
-        <div className={styles.main}>{plans}</div>
+        <div className={styles.main}>
+          {plans.map((plan, index) => (
+            <Plan
+              key={index}
+              date={plan.date}
+              areaName={plan.areaName}
+              planNum={plan.planNum}
+              onDelete={() => handleDelete(index)}
+            />
+          ))}
+        </div>
       </div>
     </div>
   );

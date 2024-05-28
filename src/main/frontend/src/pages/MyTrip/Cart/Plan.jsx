@@ -1,10 +1,10 @@
 import styles from './Plan.module.scss';
-import WhiteX from '../../assets/whiteX.svg';
+import WhiteX from '../../../assets/whiteX.svg';
 
-const Plan = ({ date, areaName, planNum }) => {
+const Plan = ({ date, areaName, planNum, onDelete }) => {
   return (
     <div className={styles.container}>
-      <button className={styles.whiteX}>
+      <button className={styles.whiteX} onClick={onDelete}>
         <img className={styles.whiteXIcon} src={WhiteX} alt='white-x' />
       </button>
       <div className={styles.subCont}>
