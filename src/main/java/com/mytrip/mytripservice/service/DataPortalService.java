@@ -14,9 +14,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.util.Objects;
 
 @Component
-public class DataPortalRequest {
+public class DataPortalService {
 
     @Value("${public-data.korservice.key.decoding}")
     private String serviceKey;
@@ -25,18 +26,37 @@ public class DataPortalRequest {
 
     private final WebClient webClient;
 
-    public DataPortalRequest() {
+    public DataPortalService() {
         ObjectMapper objectMapper = Jackson2ObjectMapperBuilder.json()
                 .modules(new JavaTimeModule())
                 .featuresToDisable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
                 .featuresToEnable(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT)
                 .build();
-
         // WebClient 빌더 설정
         this.webClient = WebClient.builder()
                 .codecs(configurer -> configurer.defaultCodecs().jackson2JsonDecoder(
                         new Jackson2JsonDecoder(objectMapper)))
                 .build();
+    }
+
+    public String makeSaveUrl(String areaCode) throws UnsupportedEncodingException {
+        UriComponentsBuilder builder = UriComponentsBuilder
+                .fromHttpUrl(serviceURL + "/areaCode1")
+                .queryParam("MobileOS", "ETC")
+                .queryParam("MobileApp", "AppTest")
+                .queryParam("_type", "json")
+                .queryParam("serviceKey", serviceKey)
+                .queryParam("numOfRows", "100")
+                .queryParam("pageNo", "1");
+
+        if (!Objects.equals(areaCode, "")) {
+            builder.queryParam("areaCode", areaCode);
+        }
+
+        String uriString = builder.toUriString();
+        uriString = URLDecoder.decode(uriString, "UTF-8");
+
+        return uriString;
     }
 
     public UriComponentsBuilder makeBasicUrl(String apiUri, String numOfRows, String pageNo) throws UnsupportedEncodingException {
@@ -55,7 +75,7 @@ public class DataPortalRequest {
         UriComponentsBuilder builder = makeBasicUrl(request.getApiUri(), request.getNumOfRows(), request.getPageNo());
 
         if (request.getArrange() != null) {
-            builder.queryParam("arrange", "D");
+            builder.queryParam("arrange", request.getArrange());
         }
         if (request.getContentTypeId() != null) {
             builder.queryParam("contentTypeId", request.getContentTypeId());
@@ -66,7 +86,7 @@ public class DataPortalRequest {
         if (request.getAreaCode() != null) {
             builder.queryParam("areaCode", request.getAreaCode());
         }
-        if (request.getSigunguCode() != null) {
+        if (request.getSigunguCode() != null & !Objects.equals(request.getSigunguCode(), "0")) {
             builder.queryParam("sigunguCode", request.getSigunguCode());
         }
         if (request.getMapX() != null) {
@@ -82,19 +102,28 @@ public class DataPortalRequest {
             builder.queryParam("keyword", request.getKeyword());
         }
         if (request.getDefaultYN() != null) {
-            builder.queryParam("defaultYN", "Y");
+            builder.queryParam("defaultYN", request.getDefaultYN());
+        }
+        if (request.getFirstImageYN() != null) {
+            builder.queryParam("firstImageYN", request.getFirstImageYN());
+        }
+        if (request.getAreacodeYN() != null) {
+            builder.queryParam("areacodeYN", request.getAreacodeYN());
         }
         if (request.getAddrinfoYN() != null) {
-            builder.queryParam("addrinfoYN", "Y");
+            builder.queryParam("addrinfoYN", request.getAddrinfoYN());
         }
         if (request.getMapinfoYN() != null) {
-            builder.queryParam("mapinfoYN", "Y");
+            builder.queryParam("mapinfoYN", request.getMapinfoYN());
         }
         if (request.getOverviewYN() != null) {
-            builder.queryParam("overviewYN", "Y");
+            builder.queryParam("overviewYN", request.getOverviewYN());
+        }
+        if (request.getImageYN() != null) {
+            builder.queryParam("imageYN", request.getImageYN());
         }
         if (request.getSubImageYN() != null) {
-            builder.queryParam("subImageYN", "Y");
+            builder.queryParam("subImageYN", request.getSubImageYN());
         }
 
         String uriString = builder.toUriString();
@@ -112,4 +141,5 @@ public class DataPortalRequest {
                 .doOnNext(response -> System.out.println("Fetched data: " + response))
                 .doOnError(error -> System.err.println("Error fetching data: " + error.getMessage()));
     }
+
 }

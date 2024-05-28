@@ -17,8 +17,11 @@ public class DataRequest {
     private String radius;
     private String keyword;
     private String defaultYN;
+    private String firstImageYN;
+    private String areacodeYN;
     private String addrinfoYN;
     private String mapinfoYN;
     private String overviewYN;
+    private String imageYN;
     private String subImageYN;
 }

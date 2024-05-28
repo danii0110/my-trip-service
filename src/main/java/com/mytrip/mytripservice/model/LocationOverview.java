@@ -51,6 +51,7 @@ public class LocationOverview {
         private String contentid; //콘텐츠ID
         private String contenttypeid; //콘텐츠타입ID
         private String createdtime; //등록일
+        private String homepage; //홈페이지 주소
         private String firstimage; //대표이미지 원본
         private String firstimage2; //대표이미지 압축본
         private String cpyrhtDivCd; //저작권 유형
@@ -60,6 +61,11 @@ public class LocationOverview {
         private String modifiedtime; //수정일
         private String sigungucode; //시군구코드
         private String tel; //전화번호
-        private String zipcode;
+        private String zipcode; //우편번호
+        private String overview; //개요
+        private String imgname;
+        private String originimgurl;
+        private String serialnum;
+        private String smaillimageurl;
     }
 }
