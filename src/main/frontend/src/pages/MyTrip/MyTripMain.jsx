@@ -3,7 +3,7 @@ import Layout from '../../components/layouts/Layout';
 import MyTripHeader from './MyTripHeader';
 import MyTrip from './MyTrip';
 import { useState } from 'react';
-import Cart from './Cart';
+import Cart from './Cart/Cart';
 const MyTripMain = () => {
   const [view, setView] = useState('mytrip');
   const [selected, setSelected] = useState('myTrip');

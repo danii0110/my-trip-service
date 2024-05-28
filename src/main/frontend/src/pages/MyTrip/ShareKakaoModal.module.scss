@@ -1,0 +1,111 @@
+.customModalBody {
+  display: flex;
+  flex-direction: column;
+  padding: 50px 0 0 43px;
+}
+.title {
+  font-family: 'Jua', serif;
+  font-size: 25px;
+}
+.subTitle {
+  font-family: 'Jua', serif;
+  font-size: 18px;
+  margin-top: 17px;
+}
+.btnsCont {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin: 20px 0;
+}
+.inviteKakaoBtn {
+  border: none;
+  background-color: #f9e000;
+  color: #fff;
+  font-family: 'Jua', serif;
+  font-size: 23px;
+  width: 269px;
+  height: 64px;
+  border-radius: 10px;
+  margin: 0 13px;
+}
+.copyLinkBtn {
+  border: none;
+  background-color: #8ea05d;
+  color: #fff;
+  font-family: 'Jua', serif;
+  font-size: 23px;
+  width: 269px;
+  height: 64px;
+  border-radius: 10px;
+  margin: 0 13px;
+}
+.mainTitle {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  font-family: 'Jua', serif;
+}
+.mainTitleExplain {
+  font-size: 18px;
+}
+.shareNum {
+  font-size: 23px;
+  margin-left: 3px;
+}
+.btnCont {
+  display: flex;
+  justify-content: center;
+}
+.tableContainer {
+  max-height: none;
+  overflow-y: visible;
+}
+.tableContainerScroll {
+  max-height: 200px;
+  overflow-y: auto;
+}
+.friendsTable {
+  width: 90%;
+  border-collapse: collapse;
+  font-family: 'Jua', serif;
+  font-size: 18px;
+}
+.friendsTable th,
+.friendsTable td {
+  padding: 8px 20px;
+  text-align: center;
+}
+.friendsTable th {
+  background-color: #f4f6f7;
+  color: #aab1b8;
+  text-align: left;
+  padding: 8px 20px;
+  text-align: center;
+}
+.friendsTable th:first-child {
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+.friendsTable th:last-child {
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+.deleteBtn {
+  color: #8ea05d;
+  background-color: transparent;
+  border: none;
+  padding: 5px 0;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.okBtn {
+  background-color: #d5d7db;
+  font-family: 'Jua', serif;
+  font-size: 23px;
+  width: 74px;
+  height: 44px;
+  border: none;
+  border-radius: 10px;
+  margin: 30px 0 50px 0;
+}
