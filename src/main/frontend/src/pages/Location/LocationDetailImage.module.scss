@@ -1,0 +1,47 @@
+.carouselContainer {
+  position: relative;
+  width: 100%;
+  height: 450px;
+  overflow: hidden;
+}
+
+.carouselSlide {
+  display: flex;
+  transition: transform 0.5s ease;
+}
+
+.carouselItem {
+  display: flex;
+  width: 100%;
+  height: 450px;
+  flex-shrink: 0;
+  justify-content: center;
+  align-items: center;
+}
+
+.carouselItem img {
+  max-width: 570px;
+  max-height: 450px;
+  height: auto;
+  object-fit: contain;
+}
+
+.prevBtn,
+.nextBtn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: transparent;
+  color: white;
+  padding: 10px;
+  border: none;
+  cursor: pointer;
+}
+
+.prevBtn {
+  left: 0;
+}
+
+.nextBtn {
+  right: 0;
+}

@@ -1,7 +1,6 @@
-import styles from './Box.module.scss'
 import defaultImage from '../../assets/defaultImage.png';
 
-const Box = ({ src, alt, title, text, onClick }) => {
+const Box = ({ src, alt, title, areacode, sigungucode, text, onClick, styles }) => {
     return (
         <div className={styles.container} onClick={onClick}>
             <div className={styles.imageContainer}>
@@ -11,6 +10,7 @@ const Box = ({ src, alt, title, text, onClick }) => {
             <div className={styles.textContainer}>
                 {/* 텍스트 */}
                 <h3>{title}</h3>
+                <p>{areacode} {sigungucode}</p>
                 <p>{text}</p>
             </div>
         </div>
