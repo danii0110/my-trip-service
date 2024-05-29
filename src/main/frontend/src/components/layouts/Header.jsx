@@ -6,22 +6,19 @@ import kakaoLoginImg from '../../assets/kakao_login_medium.png';
 import { Link } from 'react-router-dom';
 import { KAKAO_AUTH_URL } from '../../modules/api/Login/OAuth';
 import { useDispatch, useSelector } from 'react-redux';
-import { logout } from '../../modules/api/Login/userActions'; //로그아웃 액션 임포트
+import { logout } from '../../modules/api/Login/userActions';
 
 const Header = () => {
   const dispatch = useDispatch();
-  const { isLoggedIn } = useSelector((state) => state.user);
+  const { isLoggedIn, user } = useSelector((state) => state.user);
 
   const kakaoLoginHandler = () => {
-    //카카오 인증 URL(KAKAO_AUTH_URL)를 REDIRECT_URI로 전달(사용자가 인가 코드를 받아옴)
-    window.location.replace(`${KAKAO_AUTH_URL}`);
-    // window.location.href = KAKAO_AUTH_URL;
+    window.location.href = KAKAO_AUTH_URL;
   };
 
   const handleLogout = () => {
     dispatch(logout());
-    // returning initialState explicitly
-    return { user: null, isLoggedIn: false };
+    localStorage.removeItem('user'); // 로그아웃 시 로컬 스토리지에서도 삭제
   };
 
   return (
@@ -53,7 +50,7 @@ const Header = () => {
           <>
             <img className={styles.alarmIcon} src={alarmImg} alt='alarm-icon' />
             <img className={styles.profileIcon} src={profileIcon} alt='profile-icon' />
-            <button onClick={handleLogout}>로그아웃</button>
+            {/* <button onClick={handleLogout}>로그아웃</button> */}
           </>
         ) : (
           <img
