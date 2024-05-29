@@ -1,0 +1,118 @@
+s.customModalBody {
+  display: flex;
+  flex-direction: column;
+  padding: 3.125rem 0 0 2.6875rem;
+}
+.title {
+  font-family: 'Jua', serif;
+  font-size: 1.5625rem;
+}
+.subTitle {
+  font-family: 'Jua', serif;
+  font-size: 1.125rem;
+  margin-top: 1.0625rem;
+}
+.btnsCont {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin: 1.25rem 0;
+}
+.inviteKakaoBtn {
+  border: none;
+  background-color: #f9e000;
+  color: #fff;
+  font-size: 1.4375rem;
+  width: 16.8125rem;
+  height: 4rem;
+  border-radius: 0.625rem;
+  margin: 0 0.8125rem;
+}
+.copyLinkBtn {
+  border: none;
+  background-color: #8ea05d;
+  color: #fff;
+  font-family: 'Jua', serif;
+  font-size: 1.4375rem;
+  width: 16.8125rem;
+  height: 4rem;
+  border-radius: 0.625rem;
+  margin: 0 0.8125rem;
+}
+.mainTitle {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  font-family: 'Jua', serif;
+}
+.mainTitleExplain {
+  font-size: 1.125rem;
+}
+.shareNum {
+  font-size: 1.4375rem;
+  margin-left: 0.1875rem;
+}
+.btnCont {
+  display: flex;
+  justify-content: center;
+}
+.tableContainer {
+  max-height: none;
+  overflow-y: visible;
+}
+.tableContainerScroll {
+  max-height: 12.5rem;
+  overflow-y: auto;
+}
+.friendsTable {
+  width: 90%;
+  border-collapse: collapse;
+  font-family: 'Jua', serif;
+  font-size: 1.125rem;
+}
+.friendsTable th,
+.friendsTable td {
+  padding: 0.5rem 1.25rem;
+  text-align: center;
+}
+.friendsTable th {
+  background-color: #f4f6f7;
+  color: #aab1b8;
+  text-align: left;
+  text-align: center;
+}
+.friendsTable th:first-child,
+.friendsTable th:last-child {
+  border-top-left-radius: 0.625rem;
+  border-bottom-left-radius: 0.625rem;
+}
+.deleteBtn {
+  color: #8ea05d;
+  background-color: transparent;
+  border: none;
+  padding: 0.3125rem 0;
+  border-radius: 0.3125rem;
+  cursor: pointer;
+}
+.noFriendsBox {
+  width: 90%;
+  height: 15.625rem;
+  background-color: #f4f6f7;
+  border-radius: 0.625rem;
+  color: #aab1b8;
+  font-size: 1.125rem;
+  font-family: 'Jua', serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.okBtn {
+  background-color: #d5d7db;
+  font-family: 'Jua', serif;
+  font-size: 1.4375rem;
+  width: 4.625rem;
+  height: 2.75rem;
+  border: none;
+  border-radius: 0.625rem;
+  margin: 1.875rem 0 3.125rem 0;
+}

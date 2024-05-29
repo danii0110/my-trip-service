@@ -1,0 +1,136 @@
+.container {
+  width: 80vw;
+  height: 14.0625rem;
+  border-radius: 0.625rem;
+  margin-bottom: 2.8125rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  position: relative;
+}
+
+.tripImg {
+  width: 10.625rem;
+  height: 10.625rem;
+  background-color: #d9d9d9;
+  border-radius: 0.625rem;
+  margin: 0 1.6875rem;
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+}
+
+.top {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 1.5625rem;
+}
+
+.dDayCont {
+  width: 3.625rem;
+  height: 1.5rem;
+  border-radius: 1.25rem;
+  background-color: #8ea05d;
+  color: #ffffff;
+  font-size: 0.9375rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.areaName {
+  font-size: 1.4375rem;
+  margin-left: 1rem;
+}
+
+.tripTitleCont {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 1.5625rem;
+}
+
+.tripTitle {
+  font-size: 1.125rem;
+}
+
+.placeholder {
+  color: #aab1b8;
+}
+
+.edit {
+  font-size: 0.8125rem;
+  color: #8ea05d;
+  margin-left: 0.5rem;
+}
+
+.duration {
+  font-size: 0.9375rem;
+  margin-bottom: 0.3125rem;
+}
+
+.shareCont {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.hostCont {
+  width: 3.125rem;
+  height: 1.5625rem;
+  border-radius: 0.3125rem;
+  background-color: #8ea05d;
+  color: #ffffff;
+  font-size: 0.9375rem;
+  margin-right: 0.625rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.checkCont {
+  color: #8ea05d;
+  font-size: 0.9375rem;
+  margin-right: 0.625rem;
+}
+
+.partyCont {
+  font-size: 0.9375rem;
+}
+
+.editDateCont {
+  font-size: 0.9375rem;
+  color: #aab1b8;
+  margin: 1.875rem 2.5rem auto auto;
+}
+
+.dotsIcon {
+  display: flex;
+  align-items: center;
+  margin: 0 1.875rem 0 0;
+  border: none;
+  background-color: transparent;
+}
+.menu {
+  position: absolute;
+  top: 2.5rem;
+  right: 2rem;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  z-index: 10;
+  width: 10.0625rem;
+  text-align: center;
+}
+
+.menuItem {
+  padding: 0.75rem 1.5rem;
+  cursor: pointer;
+  &:hover {
+    background-color: #f5f5f5;
+  }
+}

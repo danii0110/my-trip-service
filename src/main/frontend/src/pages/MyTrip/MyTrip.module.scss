@@ -1,0 +1,81 @@
+.container {
+  display: flex;
+  flex-direction: column;
+}
+.main {
+  padding-left: 8rem;
+}
+.title {
+  font-size: 1.875rem;
+  margin: 1.25rem 0;
+}
+.subCont {
+  display: flex;
+  flex-direction: column;
+}
+.subtitleCont {
+  display: flex;
+  flex-direction: row;
+}
+.subtitle {
+  font-size: 1.5625rem;
+}
+.questionIcon {
+  margin-left: 0.3125rem;
+  border: none;
+  background-color: transparent;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  position: relative;
+}
+.tooltip {
+  visibility: hidden;
+  width: 23.75rem;
+  background-color: rgba($color: #000, $alpha: 0.7);
+  color: #fff;
+  text-align: center;
+  border-radius: 0.3125rem;
+  padding: 0.9375rem 1.125rem;
+  position: absolute;
+  z-index: 1;
+  bottom: -270%;
+  left: 50%;
+  margin-left: -6.25rem;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.questionIcon:hover .tooltip {
+  visibility: visible;
+  opacity: 0.9;
+}
+.scheduleCont {
+  display: flex;
+  flex-direction: row;
+  font-size: 1.25rem;
+  margin: 0.625rem 0;
+}
+.scheduleBtn {
+  border: none;
+  background-color: transparent;
+  padding: 0;
+  margin-right: 1.125rem;
+  color: #aab1b8;
+}
+.selected {
+  color: #000000;
+}
+.noDataBox {
+  width: 80vw;
+  height: 14.0625rem;
+  border-radius: 0.625rem;
+  background-color: #f4f6f7;
+  color: #aab1b8;
+  font-size: 1.25rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 9.375rem;
+}

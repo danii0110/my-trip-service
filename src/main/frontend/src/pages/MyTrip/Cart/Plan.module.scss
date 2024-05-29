@@ -1,0 +1,37 @@
+.container {
+  width: 13.9375rem;
+  height: 14.8125rem;
+  border-radius: 0.625rem;
+  background-color: #8ea05d;
+  margin: 0 1.25rem 0.625rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  color: #ffffff;
+  padding: 0.9375rem;
+  transition: all 0.3s ease;
+
+  @media (max-width: 1400px) {
+    margin: 0;
+  }
+}
+.whiteX {
+  border: none;
+  background-color: transparent;
+  padding: 0;
+  margin: 0 0 0 auto;
+}
+.whiteXIcon {
+  width: 1rem;
+}
+.subCont {
+  margin: auto 0 0 0;
+}
+.date {
+  font-size: 1rem;
+}
+.areaName {
+  font-size: 1.4375rem;
+}
+.cartNum {
+  font-size: 0.9375rem;
+}

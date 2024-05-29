@@ -1,0 +1,76 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 2.1875rem 0 9.375rem 0;
+}
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.profileIcon {
+  width: 5rem;
+  height: 5rem;
+  margin-bottom: 0.9375rem;
+}
+.userId {
+  font-size: 1.5625rem;
+}
+.main {
+  display: flex;
+  flex-direction: column;
+}
+.profileExplan {
+  font-size: 1.5625rem;
+  margin: 1.875rem 0 0.625rem 0;
+}
+.nicknameCont {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 0.9375rem;
+}
+.labelTag {
+  font-size: 1.25rem;
+}
+.labelInput {
+  width: 30.6875rem;
+  height: 3.1875rem;
+  border-radius: 0.625rem;
+  padding-left: 0.9375rem;
+  font-size: 1.25rem;
+  border: 1px solid #d5d7db;
+  &:focus {
+    border: 0.125rem solid #8ea05d;
+    outline: none;
+  }
+}
+.emailCont {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 0.625rem;
+}
+.deleteId {
+  font-size: 0.9375rem;
+  margin-bottom: 1.25rem;
+  margin-left: auto;
+  border: none;
+  background-color: transparent;
+}
+.btnCont {
+  display: flex;
+  flex-direction: row;
+}
+.btn {
+  border: none;
+  background-color: #d9d9d9;
+  font-size: 1.4375rem;
+  border-radius: 0.625rem;
+  width: 14.6875rem;
+  height: 3.1875rem;
+  margin: 0 1.0625rem;
+}
+.btn.save {
+  background-color: #8ea05d;
+  color: #ffffff;
+}

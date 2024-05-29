@@ -23,6 +23,9 @@ function App() {
         <Route path='plan-list/areaName' element={<AP5Main />}></Route>
         <Route path='itinerary/areaName' element={<AP6Main />}></Route>
         <Route path='callback/kakao' element={<OAuth2Redirection />} />
+        <Route path='my-trip' element={<MyTripMain />} />
+        <Route path='my-trip/profile' element={<Profile />} />
+        <Route path='/search' element={<SearchPage />}></Route>
         <Route path='/trip-plan' element={<TripPlanPage />}></Route>
         <Route path='/search' element={<SearchPage />}></Route>
         <Route path='/ai-chat' element={<AIChatPage />}></Route>

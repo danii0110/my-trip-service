@@ -1,7 +1,7 @@
 .container {
   display: flex;
   flex-direction: column;
-  margin-right: 30px;
+  margin-right: 1.875rem;
 }
 .header {
   display: flex;
@@ -9,10 +9,10 @@
   align-items: center;
 }
 .day {
-  font-size: 20px;
+  font-size: 1.25rem;
 }
 .date {
-  font-size: 13px;
+  font-size: 0.8125rem;
   color: #aab1b8;
-  margin-left: 130px;
+  margin-left: 8.125rem;
 }

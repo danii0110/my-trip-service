@@ -1,27 +1,27 @@
 .container {
   display: flex;
   flex-direction: row;
-  margin: 15px 0;
+  margin: 0.9375rem 0;
 }
 .infoCont {
   display: flex;
   flex-direction: column;
 }
 .time {
-  font-size: 13px;
+  font-size: 0.8125rem;
   color: #aab1b8;
 }
 .tag {
-  font-size: 13px;
+  font-size: 0.8125rem;
   color: #8ea05d;
 }
 .place {
-  font-size: 15px;
+  font-size: 0.9375rem;
 }
 .placeImg {
-  width: 70px;
-  height: 70px;
-  border-radius: 10px;
+  width: 4.375rem;
+  height: 4.375rem;
+  border-radius: 0.625rem;
   margin-left: auto;
   background-color: #ffffff;
 }

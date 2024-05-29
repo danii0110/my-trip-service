@@ -2,8 +2,8 @@
 import { LOGIN_SUCCESS, LOGOUT } from '../modules/api/Login/userActions';
 
 const initialState = {
-  user: null,
-  isLoggedIn: false,
+  user: JSON.parse(localStorage.getItem('user')),
+  isLoggedIn: !!localStorage.getItem('user'),
 };
 
 const userReducer = (state = initialState, action) => {
