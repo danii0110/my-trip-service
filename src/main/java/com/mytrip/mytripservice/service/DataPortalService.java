@@ -86,7 +86,7 @@ public class DataPortalService {
         if (request.getAreaCode() != null) {
             builder.queryParam("areaCode", request.getAreaCode());
         }
-        if (request.getSigunguCode() != null & !Objects.equals(request.getSigunguCode(), "0")) {
+        if (request.getSigunguCode() != null && !Objects.equals(request.getSigunguCode(), "0")) {
             builder.queryParam("sigunguCode", request.getSigunguCode());
         }
         if (request.getMapX() != null) {
@@ -141,5 +141,4 @@ public class DataPortalService {
                 .doOnNext(response -> System.out.println("Fetched data: " + response))
                 .doOnError(error -> System.err.println("Error fetching data: " + error.getMessage()));
     }
-
 }
