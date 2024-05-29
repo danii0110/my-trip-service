@@ -7,7 +7,7 @@ import AP5Main from './pages/AP/AP5_planList/AP5Main';
 import AP6Main from './pages/AP/AP6_itinerary/AP6Main';
 import TripPlanPage from "./pages/TripPlan/TripPlanPage";
 import AIChatPage from "./pages/AIChat/AIChatPage";
-import LocationPage from "./pages/TripPlan/LocationPage";
+import LocationPage from "./pages/Location/LocationPage";
 import SearchPage from "./pages/Search/SearchPage";
 import OAuth2Redirection from './modules/api/Login/OAuth2Redirection';
 
@@ -23,10 +23,10 @@ function App() {
         <Route path='plan-list/areaName' element={<AP5Main />}></Route>
         <Route path='itinerary/areaName' element={<AP6Main />}></Route>
         <Route path='callback/kakao' element={<OAuth2Redirection />} />
-          <Route path='/trip-plan' element={<TripPlanPage />}></Route>
-          <Route path='/search' element={<SearchPage />}></Route>
-          <Route path='/ai-chat' element={<AIChatPage />}></Route>
-          <Route path='/location' element={<LocationPage />}></Route>
+        <Route path='/trip-plan' element={<TripPlanPage />}></Route>
+        <Route path='/search' element={<SearchPage />}></Route>
+        <Route path='/ai-chat' element={<AIChatPage />}></Route>
+        <Route path='/location' element={<LocationPage />}></Route>
       </Routes>
     </div>
   );
