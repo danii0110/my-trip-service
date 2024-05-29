@@ -1,0 +1,17 @@
+.location {
+  display: flex;
+  flex-direction: column;
+  width: 1000px;
+  margin: 0 auto;
+  padding-bottom: 30px;
+  justify-content: center;
+  align-items: center;
+}
+
+.list {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin: 0 auto;
+}
+
