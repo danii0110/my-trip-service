@@ -1,0 +1,202 @@
+@import url('https://fonts.googleapis.com/css2?family=Jua&display=swap');
+button {
+  font-family: 'Jua', serif;
+}
+
+.circleButton {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 30px 15px;
+  z-index: 999;
+}
+
+.circleButton p {
+   text-align: center;
+   font-size: 25px;
+   margin-top: 3px;
+   margin-bottom: 0;
+ }
+
+.circleButton button {
+  width: 80px;
+  height: 80px;
+  border: 1px #bbbbbb solid;
+  border-radius: 50%;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.circleButton img {
+  width: 120%;
+  height: 120%;
+  object-fit: cover;
+  display: block;
+}
+
+.region {
+  display: flex;
+  flex-direction: column;
+  width: 90%;
+  margin: 0 auto;
+  padding-bottom: 30px;
+}
+
+.carousel {
+  position: relative;
+  z-index: 990;
+  display: flex;
+  margin: 0 auto;
+}
+
+.carousel .regionButtons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  width: 100%;
+  margin: 0 40px;
+}
+
+.carousel > button {
+  z-index: 999;
+  height: 50px;
+  width: 50px;
+  background-color: transparent;
+  border: transparent;
+  margin: 45px 0;
+  padding: 0;
+
+}
+
+.carousel > button > img {
+  height: 100%;
+  width: 100%;
+}
+
+.leftArrow, .rightArrow {
+  position: absolute;
+
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.leftArrow {
+  left: 0;
+}
+
+.rightArrow {
+  right: 0;
+}
+
+.about {
+  z-index: 900;
+  width: 990px;
+  //height: 180px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  padding: 10px 0 0 30px;
+  //flex-wrap: wrap;
+  //position: relative;
+  border: 1px solid #8EA05D;
+  background-color: transparent;
+  border-radius: 8px;
+}
+.title {
+  font-size: 35px;
+  display: flex;
+  align-items: center;
+  //margin: 15px
+  // 20px;
+}
+.aboutHeader {
+  display: flex;
+  flex-direction: row;
+}
+.greenBigButton {
+  background-color: #8EA05D;
+  border: 1px solid #8EA05D;
+  color: #ffffff;
+  height: 38px;
+  margin: 13px 0 13px 20px;
+  font-size: 20px;
+  border-radius: 8px;
+}
+
+.greenButton {
+  height: 33px;
+  margin-right: 8px;
+  margin-bottom: 10px;
+  white-space: nowrap;
+  background-color: transparent;
+  border: 1px solid #8EA05D;
+  color: #8EA05D;
+  border-radius: 8px;
+  font-size: 16px;
+}
+
+.greenButton:hover, .greenButton:active {
+  height: 33px;
+  background-color: #8EA05D;
+  color: white;
+  border: 1px solid #8EA05D;
+  border-radius: 8px;
+}
+
+.selectedButton {
+  height: 33px;
+  background-color: #8EA05D;
+  color: white;
+  border: 1px solid #8EA05D;
+  border-radius: 8px;
+}
+
+.blackButton {
+  //position: absolute;
+  height: 38px;
+  background-color: transparent;
+  border: transparent;
+  font-size: 20px;
+  //right: 10px;
+  margin: 13px 40px 13px auto;
+}
+
+.aboutDetail {
+  //z-index: 990;
+  //position: absolute;
+  //margin-left: 20px;
+  //bottom: 0;
+  //display: flex;
+  //flex-wrap: wrap;
+}
+
+.buttonContainer {
+  display: flex;
+  flex-wrap: wrap; /* 줄 바꿈을 허용하여 버튼이 컨테이너를 초과하면 다음 줄로 이동 */
+  gap: 10px; /* 버튼 간의 간격 설정 */
+  //justify-content: center; /* 버튼들을 중앙에 정렬 */
+  //padding: 10px; /* 컨테이너의 패딩 설정 */
+  margin: 10px 0 15px 0;
+  white-space: nowrap;
+  overflow: hidden;
+  max-height: 45px; /* Adjust this based on the number of buttons and their size */
+  transition: max-height 0.3s ease;
+}
+
+.buttonContainer.showMore {
+  max-height: none;
+}
+
+
+
+
+
+
+
+
