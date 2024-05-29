@@ -16,3 +16,12 @@ export const logout = () => {
     type: LOGOUT,
   };
 };
+
+export const loadUser = () => {
+  const user = JSON.parse(localStorage.getItem('user'));
+  if (user) {
+    return kakaoLogin(user);
+  } else {
+    return { type: 'NO_USER' }; // 사용자가 없는 경우의 기본 액션
+  }
+};
