@@ -9,8 +9,17 @@ import SearchPage from './pages/Search/SearchPage';
 import OAuth2Redirection from './modules/api/Login/OAuth2Redirection';
 import MyTripMain from './pages/MyTrip/MyTripMain';
 import Profile from './pages/MyTrip/Profile/Profile';
+import { useDispatch } from 'react-redux';
+import { useEffect } from 'react';
+import { loadUser } from './modules/api/Login/userActions';
 
 function App() {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(loadUser());
+  }, [dispatch]);
+
   return (
     <div className='App'>
       <Routes>

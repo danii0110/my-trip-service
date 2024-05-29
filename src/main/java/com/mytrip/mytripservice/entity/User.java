@@ -8,14 +8,21 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
-@Entity //member 클래스가 자동으로 mysql 테이블 생성
+@Entity
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED) // 생성자를 통해서 값 변경 목적으로 접근하는 메시지들 차단
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(name = "users")
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) //기본 키 생성을 데이터베이스에 위임
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // 가상 pk 식별번호
     @Column(name = "user_id")
-    private Long id;
+    private Long id; // 1 2 3 4 5 6
+
+    @Column(name = "kakao_id", nullable = false, unique = true) // pk 역할
+    private String kakaoId; // 카카오 사용자 ID를 저장할 필드 추가 // dain@kakao.com hs@kakaoo.com
+
+    //액세스 토큰 추가 예정
+    //리프레시 토큰 추가 예정
 
     @Column(name = "user_nickname", length = 255, nullable = false)
     private String nickname;
@@ -30,24 +37,21 @@ public class User {
     @Column(name = "role_type", nullable = false)
     private RoleType roleType;
 
-    @Builder //빌더 패던으로 객체 생성
-    public User(String nickname, RoleType roleType) {
+    @Builder
+    public User(String kakaoId, String nickname, RoleType roleType) {
+        this.kakaoId = kakaoId;
         this.nickname = nickname;
         this.createdAt = LocalDateTime.now();
         this.updatedAt = LocalDateTime.now();
         this.roleType = roleType;
     }
 
-    //엔티티가 처음 저장될 때 실행되는 콜백 메서드
-    //createdAt과 createdAt 필드를 현재 시간으로 설정한다.
     @PrePersist
     protected void onCreate() {
         this.createdAt = LocalDateTime.now();
         this.updatedAt = LocalDateTime.now();
     }
 
-    //엔티티가 업데이트될 때 실행되는 콜백 메서드
-    //updatedAt 필드를 현재 시간으로 갱신한다.
     @PreUpdate
     protected void onUpdate() {
         this.updatedAt = LocalDateTime.now();

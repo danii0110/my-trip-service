@@ -35,3 +35,7 @@ out/
 
 ### VS Code ###
 .vscode/
+
+###개인정보###
+application.yml
+application.properties
