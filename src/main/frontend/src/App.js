@@ -12,6 +12,7 @@ import Profile from './pages/MyTrip/Profile/Profile';
 import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import { loadUser } from './modules/api/Login/userActions';
+import TripPlanPage from './pages/TripPlan/TripPlanPage';
 
 function App() {
   const dispatch = useDispatch();
@@ -31,6 +32,7 @@ function App() {
         <Route path='callback/kakao' element={<OAuth2Redirection />} />
         <Route path='my-trip' element={<MyTripMain />} />
         <Route path='my-trip/profile' element={<Profile />} />
+        <Route path='trip-plan' element={<TripPlanPage />}></Route>
         <Route path='/search' element={<SearchPage />}></Route>
       </Routes>
     </div>
