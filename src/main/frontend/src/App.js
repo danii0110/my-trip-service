@@ -27,6 +27,7 @@ const refreshToken = async () => {
   }
 };
 
+//토큰이 만료되었을 때 자동으로 갱신
 axios.interceptors.response.use(
   (response) => response,
   async (error) => {

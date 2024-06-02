@@ -7,7 +7,7 @@ import { kakaoLogin } from './userActions';
 const OAuth2Redirection = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const location = useLocation();
+  // const location = useLocation();
   const [hasFetched, setHasFetched] = useState(false);
 
   useEffect(() => {
@@ -63,7 +63,7 @@ const OAuth2Redirection = () => {
       }
     };
 
-    getToken();
+    getToken(); //TODO: 확인해보기
   }, [dispatch, navigate, hasFetched]);
 
   return <div>로그인 중...</div>;
