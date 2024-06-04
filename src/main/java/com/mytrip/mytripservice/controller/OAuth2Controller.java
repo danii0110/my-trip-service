@@ -83,13 +83,11 @@ public class OAuth2Controller {
         }
     }
 
-    // 사용자 정보를 반환하는 엔드포인트 추가
     @GetMapping("/userinfo")
     public ResponseEntity<?> getUserInfo(@RequestHeader("Authorization") String token) {
         try {
             String accessToken = token.replace("Bearer ", "");
 
-            // 사용자 정보 요청
             String userInfoUrl = "https://kapi.kakao.com/v2/user/me";
             HttpHeaders headers = new HttpHeaders();
             headers.set("Authorization", "Bearer " + accessToken);

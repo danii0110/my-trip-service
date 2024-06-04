@@ -38,7 +38,11 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         String nickname = ((Map<String, Object>) oAuth2User.getAttribute("properties")).get("nickname").toString();
 
         User user = userRepository.findByKakaoId(kakaoId)
-                .orElseGet(() -> userRepository.save(new User(kakaoId, nickname, RoleType.USER)));
+                .orElseGet(() -> userRepository.save(User.builder()
+                        .kakaoId(kakaoId)
+                        .nickname(nickname)
+                        .roleType(RoleType.USER)
+                        .build()));
 
         return new DefaultOAuth2User(
                 Collections.singleton(new SimpleGrantedAuthority(user.getRoleType().name())),
