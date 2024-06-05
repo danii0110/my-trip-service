@@ -1,6 +1,7 @@
 package com.mytrip.mytripservice.entity;
 
 import jakarta.persistence.*;
+import com.fasterxml.jackson.annotation.JsonManagedReference; // Import 추가
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -45,6 +46,7 @@ public class User {
     private RoleType roleType;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference // Jackson이 직렬화할 때 순환 참조를 피하도록 설정
     private List<Plan> plans;
 
     @PrePersist
