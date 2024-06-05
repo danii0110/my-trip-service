@@ -33,6 +33,9 @@ public class UserController {
 
     @PostMapping
     public ResponseEntity<User> createUser(@RequestBody User user) {
+        // 로깅 추가
+        System.out.println("Received user: " + user);
+
         User createdUser = userService.createUser(user);
         return ResponseEntity.ok(createdUser);
     }

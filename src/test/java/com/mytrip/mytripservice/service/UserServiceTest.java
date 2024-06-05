@@ -1,18 +1,19 @@
 package com.mytrip.mytripservice.service;
 
+import com.mytrip.mytripservice.entity.RoleType;
 import com.mytrip.mytripservice.entity.User;
 import com.mytrip.mytripservice.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 
 class UserServiceTest {
 
@@ -21,9 +22,7 @@ class UserServiceTest {
 
     @BeforeEach
     void setUp() {
-        //UserRepository를 모킹
         userRepository = Mockito.mock(UserRepository.class);
-        //모킹된 UserRepository를 사용하여 UserService를 초기화
         userService = new UserService(userRepository);
     }
 
@@ -32,7 +31,6 @@ class UserServiceTest {
         User user1 = User.builder().userId(1L).nickname("user1").build();
         User user2 = User.builder().userId(2L).nickname("user2").build();
         List<User> userList = Arrays.asList(user1, user2);
-        //목 객체 설정
         Mockito.when(userRepository.findAll()).thenReturn(userList);
 
         List<User> result = userService.getAllUsers();
@@ -43,12 +41,9 @@ class UserServiceTest {
 
     @Test
     void testGetUserById() {
-        //테스트용 User 객체를 생성
         User user1 = User.builder().userId(1L).nickname("user1").build();
-        //userRepository.findById 호출 시, 미리 정의한 User 객체를 반환하도록 설정
         Mockito.when(userRepository.findById(1L)).thenReturn(Optional.of(user1));
 
-        //userService.getUserById 메서드를 호출하고 결과를 검증
         Optional<User> result = userService.getUserById(1L);
         assertTrue(result.isPresent());
         assertEquals("user1", result.get().getNickname());
@@ -56,10 +51,19 @@ class UserServiceTest {
 
     @Test
     void testCreateUser() {
-        User user1 = User.builder().nickname("user1").build();
+        User user1 = User.builder()
+                .kakaoId("123456789")
+                .nickname("user1")
+                .accessToken("access_token_value")
+                .refreshToken("refresh_token_value")
+                .tokenExpiryTime(LocalDateTime.parse("2024-12-31T23:59:59"))
+                .roleType(RoleType.USER)
+                .build();
+
         Mockito.when(userRepository.save(any(User.class))).thenReturn(user1);
 
         User result = userService.createUser(user1);
+
         assertNotNull(result);
         assertEquals("user1", result.getNickname());
     }
