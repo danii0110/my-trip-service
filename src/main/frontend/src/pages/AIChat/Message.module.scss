@@ -1,0 +1,27 @@
+.message {
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+p {
+  font-size: 16px;
+  margin: 0;
+}
+
+.bot {
+  align-self: flex-start;
+  width: 80%;
+  margin-left: 10%;
+  margin-right: auto;
+}
+
+.user {
+  background-color: #f0f0f0;
+  width: fit-content;
+  max-width: 60%;
+  margin-left: auto;
+  margin-right: 10%;
+}

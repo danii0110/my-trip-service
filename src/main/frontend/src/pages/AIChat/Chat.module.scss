@@ -1,0 +1,96 @@
+.chatContainer {
+  display: flex;
+  flex: 1;
+  height: 100%;
+  flex-direction: column;
+  padding: 15px 10px 10px 10px;
+  overflow-x: hidden;
+}
+
+.sidebarHeader {
+  height: 40px;
+  font-size: 20px;
+  display: flex;
+  justify-content: space-between;
+  padding-top: 5px;
+}
+
+.sidebarHeader button {
+  width: 30px;
+  height: 30px;
+  background-color: transparent;
+  border: transparent;
+  display: flex;
+  justify-content: center;
+  padding: 0;
+}
+
+.sidebarHeader img {
+  filter: opacity(0.5) drop-shadow(0 0 0 white); //gray
+  //filter: invert(100); //white
+}
+
+.sidebarButton img{
+  width: 29px;
+  height: 29px;
+  margin-top: 1px;
+}
+
+.chatHeaderContainer {
+  display: flex;
+  width: 100%;
+}
+
+span {
+  font-size: 20px;
+}
+
+.chatHeader {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  height: 40px;
+  padding: 0 10px;
+
+}
+
+.messageContainer {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.welcome {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  justify-content: center;
+  height: 400px;
+}
+
+.welcomeMessage p{
+  font-size: 20px;
+}
+
+.welcomeButton {
+  display: flex;
+  text-align: center;
+  justify-content: center;
+}
+
+.welcomeButton button {
+  background-color: transparent;
+  border: #8ea05d 1px solid;
+  border-radius: 5px;
+  margin-top: 40px;
+  margin-right: 10px;
+  width: 200px;
+  height: 50px;
+}
+
+.inputContainer {
+  display: flex;
+  height: 60px;
+  flex-shrink: 0;
+  justify-content: center;
+  align-items: flex-end;
+}
