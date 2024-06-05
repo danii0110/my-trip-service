@@ -57,4 +57,20 @@ public class User {
     protected void onUpdate() {
         updatedAt = LocalDateTime.now();
     }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "userId=" + userId +
+                ", kakaoId='" + kakaoId + '\'' +
+                ", nickname='" + nickname + '\'' +
+                ", accessToken='" + accessToken + '\'' +
+                ", refreshToken='" + refreshToken + '\'' +
+                ", tokenExpiryTime=" + tokenExpiryTime +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                ", roleType=" + roleType +
+                ", plans=" + plans +
+                '}';
+    }
 }

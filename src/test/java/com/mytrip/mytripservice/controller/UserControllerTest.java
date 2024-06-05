@@ -2,6 +2,7 @@ package com.mytrip.mytripservice.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mytrip.mytripservice.config.TestSecurityConfig;
+import com.mytrip.mytripservice.entity.RoleType;
 import com.mytrip.mytripservice.entity.User;
 import com.mytrip.mytripservice.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,6 +15,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.Optional;
 
@@ -37,7 +39,15 @@ class UserControllerTest {
 
     @BeforeEach
     void setUp() {
-        user = User.builder().userId(1L).nickname("user1").build();
+        user = User.builder()
+                .userId(1L)
+                .kakaoId("123456789")
+                .nickname("user1")
+                .accessToken("access_token_value")
+                .refreshToken("refresh_token_value")
+                .tokenExpiryTime(LocalDateTime.parse("2024-12-31T23:59:59"))
+                .roleType(RoleType.USER)
+                .build();
     }
 
     @Test
@@ -71,7 +81,7 @@ class UserControllerTest {
 
     @Test
     void testUpdateUser() throws Exception {
-        User updatedUser = User.builder().userId(1L).nickname("user1Updated").build();
+        User updatedUser = User.builder().userId(1L).nickname("user1Updated").roleType(RoleType.USER).build();
         Mockito.when(userService.updateUser(Mockito.eq(1L), Mockito.any(User.class))).thenReturn(updatedUser);
 
         mockMvc.perform(put("/api/users/1")

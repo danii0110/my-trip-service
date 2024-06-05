@@ -27,17 +27,27 @@ public class UserService {
     }
 
     public User createUser(User user) {
+        if (user.getKakaoId() == null || user.getNickname() == null) {
+            throw new IllegalArgumentException("Kakao ID and Nickname are required fields.");
+        }
+        user.setCreatedAt(LocalDateTime.now());
+        user.setUpdatedAt(LocalDateTime.now());
+
+        // 로깅 추가
+        System.out.println("Creating user: " + user);
         return userRepository.save(user);
     }
 
     public User updateUser(Long id, User userDetails) {
         return userRepository.findById(id).map(user -> {
-            user.setNickname(userDetails.getNickname());
+            if (userDetails.getNickname() != null) {
+                user.setNickname(userDetails.getNickname());
+            }
             user.setAccessToken(userDetails.getAccessToken());
             user.setRefreshToken(userDetails.getRefreshToken());
             user.setTokenExpiryTime(userDetails.getTokenExpiryTime());
             user.setRoleType(userDetails.getRoleType());
-            user.setUpdatedAt(LocalDateTime.now()); // 여기에 추가적인 설정
+            user.setUpdatedAt(LocalDateTime.now());
             return userRepository.save(user);
         }).orElseThrow(() -> new RuntimeException("User not found"));
     }
