@@ -1,10 +1,12 @@
 package com.mytrip.mytripservice.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import com.fasterxml.jackson.annotation.JsonBackReference; // Import 추가
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Getter
@@ -49,4 +51,8 @@ public class Plan {
     @Enumerated(EnumType.STRING)
     @Column(name = "plan_type")
     private PlanType planType;
+
+    @OneToMany(mappedBy = "plan", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private List<DailySchedule> dailySchedules;
 }
