@@ -1,10 +1,10 @@
 import styles from './AP6Main.module.scss';
 import KakakoMap from '../../../modules/api/KakaoMap/KakaoMap';
-import { Button } from 'react-bootstrap';
 import PlanCont from './PlanCont';
 import whiteUpArrowIcon from '../../../assets/whiteUpArrowIcon.svg';
 import whiteDownArrowIcon from '../../../assets/whiteDownArrowIcon.svg';
 import { useState } from 'react';
+import AIRouteModal from './AIRouteModal';
 
 const AP6Main = () => {
   const [isUpArrow, setIsUpArrow] = useState(true);
@@ -28,6 +28,7 @@ const AP6Main = () => {
             </button>
           </div>
           <div className={styles.showDate}>24.04.25(목) - 24.04.29(월)</div>
+          {!isUpArrow && <AIRouteModal />}
           <PlanCont />
         </div>
         <div className={styles.rightCont}>
