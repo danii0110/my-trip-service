@@ -8,18 +8,26 @@
   padding-left: 7%;
   position: relative;
 }
+
 .mainCont {
   display: flex;
   flex-direction: row;
   margin-top: 1.875rem;
+  overflow-x: auto; /* 가로 스크롤 생성을 위해 추가 */
+  overflow-y: auto; /* 세로 스크롤 생성을 위해 추가 */
+  max-height: 30rem; /* 최대 높이 설정 */
+  white-space: nowrap; /* 가로 스크롤 생성을 위해 추가 */
+  width: calc(100% - 2rem); /* 적절한 너비 설정 */
+  padding-right: 2rem; /* 오른쪽 패딩 추가 */
 }
+
 .makePlanBtn {
   background-color: #8ea05d;
   color: #ffffff;
   border: none;
   border-radius: 0.625rem;
   font-size: 1.125rem;
-  width: 3.6875rem;
+  width: 4rem;
   height: 2.1875rem;
   position: absolute;
   bottom: 1.25rem;

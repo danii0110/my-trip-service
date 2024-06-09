@@ -1,17 +1,25 @@
 import styles from './DayCont.module.scss';
 import MainCont from './MainCont';
-const DayCont = () => {
+
+const DayCont = ({ day, date, plans }) => {
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        <div className={styles.day}>1일차</div>
-        <div className={styles.date}>24.04.25</div>
+        <div className={styles.day}>{day}</div>
+        <div className={styles.date}>{date}</div>
       </div>
-      <MainCont />
-      <MainCont />
-      <MainCont />
-      <MainCont />
+      {plans.map((plan, index) => (
+        <MainCont
+          key={index}
+          time={plan.time}
+          tag={plan.tag}
+          place={plan.place}
+          moveTime={plan.moveTime}
+          showMoveTime={index !== plans.length - 1}
+        />
+      ))}
     </div>
   );
 };
+
 export default DayCont;
