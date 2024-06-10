@@ -1,12 +1,13 @@
-import { Button } from 'react-bootstrap';
 import styles from './HotelCont.module.scss';
-const HotelCont = () => {
+
+const HotelCont = ({ day, hotelName }) => {
   return (
     <div className={styles.container}>
-      <button className={styles.dayBtn}>Day1</button>
+      <button className={styles.dayBtn}>{day}</button>
       <div className={styles.imgCont}></div>
-      <div className={styles.hotelName}>숙소명</div>
+      <div className={styles.hotelName}>{hotelName}</div>
     </div>
   );
 };
+
 export default HotelCont;
