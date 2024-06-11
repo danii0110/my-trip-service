@@ -15,4 +15,5 @@ const CategoryBtn = ({ content, setSelectedCategory, selectedCategory }) => {
     </button>
   );
 };
+
 export default CategoryBtn;
