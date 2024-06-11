@@ -3,7 +3,7 @@
   justify-content: space-between;
   align-items: center;
   width: 24.875rem;
-  height: 5.3125rem;
+  min-height: 5.3125rem; /* 고정된 높이 */
   background-color: #ffffff;
 }
 .placeImg {
@@ -32,4 +32,8 @@
 .address {
   margin-left: 13px;
   color: #aab1b8;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 200px;
 }
