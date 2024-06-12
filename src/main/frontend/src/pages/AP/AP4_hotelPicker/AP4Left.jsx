@@ -2,9 +2,46 @@ import styles from './AP4Left.module.scss';
 import CheckHeader from '../AP2_timePicker/CheckHeader/CheckHeader';
 import SearchBar from '../AP3_placePicker/SearchBar/SearchBar';
 import { Button } from 'react-bootstrap';
-import PlaceBox from '../AP3_placePicker/PlaceBox';
+import HotelBox from './HotelBox';
+import { useState } from 'react';
+
+const placesData = [
+  { placeName: '롯데 호텔 제주', category: '숙소', address: '대한민국 제주특별자치도 서귀포시 중문관광로 72번길 35' },
+  {
+    placeName: '해비치 호텔 & 리조트 제주',
+    category: '숙소',
+    address: '대한민국 제주특별자치도 서귀포시 표선면 민속해안로 537',
+  },
+  { placeName: '라마다 프라자 제주 호텔', category: '숙소', address: '대한민국 제주특별자치도 제주시 탑동로 66' },
+  { placeName: '메종 글래드 제주', category: '숙소', address: '대한민국 제주특별자치도 제주시 연동 263-15' },
+  { placeName: '그랜드 하얏트 제주', category: '숙소', address: '대한민국 제주특별자치도 제주시 노형동 102-8' },
+  { placeName: '켄싱턴 제주 호텔', category: '숙소', address: '대한민국 제주특별자치도 서귀포시 중문관광로72번길 60' },
+  {
+    placeName: '휘닉스 제주 섭지코지',
+    category: '숙소',
+    address: '대한민국 제주특별자치도 서귀포시 성산읍 섭지코지로 107',
+  },
+  { placeName: '롯데 시티 호텔 제주', category: '숙소', address: '대한민국 제주특별자치도 제주시 도령로 83' },
+  {
+    placeName: '제주 신화월드',
+    category: '숙소',
+    address: '대한민국 제주특별자치도 서귀포시 안덕면 신화역사로304번길 38',
+  },
+  { placeName: '호텔 난타 제주', category: '숙소', address: '대한민국 제주특별자치도 제주시 1100로 474' },
+];
 
 const AP4Left = () => {
+  const [searchTerm, setSearchTerm] = useState('');
+
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value);
+  };
+
+  const filteredPlaces = placesData.filter((place) => {
+    const matchesSearch = searchTerm === '' || place.placeName.toLowerCase().includes(searchTerm.toLowerCase());
+    return matchesSearch;
+  });
+
   return (
     <>
       <div className={styles.container}>
@@ -18,21 +55,22 @@ const AP4Left = () => {
           </div>
           <div className={styles.showDate}>24.04.25(목) - 24.04.29(월)</div>
           <div className={styles.searchBar}>
-            <SearchBar />
+            <SearchBar onChange={handleSearchChange} />
           </div>
-          <Button id={styles.btnCommon} className={styles.categoryBtn}>
-            추천 숙소
-          </Button>
+          <div className={styles.categoryBtn}>추천 숙소</div>
           <div className={styles.places}>
-            <PlaceBox />
-            <PlaceBox />
-            <PlaceBox />
-            <PlaceBox />
-            <PlaceBox />
+            {filteredPlaces.length > 0 ? (
+              filteredPlaces.map((place, index) => (
+                <HotelBox key={index} placeName={place.placeName} category={place.category} address={place.address} />
+              ))
+            ) : (
+              <div className={styles.noResults}>검색 결과가 없습니다.</div>
+            )}
           </div>
         </div>
       </div>
     </>
   );
 };
+
 export default AP4Left;

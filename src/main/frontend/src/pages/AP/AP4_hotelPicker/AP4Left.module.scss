@@ -36,13 +36,26 @@
   margin: 1rem 0 1.1875rem 0;
 }
 .categoryBtn {
+  background-color: #8ea05d;
+  color: #fff;
   margin: 0 0 1.875rem 6rem;
   font-size: 1rem;
   height: 2rem;
-  //TODO: 가운데 정렬
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
 }
 .places {
   display: flex;
   flex-direction: column;
   align-items: center;
+  // justify-content: center;
+  // width: 65%;
+  max-height: 425px; /* 5개의 PlaceBox 높이에 맞게 픽셀로 설정 */
+  overflow-y: auto; /* 세로 스크롤 활성화 */
+}
+.noResults {
+  color: #aab1b8;
 }
