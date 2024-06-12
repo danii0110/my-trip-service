@@ -7,45 +7,8 @@ import LeftArrow from '../../../assets/leftArrow.svg';
 import RightArrow from '../../../assets/rightArrow.svg';
 import AreaBtn from './AreaBtn';
 import { useNavigate } from 'react-router-dom';
-
-const mockRegions = [
-  '서울',
-  '광주',
-  '인천',
-  '대전',
-  '대구',
-  '부산',
-  '울산',
-  '세종',
-  '경기',
-  '강원',
-  '충북',
-  '충남',
-  '전북',
-  '전남',
-  '경북',
-  '경남',
-  '제주',
-];
-const mockAreas = {
-  서울: ['성북구', '중구', '강남구'],
-  광주: ['동구', '서구', '남구'],
-  인천: ['중구', '동구', '남동구'],
-  대전: ['동구', '중구', '서구'],
-  대구: ['중구', '동구', '서구'],
-  부산: ['중구', '서구', '동구'],
-  울산: ['중구', '남구', '동구'],
-  세종: ['고운동', '아름동', '도담동'],
-  경기: ['수원시', '성남시', '의정부시'],
-  강원: ['춘천시', '원주시', '강릉시'],
-  충북: ['청주시', '충주시', '제천시'],
-  충남: ['천안시', '공주시', '보령시'],
-  전북: ['전주시', '군산시', '익산시'],
-  전남: ['목포시', '여수시', '순천시'],
-  경북: ['포항시', '경주시', '김천시'],
-  경남: ['창원시', '진주시', '통영시'],
-  제주: ['제주시', '서귀포시'],
-};
+import axios from 'axios'; // axios를 추가합니다.
+import { getImageName } from '../../../modules/utils/importImages'; // getImageName 함수를 추가합니다.
 
 const ITEMS_PER_PAGE = 9;
 
@@ -56,18 +19,36 @@ const PickRegionModal = ({ show, onHide }) => {
   const [selectedRegion, setSelectedRegion] = useState(null);
   const [selectedAreaBtn, setSelectedAreaBtn] = useState(null);
   const [currentPage, setCurrentPage] = useState(0);
+  const [areaList, setAreaList] = useState({});
+
+  // fetchAreaName 함수를 추가하여 백엔드에서 데이터를 가져옵니다.
+  const fetchAreaName = async () => {
+    try {
+      const response = await axios.get('/area/areaCode');
+      const areaSigunguMap = response.data.reduce((acc, curr) => {
+        if (!acc[curr.areacode]) {
+          acc[curr.areacode] = {};
+        }
+        acc[curr.areacode][curr.sigungucode || '0'] = curr.name;
+        return acc;
+      }, {});
+      setAreaList(areaSigunguMap);
+      setRegions(Object.keys(areaSigunguMap).map((key) => areaSigunguMap[key]['0'])); // 지역명만 추출
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
-    // Use mock data for regions
-    setRegions(mockRegions);
+    fetchAreaName(); // 컴포넌트가 처음 렌더링될 때 fetchAreaName을 호출합니다.
   }, []);
 
   const handleRegionClick = (index, regionName) => {
     setSelectedRegion(index);
     setSelectedAreaBtn(null);
 
-    // Use mock data for areas based on selected region
-    setAreas(mockAreas[regionName] || []);
+    const selectedAreaCode = Object.keys(areaList).find((key) => areaList[key]['0'] === regionName);
+    setAreas(areaList[selectedAreaCode] ? Object.values(areaList[selectedAreaCode]) : []);
   };
 
   const goToAP2 = () => {
@@ -109,6 +90,7 @@ const PickRegionModal = ({ show, onHide }) => {
                 key={index + startIndex}
                 name={regionName}
                 selected={selectedRegion === index + startIndex}
+                imageSrc={getImageName(regionName)} // 이미지 경로를 추가합니다.
                 onClick={() => handleRegionClick(index + startIndex, regionName)}
               />
             ))}
