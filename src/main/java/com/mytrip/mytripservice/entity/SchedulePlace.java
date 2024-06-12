@@ -1,6 +1,6 @@
+// SchedulePlace.java
 package com.mytrip.mytripservice.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
@@ -21,10 +21,11 @@ public class SchedulePlace {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "schedule_id", nullable = false)
-    @JsonBackReference
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "schedulePlaces"})
     private DailySchedule dailySchedule;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "place_id", nullable = false)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "schedulePlaces"})
     private Place place;
 }

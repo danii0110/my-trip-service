@@ -1,7 +1,6 @@
+// DailySchedule.java
 package com.mytrip.mytripservice.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
@@ -26,7 +25,7 @@ public class DailySchedule {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "plan_id", nullable = false)
-    @JsonBackReference
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "dailySchedules"})
     private Plan plan;
 
     @Column(name = "date", nullable = false)
@@ -42,6 +41,11 @@ public class DailySchedule {
     private Integer duration;
 
     @OneToMany(mappedBy = "dailySchedule", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
+    @JsonIgnoreProperties("dailySchedule")
     private List<SchedulePlace> schedulePlaces;
+
+    // 기본 public 생성자 추가
+    public DailySchedule(Long scheduleId) {
+        this.scheduleId = scheduleId;
+    }
 }

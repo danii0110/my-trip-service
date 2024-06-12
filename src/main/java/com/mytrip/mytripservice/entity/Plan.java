@@ -1,5 +1,7 @@
+// Plan.java
 package com.mytrip.mytripservice.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -9,7 +11,7 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Table(name = "plans")
@@ -45,4 +47,16 @@ public class Plan {
 
     @OneToMany(mappedBy = "plan", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<DailySchedule> dailySchedules;
+
+    @OneToMany(mappedBy = "plan", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Accommodation> accommodations;
+
+    @OneToMany(mappedBy = "plan", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<MoveTime> moveTimes;
+
+    // 기본 public 생성자 추가
+    public Plan(Long planId) {
+        this.planId = planId;
+    }
 }
+

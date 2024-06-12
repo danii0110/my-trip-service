@@ -30,4 +30,8 @@ public class MoveTime {
 
     @Column(name = "move_time", nullable = false)
     private Integer moveTime;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "daily_schedule_id")
+    private DailySchedule dailySchedule;
 }

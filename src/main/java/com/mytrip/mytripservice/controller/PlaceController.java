@@ -12,6 +12,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/places")
 public class PlaceController {
+
     private final PlaceService placeService;
 
     @Autowired
@@ -21,9 +22,15 @@ public class PlaceController {
 
     @PostMapping
     public ResponseEntity<Place> createPlace(@RequestBody Place place) {
-        System.out.println("Received place: " + place.toString());
+        // 로깅 추가
+        System.out.println("Received place: " + place);
+        System.out.println("Coordinates: " + place.getXCoordinate() + ", " + place.getYCoordinate());
+        if (place.getXCoordinate() == null || place.getYCoordinate() == null) {
+            System.out.println("Coordinates are missing");
+            return ResponseEntity.badRequest().body(null);
+        }
         Place createdPlace = placeService.createPlace(place);
-        System.out.println("Creating place: " + createdPlace.toString());
+        System.out.println("Creating place: " + createdPlace);
         return ResponseEntity.ok(createdPlace);
     }
 

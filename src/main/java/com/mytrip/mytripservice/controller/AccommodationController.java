@@ -1,5 +1,6 @@
 package com.mytrip.mytripservice.controller;
 
+import com.mytrip.mytripservice.dto.AccommodationRequest;
 import com.mytrip.mytripservice.entity.Accommodation;
 import com.mytrip.mytripservice.service.AccommodationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,11 +13,22 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/accommodations")
 public class AccommodationController {
+
     private final AccommodationService accommodationService;
 
     @Autowired
     public AccommodationController(AccommodationService accommodationService) {
         this.accommodationService = accommodationService;
+    }
+
+    @PostMapping
+    public ResponseEntity<Accommodation> createAccommodation(@RequestBody AccommodationRequest request) {
+        // 로깅 추가
+        System.out.println("Received accommodation request: " + request);
+        System.out.println("Coordinates: " + request.getXCoordinate() + ", " + request.getYCoordinate());
+
+        Accommodation createdAccommodation = accommodationService.createAccommodation(request);
+        return ResponseEntity.ok(createdAccommodation);
     }
 
     @GetMapping
@@ -31,15 +43,9 @@ public class AccommodationController {
         return accommodation.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @PostMapping
-    public ResponseEntity<Accommodation> createAccommodation(@RequestBody Accommodation accommodation) {
-        Accommodation createdAccommodation = accommodationService.createAccommodation(accommodation);
-        return ResponseEntity.ok(createdAccommodation);
-    }
-
     @PutMapping("/{id}")
-    public ResponseEntity<Accommodation> updateAccommodation(@PathVariable Long id, @RequestBody Accommodation accommodationDetails) {
-        Accommodation updatedAccommodation = accommodationService.updateAccommodation(id, accommodationDetails);
+    public ResponseEntity<Accommodation> updateAccommodation(@PathVariable Long id, @RequestBody AccommodationRequest request) {
+        Accommodation updatedAccommodation = accommodationService.updateAccommodation(id, request);
         return ResponseEntity.ok(updatedAccommodation);
     }
 
