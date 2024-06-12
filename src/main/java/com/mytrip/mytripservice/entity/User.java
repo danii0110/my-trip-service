@@ -1,7 +1,7 @@
 package com.mytrip.mytripservice.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -14,6 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @Table(name = "users")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "plans"})
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -46,12 +47,7 @@ public class User {
     private RoleType roleType;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
     private List<Plan> plans;
-
-    @OneToMany(mappedBy = "hostUser", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
-    private List<Plan> hostedPlans;
 
     @PrePersist
     protected void onCreate() {
@@ -63,21 +59,5 @@ public class User {
     protected void onUpdate() {
         updatedAt = LocalDateTime.now();
     }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "userId=" + userId +
-                ", kakaoId='" + kakaoId + '\'' +
-                ", nickname='" + nickname + '\'' +
-                ", accessToken='" + accessToken + '\'' +
-                ", refreshToken='" + refreshToken + '\'' +
-                ", tokenExpiryTime=" + tokenExpiryTime +
-                ", createdAt=" + createdAt +
-                ", updatedAt=" + updatedAt +
-                ", roleType=" + roleType +
-                ", plans=" + plans +
-                ", hostedPlans=" + hostedPlans +
-                '}';
-    }
 }
+

@@ -1,7 +1,9 @@
 package com.mytrip.mytripservice.service;
 
 import com.mytrip.mytripservice.entity.Plan;
+import com.mytrip.mytripservice.entity.User;
 import com.mytrip.mytripservice.repository.PlanRepository;
+import com.mytrip.mytripservice.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,10 +13,12 @@ import java.util.Optional;
 @Service
 public class PlanService {
     private final PlanRepository planRepository;
+    private final UserRepository userRepository;
 
     @Autowired
-    public PlanService(PlanRepository planRepository) {
+    public PlanService(PlanRepository planRepository, UserRepository userRepository) {
         this.planRepository = planRepository;
+        this.userRepository = userRepository;
     }
 
     public List<Plan> getAllPlans() {
@@ -26,6 +30,25 @@ public class PlanService {
     }
 
     public Plan createPlan(Plan plan) {
+        // Ensure that the user exists and fetch the complete user details
+        Optional<User> userOptional = userRepository.findById(plan.getUser().getUserId());
+        if (!userOptional.isPresent()) {
+            throw new RuntimeException("User not found");
+        }
+
+        User user = userOptional.get();
+        plan.setUser(user);
+
+        // Ensure that the hostUser exists if specified
+        if (plan.getHostUser() != null) {
+            Optional<User> hostUserOptional = userRepository.findById(plan.getHostUser().getUserId());
+            if (!hostUserOptional.isPresent()) {
+                throw new RuntimeException("Host user not found");
+            }
+            User hostUser = hostUserOptional.get();
+            plan.setHostUser(hostUser);
+        }
+
         return planRepository.save(plan);
     }
 
