@@ -1,0 +1,33 @@
+.container {
+  width: 30%; // 한 줄에 3개씩 배치되도록 설정
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 25px 0; // 세로 간격 조정
+}
+.date {
+  background-color: #8ea05d;
+  color: #fff;
+  font-size: 15px;
+  border-radius: 20px;
+  width: 80px;
+  height: 28px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 0 8px 0;
+}
+.btn {
+  border: none;
+  padding: none;
+  margin: 0 0 10px 0;
+  background-color: transparent;
+  cursor: pointer; // 추가: 클릭할 수 있도록 커서 스타일 추가
+}
+.addBtnIcon {
+  width: 80px; // 추가: 아이콘 크기 설정
+  height: 80px; // 추가: 아이콘 크기 설정
+}
+.hotelName {
+  font-size: 18px;
+}
