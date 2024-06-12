@@ -35,7 +35,13 @@ public class DailyScheduleService {
             dailySchedule.setStartTime(dailyScheduleDetails.getStartTime());
             dailySchedule.setEndTime(dailyScheduleDetails.getEndTime());
             dailySchedule.setDuration(dailyScheduleDetails.getDuration());
-            dailySchedule.setSchedulePlaces(dailyScheduleDetails.getSchedulePlaces());
+
+            // SchedulePlaces의 업데이트를 안전하게 처리
+            if (dailyScheduleDetails.getSchedulePlaces() != null) {
+                dailySchedule.getSchedulePlaces().clear();
+                dailySchedule.getSchedulePlaces().addAll(dailyScheduleDetails.getSchedulePlaces());
+            }
+
             return dailyScheduleRepository.save(dailySchedule);
         }).orElseThrow(() -> new RuntimeException("DailySchedule not found"));
     }
