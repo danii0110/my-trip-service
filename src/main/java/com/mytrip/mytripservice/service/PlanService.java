@@ -39,16 +39,6 @@ public class PlanService {
         User user = userOptional.get();
         plan.setUser(user);
 
-        // Ensure that the hostUser exists if specified
-        if (plan.getHostUser() != null) {
-            Optional<User> hostUserOptional = userRepository.findById(plan.getHostUser().getUserId());
-            if (!hostUserOptional.isPresent()) {
-                throw new RuntimeException("Host user not found");
-            }
-            User hostUser = hostUserOptional.get();
-            plan.setHostUser(hostUser);
-        }
-
         return planRepository.save(plan);
     }
 
