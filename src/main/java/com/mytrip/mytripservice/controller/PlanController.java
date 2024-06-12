@@ -2,7 +2,9 @@ package com.mytrip.mytripservice.controller;
 
 import com.mytrip.mytripservice.entity.Plan;
 import com.mytrip.mytripservice.service.PlanService;
+import com.mytrip.mytripservice.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,11 +14,14 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/plans")
 public class PlanController {
+
     private final PlanService planService;
+    private final UserService userService;
 
     @Autowired
-    public PlanController(PlanService planService) {
+    public PlanController(PlanService planService, UserService userService) {
         this.planService = planService;
+        this.userService = userService;
     }
 
     @GetMapping
@@ -31,13 +36,13 @@ public class PlanController {
         return plan.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @PostMapping
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Plan> createPlan(@RequestBody Plan plan) {
         Plan createdPlan = planService.createPlan(plan);
         return ResponseEntity.ok(createdPlan);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Plan> updatePlan(@PathVariable Long id, @RequestBody Plan planDetails) {
         Plan updatedPlan = planService.updatePlan(id, planDetails);
         return ResponseEntity.ok(updatedPlan);
