@@ -1,39 +1,46 @@
-.modalBackdrop {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
+.container {
   display: flex;
-  align-items: center;
-  justify-content: center;
+  flex-direction: column;
 }
-
-.modal {
-  background-color: white;
-  padding: 20px;
-  border-radius: 8px;
-  max-width: 500px;
-  width: 100%;
-  position: relative;
+.xIcon {
+  width: 35px;
+  height: 35px;
+  margin: 0 0 0 auto;
+  cursor: pointer; // 추가: 클릭할 수 있도록 커서 스타일 추가
 }
-
-.closeButton {
-  background: none;
-  border: none;
-  font-size: 1.5rem;
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  cursor: pointer;
-}
-
-.total {
-  margin-bottom: 20px;
-}
-
 .main {
   display: flex;
   flex-direction: column;
+  align-items: center;
+  font-family: 'Jua', serif;
+}
+.explain {
+  font-size: 28px;
+  margin: 0 0 20px 0;
+}
+.hotelName {
+  font-size: 25px;
+}
+.hotelsCont {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center; // 추가: 중앙 정렬
+  gap: 10px; // 추가: 간격 조정
+  margin-bottom: 20px; // 추가: 하단 여백 추가
+}
+.btnsCont {
+  display: flex;
+  flex-direction: row;
+  margin: 0 0 75px 0;
+}
+.btn {
+  background-color: #8ea05d;
+  color: #fff;
+  font-size: 23px;
+  border: none;
+  border-radius: 20px;
+  width: 200px;
+  padding: 5px 20px;
+  margin: 0 25px;
+  cursor: pointer; // 추가: 클릭할 수 있도록 커서 스타일 추가
 }

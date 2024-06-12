@@ -2,11 +2,14 @@ import styles from './HotelBox.module.scss';
 import AddBtn from '../AP3_placePicker/AddBtn';
 import { useState } from 'react';
 
-const HotelBox = ({ placeName, category, address }) => {
+const HotelBox = ({ placeName, category, address, onAddClick }) => {
   const [isChecked, setIsChecked] = useState(false);
 
   const handleClick = () => {
     setIsChecked(!isChecked);
+    if (!isChecked) {
+      onAddClick();
+    }
   };
 
   return (

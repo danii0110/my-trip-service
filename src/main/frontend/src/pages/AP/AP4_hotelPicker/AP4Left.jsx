@@ -4,6 +4,7 @@ import SearchBar from '../AP3_placePicker/SearchBar/SearchBar';
 import { Button } from 'react-bootstrap';
 import HotelBox from './HotelBox';
 import { useState } from 'react';
+import HotelDatePickModal from './HotelDatePickModal/HotelDatePickModal';
 
 const placesData = [
   { placeName: '롯데 호텔 제주', category: '숙소', address: '대한민국 제주특별자치도 서귀포시 중문관광로 72번길 35' },
@@ -32,9 +33,18 @@ const placesData = [
 
 const AP4Left = () => {
   const [searchTerm, setSearchTerm] = useState('');
+  const [showHotelDatePickModal, setShowHotelDatePickModal] = useState(false);
 
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
+  };
+
+  const handleHotelBoxClick = () => {
+    setShowHotelDatePickModal(true);
+  };
+
+  const handleModalClose = () => {
+    setShowHotelDatePickModal(false);
   };
 
   const filteredPlaces = placesData.filter((place) => {
@@ -61,7 +71,13 @@ const AP4Left = () => {
           <div className={styles.places}>
             {filteredPlaces.length > 0 ? (
               filteredPlaces.map((place, index) => (
-                <HotelBox key={index} placeName={place.placeName} category={place.category} address={place.address} />
+                <HotelBox
+                  key={index}
+                  placeName={place.placeName}
+                  category={place.category}
+                  address={place.address}
+                  onAddClick={handleHotelBoxClick}
+                />
               ))
             ) : (
               <div className={styles.noResults}>검색 결과가 없습니다.</div>
@@ -69,6 +85,7 @@ const AP4Left = () => {
           </div>
         </div>
       </div>
+      <HotelDatePickModal show={showHotelDatePickModal} onHide={handleModalClose} onConfirm={handleModalClose} />
     </>
   );
 };
