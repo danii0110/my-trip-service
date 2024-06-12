@@ -39,16 +39,14 @@ public class DailyScheduleController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<DailySchedule> createDailySchedule(@RequestBody DailyScheduleRequest dailyScheduleRequest) {
-        Plan plan = planService.getPlanById(dailyScheduleRequest.getPlanId())
+    public ResponseEntity<DailySchedule> createDailySchedule(@RequestBody DailySchedule dailySchedule) {
+        // Retrieve the plan based on planId provided in dailySchedule
+        Plan plan = planService.getPlanById(dailySchedule.getPlan().getPlanId())
                 .orElseThrow(() -> new RuntimeException("Plan not found"));
-        DailySchedule dailySchedule = DailySchedule.builder()
-                .plan(plan)
-                .date(dailyScheduleRequest.getDate())
-                .startTime(dailyScheduleRequest.getStartTime())
-                .endTime(dailyScheduleRequest.getEndTime())
-                .duration(dailyScheduleRequest.getDuration())
-                .build();
+
+        // Set the retrieved plan to dailySchedule
+        dailySchedule.setPlan(plan);
+
         DailySchedule createdDailySchedule = dailyScheduleService.createDailySchedule(dailySchedule);
         return ResponseEntity.ok(createdDailySchedule);
     }

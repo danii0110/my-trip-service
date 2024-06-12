@@ -39,10 +39,7 @@ public class DailySchedule {
     @Column(name = "duration", nullable = false)
     private Integer duration;
 
-    //    @OneToMany(mappedBy = "dailySchedule", cascade = CascadeType.ALL, orphanRemoval = true)
-//    @JsonManagedReference
-//    private List<SchedulePlace> schedulePlaces;
+    @OneToMany(mappedBy = "dailySchedule", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private List<SchedulePlaces> schedulePlaces;
 }
-
-
-
