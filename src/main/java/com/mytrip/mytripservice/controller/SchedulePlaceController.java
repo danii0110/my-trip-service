@@ -1,7 +1,9 @@
 package com.mytrip.mytripservice.controller;
 
 import com.mytrip.mytripservice.entity.SchedulePlace;
+import com.mytrip.mytripservice.entity.Place;
 import com.mytrip.mytripservice.service.SchedulePlaceService;
+import com.mytrip.mytripservice.service.PlaceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -15,10 +17,12 @@ import java.util.Optional;
 public class SchedulePlaceController {
 
     private final SchedulePlaceService schedulePlaceService;
+    private final PlaceService placeService;
 
     @Autowired
-    public SchedulePlaceController(SchedulePlaceService schedulePlaceService) {
+    public SchedulePlaceController(SchedulePlaceService schedulePlaceService, PlaceService placeService) {
         this.schedulePlaceService = schedulePlaceService;
+        this.placeService = placeService;
     }
 
     @GetMapping
@@ -36,6 +40,11 @@ public class SchedulePlaceController {
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<SchedulePlace> createSchedulePlace(@RequestBody SchedulePlace schedulePlace) {
         SchedulePlace createdSchedulePlace = schedulePlaceService.createSchedulePlace(schedulePlace);
+
+        // Fetch complete place details
+        Place place = placeService.getPlaceById(createdSchedulePlace.getPlace().getPlaceId()).orElse(null);
+        createdSchedulePlace.setPlace(place);
+
         return ResponseEntity.ok(createdSchedulePlace);
     }
 

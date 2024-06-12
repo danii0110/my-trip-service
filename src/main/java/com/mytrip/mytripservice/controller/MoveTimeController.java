@@ -1,13 +1,12 @@
 package com.mytrip.mytripservice.controller;
 
-import com.mytrip.mytripservice.entity.MoveTime;
+import com.mytrip.mytripservice.dto.MoveTimeDTO;
 import com.mytrip.mytripservice.service.MoveTimeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/move-times")
@@ -21,26 +20,27 @@ public class MoveTimeController {
     }
 
     @GetMapping
-    public ResponseEntity<List<MoveTime>> getAllMoveTimes() {
-        List<MoveTime> moveTimes = moveTimeService.getAllMoveTimes();
+    public ResponseEntity<List<MoveTimeDTO>> getAllMoveTimes() {
+        List<MoveTimeDTO> moveTimes = moveTimeService.getAllMoveTimes();
         return ResponseEntity.ok(moveTimes);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<MoveTime> getMoveTimeById(@PathVariable Long id) {
-        Optional<MoveTime> moveTime = moveTimeService.getMoveTimeById(id);
-        return moveTime.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    public ResponseEntity<MoveTimeDTO> getMoveTimeById(@PathVariable Long id) {
+        return moveTimeService.getMoveTimeById(id)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping
-    public ResponseEntity<MoveTime> createMoveTime(@RequestBody MoveTime moveTime) {
-        MoveTime createdMoveTime = moveTimeService.createMoveTime(moveTime);
+    public ResponseEntity<MoveTimeDTO> createMoveTime(@RequestBody MoveTimeDTO moveTimeDTO) {
+        MoveTimeDTO createdMoveTime = moveTimeService.createMoveTime(moveTimeDTO);
         return ResponseEntity.ok(createdMoveTime);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<MoveTime> updateMoveTime(@PathVariable Long id, @RequestBody MoveTime moveTimeDetails) {
-        MoveTime updatedMoveTime = moveTimeService.updateMoveTime(id, moveTimeDetails);
+    public ResponseEntity<MoveTimeDTO> updateMoveTime(@PathVariable Long id, @RequestBody MoveTimeDTO moveTimeDTO) {
+        MoveTimeDTO updatedMoveTime = moveTimeService.updateMoveTime(id, moveTimeDTO);
         return ResponseEntity.ok(updatedMoveTime);
     }
 

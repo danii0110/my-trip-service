@@ -1,6 +1,5 @@
 package com.mytrip.mytripservice.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -11,7 +10,6 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 @Table(name = "places")
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Place {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,4 +37,9 @@ public class Place {
     @Enumerated(EnumType.STRING)
     @Column(name = "place_type", nullable = false)
     private PlaceType placeType;
+
+    // 기본 public 생성자 추가
+    public Place(Long placeId) {
+        this.placeId = placeId;
+    }
 }

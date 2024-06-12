@@ -1,3 +1,4 @@
+// User.java
 package com.mytrip.mytripservice.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -10,11 +11,11 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Table(name = "users")
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "plans"})
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -47,6 +48,7 @@ public class User {
     private RoleType roleType;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnoreProperties("user")
     private List<Plan> plans;
 
     @PrePersist
@@ -60,4 +62,3 @@ public class User {
         updatedAt = LocalDateTime.now();
     }
 }
-

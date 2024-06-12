@@ -30,15 +30,11 @@ public class PlanService {
     }
 
     public Plan createPlan(Plan plan) {
-        // Ensure that the user exists and fetch the complete user details
         Optional<User> userOptional = userRepository.findById(plan.getUser().getUserId());
         if (!userOptional.isPresent()) {
             throw new RuntimeException("User not found");
         }
-
-        User user = userOptional.get();
-        plan.setUser(user);
-
+        plan.setUser(userOptional.get());
         return planRepository.save(plan);
     }
 
