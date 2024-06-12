@@ -1,9 +1,6 @@
 package com.mytrip.mytripservice.entity;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.persistence.*;
-import lombok.*;
-
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -14,6 +11,7 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 @Table(name = "places")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Place {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,11 +30,9 @@ public class Place {
     @Column(name = "image", nullable = false)
     private String image;
 
-    @JsonProperty("xCoordinate")
     @Column(name = "x_coordinate", nullable = false)
     private Double xCoordinate;
 
-    @JsonProperty("yCoordinate")
     @Column(name = "y_coordinate", nullable = false)
     private Double yCoordinate;
 
@@ -44,6 +40,3 @@ public class Place {
     @Column(name = "place_type", nullable = false)
     private PlaceType placeType;
 }
-
-
-

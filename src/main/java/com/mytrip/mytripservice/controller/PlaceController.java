@@ -3,7 +3,6 @@ package com.mytrip.mytripservice.controller;
 import com.mytrip.mytripservice.entity.Place;
 import com.mytrip.mytripservice.service.PlaceService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -52,5 +51,3 @@ public class PlaceController {
         return ResponseEntity.noContent().build();
     }
 }
-
-

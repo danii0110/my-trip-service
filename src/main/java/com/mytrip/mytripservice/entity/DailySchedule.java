@@ -1,8 +1,8 @@
 package com.mytrip.mytripservice.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -17,6 +17,7 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @Table(name = "daily_schedules")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class DailySchedule {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,15 +30,12 @@ public class DailySchedule {
     private Plan plan;
 
     @Column(name = "date", nullable = false)
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate date;
 
     @Column(name = "start_time", nullable = false)
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss")
     private LocalTime startTime;
 
     @Column(name = "end_time", nullable = false)
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss")
     private LocalTime endTime;
 
     @Column(name = "duration", nullable = false)

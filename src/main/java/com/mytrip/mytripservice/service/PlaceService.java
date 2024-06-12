@@ -47,5 +47,3 @@ public class PlaceService {
         placeRepository.deleteById(id);
     }
 }
-
-
