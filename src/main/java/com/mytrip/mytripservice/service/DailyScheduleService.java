@@ -35,6 +35,7 @@ public class DailyScheduleService {
             dailySchedule.setStartTime(dailyScheduleDetails.getStartTime());
             dailySchedule.setEndTime(dailyScheduleDetails.getEndTime());
             dailySchedule.setDuration(dailyScheduleDetails.getDuration());
+            dailySchedule.setSchedulePlaces(dailyScheduleDetails.getSchedulePlaces());
             return dailyScheduleRepository.save(dailySchedule);
         }).orElseThrow(() -> new RuntimeException("DailySchedule not found"));
     }
