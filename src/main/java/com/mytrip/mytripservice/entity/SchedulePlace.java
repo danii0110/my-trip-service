@@ -11,19 +11,18 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 @Table(name = "schedule_places")
-public class SchedulePlaces {
-
+public class SchedulePlace {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "schedule_place_id")
     private Long schedulePlaceId;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "schedule_id", nullable = false)
     @JsonBackReference
     private DailySchedule dailySchedule;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "place_id", nullable = false)
     private Place place;
 }
