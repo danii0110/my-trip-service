@@ -14,7 +14,9 @@ const Calendar = ({ setSelectedDates }) => {
       const diffInDays = Math.ceil((end - start) / (1000 * 60 * 60 * 24)); // 끝나는 날짜와 시작 날짜 사이의 날짜 차이 계산
       if (diffInDays <= 4) {
         setEndDate(end); // 날짜 차이가 4박 5일 이하일 경우에만 끝나는 날짜 설정
-        setSelectedDates({ start, end }); // 선택한 날짜 설정
+        const selectedDates = { start, end };
+        setSelectedDates(selectedDates); // 선택한 날짜 설정
+        console.log('Selected dates set in Calendar:', selectedDates);
       } else {
         alert('날짜 설정은 최대 5일까지 가능합니다.');
         setEndDate(null); // 날짜 차이가 초과되면 끝나는 날짜를 null로 설정
