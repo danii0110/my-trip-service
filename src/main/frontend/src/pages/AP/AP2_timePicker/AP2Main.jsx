@@ -22,6 +22,7 @@ const AP2Main = () => {
   const [selectedDates, setSelectedDates] = useState(initialState.selectedDates || { start: null, end: null });
   const [selectedRegion, setSelectedRegion] = useState(initialState.selectedRegion);
   const [selectedArea, setSelectedArea] = useState(initialState.selectedArea);
+  const [tableData, setTableData] = useState([]);
 
   const regionMap = {
     0: '서울',
@@ -51,7 +52,15 @@ const AP2Main = () => {
 
     switch (currentLeftComponent.type) {
       case AP2Left:
-        setCurrentLeftComponent(<AP3Left regionMap={regionMap} />);
+        setCurrentLeftComponent(
+          <AP3Left
+            regionMap={regionMap}
+            selectedDates={selectedDates}
+            selectedRegion={selectedRegion}
+            selectedArea={selectedArea}
+            tableData={tableData}
+          />
+        );
         break;
       case AP3Left:
         setCurrentLeftComponent(<AP4Left regionMap={regionMap} />);
@@ -113,6 +122,7 @@ const AP2Main = () => {
       setSelectedDates(data.selectedDates);
       setSelectedRegion(data.selectedRegion);
       setSelectedArea(data.selectedArea);
+      setTableData([]); // 새로 날짜를 선택하면 tableData를 초기화
       navigate('/planning/areaName', {
         state: {
           selectedDates: data.selectedDates,
@@ -133,6 +143,8 @@ const AP2Main = () => {
           selectedDates,
           selectedRegion,
           selectedArea,
+          tableData,
+          onTableDataChange: setTableData, // 테이블 데이터 변경 핸들러
           openDatePickerModal: () => setShowDatePickerModal(true),
         })}
         {renderNextButton()}
