@@ -7,7 +7,14 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import CheckHeader from './CheckHeader/CheckHeader';
 import TimeTable from './TimeTable';
 
-const AP2Left = ({ regionMap, selectedDates, selectedRegion, selectedArea, openDatePickerModal }) => {
+const AP2Left = ({
+  regionMap,
+  selectedDates,
+  selectedRegion,
+  selectedArea,
+  openDatePickerModal,
+  onTableDataChange,
+}) => {
   const [showTimePicker, setShowTimePicker] = useState(false);
   const [totalTime, setTotalTime] = useState('총00시간 00분');
   const [currentCell, setCurrentCell] = useState(null);
@@ -34,6 +41,7 @@ const AP2Left = ({ regionMap, selectedDates, selectedRegion, selectedArea, openD
         daysArray.push([day.toLocaleDateString(), dayString, '오전 10:00', '오후 10:00']);
       }
       setTableData(daysArray);
+      onTableDataChange(daysArray); // 변경된 데이터 전달
     }
   }, [selectedDates]);
 
@@ -116,6 +124,7 @@ const AP2Left = ({ regionMap, selectedDates, selectedRegion, selectedArea, openD
           }
         }
         newData[currentCell.rowIndex][currentCell.cellIndex] = formattedTime;
+        onTableDataChange(newData); // 변경된 데이터 전달
         return newData;
       });
     }
