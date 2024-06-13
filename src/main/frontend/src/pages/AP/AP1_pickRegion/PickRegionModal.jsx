@@ -53,8 +53,9 @@ const PickRegionModal = ({ show, onHide }) => {
 
   const goToAP2 = () => {
     if (selectedAreaBtn !== null) {
+      const selectedArea = areas[selectedAreaBtn];
       onHide();
-      navigate('/planning/areaName');
+      navigate('/planning/areaName', { state: { selectedRegion, selectedArea } }); // navigate 함수의 state를 사용하여 상태 전달
     }
   };
 

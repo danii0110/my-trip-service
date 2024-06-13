@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { useLocation } from 'react-router-dom';
 import styles from './AP2Left.module.scss';
 import { Button } from 'react-bootstrap';
 import TrainIcon from '../../../assets/trainIcon.svg';
@@ -9,20 +10,59 @@ import TimeTable from './TimeTable';
 import DatePickerModal from './DatePicker/DatePickerModal';
 
 const AP2Left = () => {
+  const location = useLocation();
+  const { selectedDates: initialDates, selectedRegion, selectedArea } = location.state || {};
+
+  const regionMap = {
+    0: '서울',
+    1: '부산',
+    2: '대구',
+    3: '인천',
+    4: '광주',
+    5: '대전',
+    6: '울산',
+    7: '세종',
+    8: '경기',
+    9: '강원',
+    10: '충북',
+    11: '충남',
+    12: '전북',
+    13: '전남',
+    14: '경북',
+    15: '경남',
+    16: '제주',
+  };
+
   const [showDatePicker, setShowDatePicker] = useState(false);
-  const [showTimePicker, setShowTimePicker] = useState(false); // TimePicker 표시 상태
-  const [selectedDates, setSelectedDates] = useState({ start: null, end: null });
+  const [showTimePicker, setShowTimePicker] = useState(false);
+  const [selectedDates, setSelectedDates] = useState(initialDates || { start: null, end: null });
   const [totalTime, setTotalTime] = useState('총00시간 00분');
-  const [currentCell, setCurrentCell] = useState(null); // 현재 시간 조절 중인 셀
+  const [currentCell, setCurrentCell] = useState(null);
   const [popupPosition, setPopupPosition] = useState({ top: 0, left: 0 });
-  const timeTableRef = useRef(null); // Ref to TimeTable
-  const [tableData, setTableData] = useState([
-    ['4/25', '목', '오전 10:00', '오후 10:00'],
-    ['4/26', '금', '오전 10:00', '오후 10:00'],
-    ['4/27', '토', '오전 10:00', '오후 10:00'],
-    ['4/28', '일', '오전 10:00', '오후 10:00'],
-    ['4/29', '월', '오전 10:00', '오후 10:00'],
-  ]);
+  const timeTableRef = useRef(null);
+  const [tableData, setTableData] = useState([]);
+
+  useEffect(() => {
+    console.log('AP2Left loaded with:', {
+      selectedRegion,
+      selectedArea,
+      selectedDates,
+    });
+  }, [selectedRegion, selectedArea, selectedDates]);
+
+  useEffect(() => {
+    if (selectedDates.start && selectedDates.end) {
+      const startDate = new Date(selectedDates.start);
+      const endDate = new Date(selectedDates.end);
+      const daysArray = [];
+      for (let d = startDate; d <= endDate; d.setDate(d.getDate() + 1)) {
+        const day = new Date(d);
+        const dayString = day.toLocaleDateString('ko-KR', { weekday: 'short' });
+        daysArray.push([day.toLocaleDateString(), dayString, '오전 10:00', '오후 10:00']);
+      }
+      setTableData(daysArray);
+    }
+  }, [selectedDates]);
 
   useEffect(() => {
     const calculateTotalTime = () => {
@@ -64,21 +104,29 @@ const AP2Left = () => {
     setShowDatePicker(true);
   };
 
-  const handleCloseDatePicker = (dates) => {
+  const handleCloseDatePicker = (data) => {
+    console.log('handleCloseDatePicker called with:', data);
     setShowDatePicker(false);
-    if (dates.start && dates.end) {
-      setSelectedDates(dates);
+    if (data.selectedDates.start && data.selectedDates.end) {
+      setSelectedDates(data.selectedDates);
     }
   };
 
   const handleTimeIconClick = (event, rowIndex, cellIndex) => {
     const iconRect = event.target.getBoundingClientRect();
     setPopupPosition({
-      top: iconRect.top + window.scrollY + iconRect.height, // 시계 아이콘 바로 아래에 위치
+      top: iconRect.top + window.scrollY + iconRect.height,
       left: iconRect.left + window.scrollX,
     });
     setCurrentCell({ rowIndex, cellIndex });
     setShowTimePicker(true);
+  };
+
+  const formatTime = (time) => {
+    const [hours, minutes] = time.split(':').map(Number);
+    const period = hours >= 12 ? '오후' : '오전';
+    const adjustedHours = hours % 12 || 12;
+    return `${period} ${String(adjustedHours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
   };
 
   const handleCloseTimePicker = (e) => {
@@ -86,7 +134,7 @@ const AP2Left = () => {
     if (time && currentCell) {
       setTableData((prevData) => {
         const newData = [...prevData];
-        newData[currentCell.rowIndex][currentCell.cellIndex] = `오후 ${time}`;
+        newData[currentCell.rowIndex][currentCell.cellIndex] = formatTime(time);
         return newData;
       });
     }
@@ -96,7 +144,12 @@ const AP2Left = () => {
   return (
     <>
       <CheckHeader progress={33} firstColor='#000000' secondColor='#aab1b8' thirdColor='#aab1b8' />
-      <div className={styles.titleArea}>광주 동구</div>
+      <div className={styles.titleArea}>
+        {selectedRegion !== undefined && selectedRegion !== null
+          ? `${regionMap[selectedRegion]} ${selectedArea}`
+          : '지역 정보 없음'}
+      </div>{' '}
+      {/* 지역 정보를 표시 */}
       <div className={styles.reserveTransportation}>
         <div className={styles.subTitle}>
           <img className={styles.trainIcon} src={TrainIcon} alt='train-icon' />
@@ -121,8 +174,8 @@ const AP2Left = () => {
         <div className={styles.subTitle}>
           <img className={styles.calendarIcon} src={CalendarIcon} alt='calendar-icon' onClick={handleCalendarClick} />
           {selectedDates.start && selectedDates.end
-            ? `${selectedDates.start} - ${selectedDates.end}`
-            : '24.04.25(목) - 24.04.29(월)'}
+            ? `${selectedDates.start.toLocaleDateString()} - ${selectedDates.end.toLocaleDateString()}`
+            : '날짜를 선택하세요'}
         </div>
         <div className={styles.timeCont}>
           <div>여행시간 상세설정</div>
@@ -146,6 +199,14 @@ const AP2Left = () => {
           <input type='time' defaultValue='10:00' onBlur={handleCloseTimePicker} autoFocus />
         </div>
       )}
+      {/* 전달된 상태를 화면에 표시하여 데이터가 잘 넘어왔는지 확인 */}
+      <div>
+        <h3>전달된 지역 정보:</h3>
+        <p>Region: {selectedRegion !== undefined && selectedRegion !== null ? regionMap[selectedRegion] : '없음'}</p>
+        <p>Area: {selectedArea}</p>
+        <p>Start Date: {selectedDates.start ? selectedDates.start.toLocaleDateString() : '없음'}</p>
+        <p>End Date: {selectedDates.end ? selectedDates.end.toLocaleDateString() : '없음'}</p>
+      </div>
     </>
   );
 };
