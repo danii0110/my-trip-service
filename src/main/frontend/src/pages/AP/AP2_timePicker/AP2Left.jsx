@@ -129,14 +129,45 @@ const AP2Left = () => {
     return `${period} ${String(adjustedHours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
   };
 
+  // parseTime 함수를 handleCloseTimePicker 함수에서 사용할 수 있도록 이동합니다.
+  const parseTime = (timeString) => {
+    if (!timeString) return null;
+    const [period, time] = timeString.split(' ');
+    let [hours, minutes] = time.split(':').map(Number);
+    if (period === '오후' && hours !== 12) {
+      hours += 12;
+    } else if (period === '오전' && hours === 12) {
+      hours = 0;
+    }
+    return hours * 60 + minutes;
+  };
+
   const handleCloseTimePicker = (e) => {
     const time = e.target.value;
     if (time && currentCell) {
-      setTableData((prevData) => {
-        const newData = [...prevData];
-        newData[currentCell.rowIndex][currentCell.cellIndex] = formatTime(time);
-        return newData;
-      });
+      const newTableData = [...tableData];
+      const formattedTime = formatTime(time);
+
+      if (currentCell.cellIndex === 2) {
+        // 시작시간인 경우
+        const endTime = newTableData[currentCell.rowIndex][3];
+        if (parseTime(formattedTime) >= parseTime(endTime)) {
+          alert('시작시간은 종료시간보다 늦을 수 없습니다.');
+          setShowTimePicker(false);
+          return;
+        }
+      } else if (currentCell.cellIndex === 3) {
+        // 종료시간인 경우
+        const startTime = newTableData[currentCell.rowIndex][2];
+        if (parseTime(formattedTime) <= parseTime(startTime)) {
+          alert('종료시간은 시작시간보다 이를 수 없습니다.');
+          setShowTimePicker(false);
+          return;
+        }
+      }
+
+      newTableData[currentCell.rowIndex][currentCell.cellIndex] = formattedTime;
+      setTableData(newTableData);
     }
     setShowTimePicker(false);
   };
