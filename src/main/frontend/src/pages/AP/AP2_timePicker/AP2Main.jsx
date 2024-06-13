@@ -1,26 +1,28 @@
-import styles from './AP2Main.module.scss';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import AP2Left from './AP2Left';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
+import styles from './AP2Main.module.scss';
+import AP2Left from './AP2Left';
 import AP3Left from '../AP3_placePicker/AP3Left';
 import AP4Left from '../AP4_hotelPicker/AP4Left';
-import React, { useState } from 'react';
 import DatePickerModal from './DatePicker/DatePickerModal';
 import KakakoMap from '../../../modules/api/KakaoMap/KakaoMap';
 import PlaceModalBox from '../AP3_placePicker/PlaceModal/PlaceModalBox';
-import { useNavigate, useLocation } from 'react-router-dom';
 import HotelModalBox from '../AP4_hotelPicker/HotelModal/HotelModalBox';
 import ConfirmModal from '../AP4_hotelPicker/ConfirmModal/ConfirmModal';
 
 const AP2Main = () => {
   const [showDatePickerModal, setShowDatePickerModal] = useState(true);
-  const [showConfirmModal, setShowConfirmModal] = useState(false); // 확인 모달 상태
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [currentLeftComponent, setCurrentLeftComponent] = useState(<AP2Left />);
   const navigate = useNavigate();
   const location = useLocation();
-  const { selectedRegion, selectedArea } = location.state || {};
+  const initialState = location.state || {};
 
-  // 지역 코드와 지역명을 매핑하는 객체
+  const [selectedDates, setSelectedDates] = useState(initialState.selectedDates || { start: null, end: null });
+  const [selectedRegion, setSelectedRegion] = useState(initialState.selectedRegion);
+  const [selectedArea, setSelectedArea] = useState(initialState.selectedArea);
+
   const regionMap = {
     0: '서울',
     1: '부산',
@@ -43,7 +45,7 @@ const AP2Main = () => {
 
   const handleNextButtonClick = () => {
     if (currentLeftComponent.type === AP4Left) {
-      setShowConfirmModal(true); // 확인 모달을 표시
+      setShowConfirmModal(true);
       return;
     }
 
@@ -60,8 +62,8 @@ const AP2Main = () => {
   };
 
   const handleConfirm = () => {
-    setShowConfirmModal(false); // 확인 모달을 닫기
-    navigate('/plan-list/areaName'); // 페이지 이동
+    setShowConfirmModal(false);
+    navigate('/plan-list/areaName');
   };
 
   const renderNextButton = () => {
@@ -104,14 +106,39 @@ const AP2Main = () => {
     }
   };
 
+  const handleCloseDatePicker = (data) => {
+    console.log('handleCloseDatePicker calling with:', data);
+    setShowDatePickerModal(false);
+    if (data.selectedDates.start && data.selectedDates.end) {
+      setSelectedDates(data.selectedDates);
+      setSelectedRegion(data.selectedRegion);
+      setSelectedArea(data.selectedArea);
+      navigate('/planning/areaName', {
+        state: {
+          selectedDates: data.selectedDates,
+          selectedRegion: data.selectedRegion,
+          selectedArea: data.selectedArea,
+        },
+      });
+    } else {
+      setShowDatePickerModal(false);
+    }
+  };
+
   return (
     <div className={styles.container}>
       <div className={styles.leftCont}>
-        {React.cloneElement(currentLeftComponent, { regionMap })}
+        {React.cloneElement(currentLeftComponent, {
+          regionMap,
+          selectedDates,
+          selectedRegion,
+          selectedArea,
+          openDatePickerModal: () => setShowDatePickerModal(true),
+        })}
         {renderNextButton()}
       </div>
       <div className={styles.rightCont}>{renderRightComponent()}</div>
-      <DatePickerModal show={showDatePickerModal} onHide={() => setShowDatePickerModal(false)} />
+      <DatePickerModal show={showDatePickerModal} onHide={handleCloseDatePicker} />
       <ConfirmModal show={showConfirmModal} onHide={() => setShowConfirmModal(false)} onConfirm={handleConfirm} />
     </div>
   );

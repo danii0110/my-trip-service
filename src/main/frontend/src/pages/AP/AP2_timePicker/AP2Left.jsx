@@ -1,5 +1,4 @@
 import { useState, useEffect, useRef } from 'react';
-import { useLocation } from 'react-router-dom';
 import styles from './AP2Left.module.scss';
 import { Button } from 'react-bootstrap';
 import TrainIcon from '../../../assets/trainIcon.svg';
@@ -7,35 +6,9 @@ import CalendarIcon from '../../../assets/calendarIcon.svg';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import CheckHeader from './CheckHeader/CheckHeader';
 import TimeTable from './TimeTable';
-import DatePickerModal from './DatePicker/DatePickerModal';
 
-const AP2Left = () => {
-  const location = useLocation();
-  const { selectedDates: initialDates, selectedRegion, selectedArea } = location.state || {};
-
-  const regionMap = {
-    0: '서울',
-    1: '부산',
-    2: '대구',
-    3: '인천',
-    4: '광주',
-    5: '대전',
-    6: '울산',
-    7: '세종',
-    8: '경기',
-    9: '강원',
-    10: '충북',
-    11: '충남',
-    12: '전북',
-    13: '전남',
-    14: '경북',
-    15: '경남',
-    16: '제주',
-  };
-
-  const [showDatePicker, setShowDatePicker] = useState(false);
+const AP2Left = ({ regionMap, selectedDates, selectedRegion, selectedArea, openDatePickerModal }) => {
   const [showTimePicker, setShowTimePicker] = useState(false);
-  const [selectedDates, setSelectedDates] = useState(initialDates || { start: null, end: null });
   const [totalTime, setTotalTime] = useState('총00시간 00분');
   const [currentCell, setCurrentCell] = useState(null);
   const [popupPosition, setPopupPosition] = useState({ top: 0, left: 0 });
@@ -81,55 +54,9 @@ const AP2Left = () => {
       setTotalTime(`총${hours}시간 ${minutes}분`);
     };
 
-    const parseTime = (timeString) => {
-      if (!timeString) return null;
-      const [period, time] = timeString.split(' ');
-      let [hours, minutes] = time.split(':').map(Number);
-      if (period === '오후' && hours !== 12) {
-        hours += 12;
-      } else if (period === '오전' && hours === 12) {
-        hours = 0;
-      }
-      return hours * 60 + minutes;
-    };
-
     calculateTotalTime();
   }, [tableData]);
 
-  const handleReserve = (url) => {
-    window.open(url, '_blank');
-  };
-
-  const handleCalendarClick = () => {
-    setShowDatePicker(true);
-  };
-
-  const handleCloseDatePicker = (data) => {
-    console.log('handleCloseDatePicker called with:', data);
-    setShowDatePicker(false);
-    if (data.selectedDates.start && data.selectedDates.end) {
-      setSelectedDates(data.selectedDates);
-    }
-  };
-
-  const handleTimeIconClick = (event, rowIndex, cellIndex) => {
-    const iconRect = event.target.getBoundingClientRect();
-    setPopupPosition({
-      top: iconRect.top + window.scrollY + iconRect.height,
-      left: iconRect.left + window.scrollX,
-    });
-    setCurrentCell({ rowIndex, cellIndex });
-    setShowTimePicker(true);
-  };
-
-  const formatTime = (time) => {
-    const [hours, minutes] = time.split(':').map(Number);
-    const period = hours >= 12 ? '오후' : '오전';
-    const adjustedHours = hours % 12 || 12;
-    return `${period} ${String(adjustedHours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
-  };
-
-  // parseTime 함수를 handleCloseTimePicker 함수에서 사용할 수 있도록 이동합니다.
   const parseTime = (timeString) => {
     if (!timeString) return null;
     const [period, time] = timeString.split(' ');
@@ -142,32 +69,55 @@ const AP2Left = () => {
     return hours * 60 + minutes;
   };
 
+  const parseTimeToAmPm = (time) => {
+    const [hours, minutes] = time.split(':').map(Number);
+    const period = hours >= 12 ? '오후' : '오전';
+    const adjustedHours = hours % 12 || 12;
+    return `${period} ${adjustedHours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+  };
+
+  const handleReserve = (url) => {
+    window.open(url, '_blank');
+  };
+
+  const handleCalendarClick = () => {
+    openDatePickerModal();
+  };
+
+  const handleTimeIconClick = (event, rowIndex, cellIndex) => {
+    const iconRect = event.target.getBoundingClientRect();
+    setPopupPosition({
+      top: iconRect.top + window.scrollY + iconRect.height,
+      left: iconRect.left + window.scrollX,
+    });
+    setCurrentCell({ rowIndex, cellIndex });
+    setShowTimePicker(true);
+  };
+
   const handleCloseTimePicker = (e) => {
     const time = e.target.value;
     if (time && currentCell) {
-      const newTableData = [...tableData];
-      const formattedTime = formatTime(time);
-
-      if (currentCell.cellIndex === 2) {
-        // 시작시간인 경우
-        const endTime = newTableData[currentCell.rowIndex][3];
-        if (parseTime(formattedTime) >= parseTime(endTime)) {
-          alert('시작시간은 종료시간보다 늦을 수 없습니다.');
-          setShowTimePicker(false);
-          return;
+      setTableData((prevData) => {
+        const newData = [...prevData];
+        const formattedTime = parseTimeToAmPm(time);
+        if (currentCell.cellIndex === 2) {
+          const endTime = newData[currentCell.rowIndex][3];
+          if (parseTime(formattedTime) >= parseTime(endTime)) {
+            alert('시작시간은 종료시간보다 늦을 수 없습니다.');
+            setShowTimePicker(false);
+            return prevData;
+          }
+        } else if (currentCell.cellIndex === 3) {
+          const startTime = newData[currentCell.rowIndex][2];
+          if (parseTime(formattedTime) <= parseTime(startTime)) {
+            alert('종료시간은 시작시간보다 이를 수 없습니다.');
+            setShowTimePicker(false);
+            return prevData;
+          }
         }
-      } else if (currentCell.cellIndex === 3) {
-        // 종료시간인 경우
-        const startTime = newTableData[currentCell.rowIndex][2];
-        if (parseTime(formattedTime) <= parseTime(startTime)) {
-          alert('종료시간은 시작시간보다 이를 수 없습니다.');
-          setShowTimePicker(false);
-          return;
-        }
-      }
-
-      newTableData[currentCell.rowIndex][currentCell.cellIndex] = formattedTime;
-      setTableData(newTableData);
+        newData[currentCell.rowIndex][currentCell.cellIndex] = formattedTime;
+        return newData;
+      });
     }
     setShowTimePicker(false);
   };
@@ -179,8 +129,7 @@ const AP2Left = () => {
         {selectedRegion !== undefined && selectedRegion !== null
           ? `${regionMap[selectedRegion]} ${selectedArea}`
           : '지역 정보 없음'}
-      </div>{' '}
-      {/* 지역 정보를 표시 */}
+      </div>
       <div className={styles.reserveTransportation}>
         <div className={styles.subTitle}>
           <img className={styles.trainIcon} src={TrainIcon} alt='train-icon' />
@@ -221,7 +170,6 @@ const AP2Left = () => {
           <TimeTable tableData={tableData} onTimeIconClick={handleTimeIconClick} />
         </div>
       </div>
-      <DatePickerModal show={showDatePicker} onHide={handleCloseDatePicker} />
       {showTimePicker && (
         <div
           className={styles.timePickerPopup}
@@ -230,7 +178,6 @@ const AP2Left = () => {
           <input type='time' defaultValue='10:00' onBlur={handleCloseTimePicker} autoFocus />
         </div>
       )}
-      {/* 전달된 상태를 화면에 표시하여 데이터가 잘 넘어왔는지 확인 */}
       <div>
         <h3>전달된 지역 정보:</h3>
         <p>Region: {selectedRegion !== undefined && selectedRegion !== null ? regionMap[selectedRegion] : '없음'}</p>
