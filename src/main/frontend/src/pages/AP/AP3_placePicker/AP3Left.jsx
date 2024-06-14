@@ -4,18 +4,19 @@ import styles from './AP3Left.module.scss';
 import CategoryBtn from './CategoryBtn';
 import SearchBar from './SearchBar/SearchBar';
 import PlaceBox from './PlaceBox';
+import PlaceModalBox from './PlaceModal/PlaceModalBox';
 
 const placesData = [
-  { placeName: '성산 일출봉', category: '명소', address: '대한민국 서귀포시 성산 일출봉' },
-  { placeName: '제주 돌하르방 공원', category: '명소', address: '대한민국 제주특별자치도 제주시' },
-  { placeName: '흑돼지 거리', category: '식당', address: '대한민국 제주특별자치도 제주시' },
+  { placeName: '성산 일출봉', category: '여행지', address: '대한민국 서귀포시 성산 일출봉' },
+  { placeName: '제주 돌하르방 공원', category: '여행지', address: '대한민국 제주특별자치도 제주시' },
+  { placeName: '흑돼지 거리', category: '음식점', address: '대한민국 제주특별자치도 제주시' },
   { placeName: '제주 아르떼 뮤지엄', category: '문화시설', address: '대한민국 제주특별자치도 제주시' },
   { placeName: '한라산 국립공원', category: '레포츠', address: '대한민국 제주특별자치도 제주시' },
   { placeName: '동문 재래시장', category: '쇼핑', address: '대한민국 제주특별자치도 제주시' },
-  { placeName: '섭지코지', category: '명소', address: '대한민국 제주특별자치도 서귀포시' },
+  { placeName: '섭지코지', category: '여행지', address: '대한민국 제주특별자치도 서귀포시' },
   { placeName: '우도 잠수함', category: '레포츠', address: '대한민국 제주특별자치도 제주시' },
   { placeName: '제주 현대 미술관', category: '문화시설', address: '대한민국 제주특별자치도 제주시' },
-  { placeName: '비자림', category: '명소', address: '대한민국 제주특별자치도 제주시' },
+  { placeName: '비자림', category: '여행지', address: '대한민국 제주특별자치도 제주시' },
 ];
 
 const AP3Left = ({ regionMap, selectedDates, selectedRegion, selectedArea, tableData }) => {
@@ -65,8 +66,8 @@ const AP3Left = ({ regionMap, selectedDates, selectedRegion, selectedArea, table
             selectedCategory={selectedCategory}
             setSelectedCategory={setSelectedCategory}
           />
-          <CategoryBtn content='명소' selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory} />
-          <CategoryBtn content='식당' selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory} />
+          <CategoryBtn content='여행지' selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory} />
+          <CategoryBtn content='음식점' selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory} />
           <CategoryBtn
             content='문화시설'
             selectedCategory={selectedCategory}
@@ -92,6 +93,7 @@ const AP3Left = ({ regionMap, selectedDates, selectedRegion, selectedArea, table
           <p>End Date: {selectedDates.end ? selectedDates.end.toLocaleDateString() : '없음'}</p>
           <p>Table Data: {JSON.stringify(tableData)}</p>
         </div>
+        <PlaceModalBox selectedDates={selectedDates} />
       </div>
     </div>
   );
