@@ -41,7 +41,7 @@ const ChatInput = ({ onSendMessage }) => {
         <div className={styles.inputContainer}>
             <textarea
                 ref={textareaRef}
-                placeholder="Type your message..."
+                placeholder="채팅을 입력하세요"
                 value={inputValue}
                 onChange={handleInputChange}
                 onKeyDown={handleKeyDown}
