@@ -4,7 +4,6 @@ import styles from './AP3Left.module.scss';
 import CategoryBtn from './CategoryBtn';
 import SearchBar from './SearchBar/SearchBar';
 import PlaceBox from './PlaceBox';
-import PlaceModalBox from './PlaceModal/PlaceModalBox';
 
 const placesData = [
   { placeName: '성산 일출봉', category: '여행지', address: '대한민국 서귀포시 성산 일출봉' },
@@ -93,7 +92,6 @@ const AP3Left = ({ regionMap, selectedDates, selectedRegion, selectedArea, table
           <p>End Date: {selectedDates.end ? selectedDates.end.toLocaleDateString() : '없음'}</p>
           <p>Table Data: {JSON.stringify(tableData)}</p>
         </div>
-        <PlaceModalBox selectedDates={selectedDates} />
       </div>
     </div>
   );
