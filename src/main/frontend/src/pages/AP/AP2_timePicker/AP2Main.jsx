@@ -10,11 +10,17 @@ import KakakoMap from '../../../modules/api/KakaoMap/KakaoMap';
 import PlaceModalBox from '../AP3_placePicker/PlaceModal/PlaceModalBox';
 import HotelModalBox from '../AP4_hotelPicker/HotelModal/HotelModalBox';
 import ConfirmModal from '../AP4_hotelPicker/ConfirmModal/ConfirmModal';
+import LeftArrowIcon from '../../../assets/leftArrow.svg';
+import RightArrowIcon from '../../../assets/rightArrow.svg';
 
 const AP2Main = () => {
   const [showDatePickerModal, setShowDatePickerModal] = useState(true);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [currentLeftComponent, setCurrentLeftComponent] = useState(<AP2Left />);
+  const [isPlaceModalVisible, setIsPlaceModalVisible] = useState(false);
+  const [isHotelModalVisible, setIsHotelModalVisible] = useState(false);
+  const [isLeftArrow, setIsLeftArrow] = useState(true);
+
   const navigate = useNavigate();
   const location = useLocation();
   const initialState = location.state || {};
@@ -75,6 +81,15 @@ const AP2Main = () => {
     navigate('/plan-list/areaName');
   };
 
+  const handleClick = () => {
+    setIsLeftArrow(!isLeftArrow);
+    setIsPlaceModalVisible(!isPlaceModalVisible);
+  };
+
+  const handleHotelClick = () => {
+    setIsHotelModalVisible(!isHotelModalVisible);
+  };
+
   const renderNextButton = () => {
     switch (currentLeftComponent.type) {
       case AP4Left:
@@ -93,26 +108,35 @@ const AP2Main = () => {
   };
 
   const renderRightComponent = () => {
-    switch (currentLeftComponent.type) {
-      case AP2Left:
-        return <KakakoMap selectedRegion={selectedRegion} selectedArea={selectedArea} regionMap={regionMap} />;
-      case AP3Left:
-        return (
-          <>
-            <PlaceModalBox />
-            <KakakoMap selectedRegion={selectedRegion} selectedArea={selectedArea} regionMap={regionMap} />
-          </>
-        );
-      case AP4Left:
-        return (
-          <>
-            <HotelModalBox />
-            <KakakoMap selectedRegion={selectedRegion} selectedArea={selectedArea} regionMap={regionMap} />
-          </>
-        );
-      default:
-        return <KakakoMap selectedRegion={selectedRegion} selectedArea={selectedArea} regionMap={regionMap} />;
-    }
+    return (
+      <>
+        <div className={styles.buttonContainer}>
+          {currentLeftComponent.type === AP3Left && (
+            <Button className={styles.modalBtn} onClick={handleClick}>
+              <img
+                className={styles.arrowIcon}
+                src={isLeftArrow ? LeftArrowIcon : RightArrowIcon}
+                alt={isLeftArrow ? 'left-arrow-icon' : 'right-arrow-icon'}
+              />
+            </Button>
+          )}
+          {currentLeftComponent.type === AP4Left && (
+            <Button className={styles.modalBtn} onClick={handleHotelClick}>
+              <img
+                className={styles.arrowIcon}
+                src={isHotelModalVisible ? LeftArrowIcon : RightArrowIcon}
+                alt={isHotelModalVisible ? 'left-arrow-icon' : 'right-arrow-icon'}
+              />
+            </Button>
+          )}
+        </div>
+        {isPlaceModalVisible && currentLeftComponent.type === AP3Left && (
+          <PlaceModalBox selectedDates={selectedDates} />
+        )}
+        {isHotelModalVisible && currentLeftComponent.type === AP4Left && <HotelModalBox />}
+        <KakakoMap selectedRegion={selectedRegion} selectedArea={selectedArea} regionMap={regionMap} />
+      </>
+    );
   };
 
   const handleCloseDatePicker = (data) => {
