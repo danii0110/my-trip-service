@@ -43,7 +43,7 @@ const PlaceModal = ({ selectedDates = { start: null, end: null } }) => {
         <img className={styles.arrowIcon} src={LeftArrowIcon} alt='left-arrow-icon' />
         <div className={styles.headerCenter}>
           <img className={styles.calendarIcon} src={CalendarIcon} alt='calendar-icon' onClick={toggleDatePicker} />
-          <p>{selectedDate}</p>
+          <div className={styles.selectDateCont}>{selectedDate}</div>
         </div>
         <img className={styles.arrowIcon} src={RightArrowIcon} alt='right-arrow-icon' />
       </div>
@@ -53,7 +53,7 @@ const PlaceModal = ({ selectedDates = { start: null, end: null } }) => {
       </div>
       <div className={styles.main}>
         {places.length === 0 ? (
-          <p>장소를 선택해주세요</p>
+          <div className={styles.noPlaceCont}>장소를 선택해주세요</div>
         ) : (
           places.map((place) => (
             <AddPlaceBox

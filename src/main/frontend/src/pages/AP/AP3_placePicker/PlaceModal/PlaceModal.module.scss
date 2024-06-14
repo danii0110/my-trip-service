@@ -16,9 +16,12 @@
   display: flex;
   flex-direction: row;
 }
-.headerCenter > p {
-  font-size: 1.5625rem;
-  margin: 0 0 0 0.4375rem;
+.calendarIcon {
+  width: 23px;
+}
+.selectDateCont {
+  font-size: 25px;
+  margin: 0 0 0 10px;
 }
 .subHeader {
   display: flex;
