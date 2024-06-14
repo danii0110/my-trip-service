@@ -5,7 +5,8 @@ import RightArrowIcon from '../../../../assets/rightArrow.svg';
 import { useState } from 'react';
 import PlaceModal from './PlaceModal';
 
-const PlaceModalBox = () => {
+const PlaceModalBox = ({ selectedDates }) => {
+  // selectedDates prop 추가
   const [isLeftArrow, setIsLeftArrow] = useState(true);
   const [modal, setModal] = useState(false);
 
@@ -16,7 +17,7 @@ const PlaceModalBox = () => {
 
   return (
     <div className={styles.container}>
-      {modal === true ? <PlaceModal /> : null}
+      {modal && <PlaceModal selectedDates={selectedDates} />} {/* 조건부 렌더링 수정 */}
       <Button className={styles.modalBtn} onClick={handleClick}>
         <img
           className={styles.arrowIcon}
@@ -27,4 +28,5 @@ const PlaceModalBox = () => {
     </div>
   );
 };
+
 export default PlaceModalBox;
