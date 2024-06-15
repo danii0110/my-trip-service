@@ -1,8 +1,10 @@
+// PlaceController.java
 package com.mytrip.mytripservice.controller;
 
-import com.mytrip.mytripservice.entity.Place;
+import com.mytrip.mytripservice.dto.PlaceDTO;
 import com.mytrip.mytripservice.service.PlaceService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,35 +22,27 @@ public class PlaceController {
         this.placeService = placeService;
     }
 
-    @PostMapping
-    public ResponseEntity<Place> createPlace(@RequestBody Place place) {
-        // 로깅 추가
-        System.out.println("Received place: " + place);
-        System.out.println("Coordinates: " + place.getXCoordinate() + ", " + place.getYCoordinate());
-        if (place.getXCoordinate() == null || place.getYCoordinate() == null) {
-            System.out.println("Coordinates are missing");
-            return ResponseEntity.badRequest().body(null);
-        }
-        Place createdPlace = placeService.createPlace(place);
-        System.out.println("Creating place: " + createdPlace);
-        return ResponseEntity.ok(createdPlace);
-    }
-
     @GetMapping
-    public ResponseEntity<List<Place>> getAllPlaces() {
-        List<Place> places = placeService.getAllPlaces();
+    public ResponseEntity<List<PlaceDTO>> getAllPlaces() {
+        List<PlaceDTO> places = placeService.getAllPlaces();
         return ResponseEntity.ok(places);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Place> getPlaceById(@PathVariable Long id) {
-        Optional<Place> place = placeService.getPlaceById(id);
+    public ResponseEntity<PlaceDTO> getPlaceById(@PathVariable Long id) {
+        Optional<PlaceDTO> place = placeService.getPlaceById(id);
         return place.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Place> updatePlace(@PathVariable Long id, @RequestBody Place placeDetails) {
-        Place updatedPlace = placeService.updatePlace(id, placeDetails);
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<PlaceDTO> createPlace(@RequestBody PlaceDTO placeDTO) {
+        PlaceDTO createdPlace = placeService.createPlace(placeDTO);
+        return ResponseEntity.ok(createdPlace);
+    }
+
+    @PatchMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<PlaceDTO> updatePlace(@PathVariable Long id, @RequestBody PlaceDTO placeDetails) {
+        PlaceDTO updatedPlace = placeService.updatePlace(id, placeDetails);
         return ResponseEntity.ok(updatedPlace);
     }
 

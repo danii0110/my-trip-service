@@ -1,7 +1,7 @@
 // PlanController.java
 package com.mytrip.mytripservice.controller;
 
-import com.mytrip.mytripservice.entity.Plan;
+import com.mytrip.mytripservice.dto.PlanDTO;
 import com.mytrip.mytripservice.service.PlanService;
 import com.mytrip.mytripservice.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,26 +26,26 @@ public class PlanController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Plan>> getAllPlans() {
-        List<Plan> plans = planService.getAllPlans();
+    public ResponseEntity<List<PlanDTO>> getAllPlans() {
+        List<PlanDTO> plans = planService.getAllPlans();
         return ResponseEntity.ok(plans);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Plan> getPlanById(@PathVariable Long id) {
-        Optional<Plan> plan = planService.getPlanById(id);
+    public ResponseEntity<PlanDTO> getPlanById(@PathVariable Long id) {
+        Optional<PlanDTO> plan = planService.getPlanById(id);
         return plan.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Plan> createPlan(@RequestBody Plan plan) {
-        Plan createdPlan = planService.createPlan(plan);
+    public ResponseEntity<PlanDTO> createPlan(@RequestBody PlanDTO plan) {
+        PlanDTO createdPlan = planService.createPlan(plan);
         return ResponseEntity.ok(createdPlan);
     }
 
-    @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Plan> updatePlan(@PathVariable Long id, @RequestBody Plan planDetails) {
-        Plan updatedPlan = planService.updatePlan(id, planDetails);
+    @PatchMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<PlanDTO> updatePlan(@PathVariable Long id, @RequestBody PlanDTO planDetails) {
+        PlanDTO updatedPlan = planService.updatePlan(id, planDetails);
         return ResponseEntity.ok(updatedPlan);
     }
 

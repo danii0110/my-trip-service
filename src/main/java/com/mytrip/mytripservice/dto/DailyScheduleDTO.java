@@ -1,14 +1,14 @@
+// DailyScheduleDTO.java
 package com.mytrip.mytripservice.dto;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-@Getter
-@Setter
-public class DailyScheduleRequest {
+@Data
+public class DailyScheduleDTO {
+    private Long scheduleId;
     private Long planId;
     private LocalDate date;
     private LocalTime startTime;

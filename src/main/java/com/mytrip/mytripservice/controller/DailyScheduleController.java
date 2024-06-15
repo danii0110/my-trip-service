@@ -1,10 +1,8 @@
+// DailyScheduleController.java
 package com.mytrip.mytripservice.controller;
 
-import com.mytrip.mytripservice.entity.DailySchedule;
-import com.mytrip.mytripservice.entity.Plan;
+import com.mytrip.mytripservice.dto.DailyScheduleDTO;
 import com.mytrip.mytripservice.service.DailyScheduleService;
-import com.mytrip.mytripservice.service.PlanService;
-import com.mytrip.mytripservice.dto.DailyScheduleRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -18,51 +16,33 @@ import java.util.Optional;
 public class DailyScheduleController {
 
     private final DailyScheduleService dailyScheduleService;
-    private final PlanService planService;
 
     @Autowired
-    public DailyScheduleController(DailyScheduleService dailyScheduleService, PlanService planService) {
+    public DailyScheduleController(DailyScheduleService dailyScheduleService) {
         this.dailyScheduleService = dailyScheduleService;
-        this.planService = planService;
     }
 
     @GetMapping
-    public ResponseEntity<List<DailySchedule>> getAllDailySchedules() {
-        List<DailySchedule> dailySchedules = dailyScheduleService.getAllDailySchedules();
+    public ResponseEntity<List<DailyScheduleDTO>> getAllDailySchedules() {
+        List<DailyScheduleDTO> dailySchedules = dailyScheduleService.getAllDailySchedules();
         return ResponseEntity.ok(dailySchedules);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<DailySchedule> getDailyScheduleById(@PathVariable Long id) {
-        Optional<DailySchedule> dailySchedule = dailyScheduleService.getDailyScheduleById(id);
+    public ResponseEntity<DailyScheduleDTO> getDailyScheduleById(@PathVariable Long id) {
+        Optional<DailyScheduleDTO> dailySchedule = dailyScheduleService.getDailyScheduleById(id);
         return dailySchedule.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<DailySchedule> createDailySchedule(@RequestBody DailySchedule dailySchedule) {
-        // Retrieve the plan based on planId provided in dailySchedule
-        Plan plan = planService.getPlanById(dailySchedule.getPlan().getPlanId())
-                .orElseThrow(() -> new RuntimeException("Plan not found"));
-
-        // Set the retrieved plan to dailySchedule
-        dailySchedule.setPlan(plan);
-
-        DailySchedule createdDailySchedule = dailyScheduleService.createDailySchedule(dailySchedule);
+    public ResponseEntity<DailyScheduleDTO> createDailySchedule(@RequestBody DailyScheduleDTO dailyScheduleDTO) {
+        DailyScheduleDTO createdDailySchedule = dailyScheduleService.createDailySchedule(dailyScheduleDTO);
         return ResponseEntity.ok(createdDailySchedule);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<DailySchedule> updateDailySchedule(@PathVariable Long id, @RequestBody DailyScheduleRequest dailyScheduleRequest) {
-        Plan plan = planService.getPlanById(dailyScheduleRequest.getPlanId())
-                .orElseThrow(() -> new RuntimeException("Plan not found"));
-        DailySchedule dailyScheduleDetails = DailySchedule.builder()
-                .plan(plan)
-                .date(dailyScheduleRequest.getDate())
-                .startTime(dailyScheduleRequest.getStartTime())
-                .endTime(dailyScheduleRequest.getEndTime())
-                .duration(dailyScheduleRequest.getDuration())
-                .build();
-        DailySchedule updatedDailySchedule = dailyScheduleService.updateDailySchedule(id, dailyScheduleDetails);
+    @PatchMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<DailyScheduleDTO> updateDailySchedule(@PathVariable Long id, @RequestBody DailyScheduleDTO dailyScheduleDetails) {
+        DailyScheduleDTO updatedDailySchedule = dailyScheduleService.updateDailySchedule(id, dailyScheduleDetails);
         return ResponseEntity.ok(updatedDailySchedule);
     }
 

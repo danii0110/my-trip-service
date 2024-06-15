@@ -1,3 +1,4 @@
+// MoveTime.java
 package com.mytrip.mytripservice.entity;
 
 import jakarta.persistence.*;

@@ -1,3 +1,4 @@
+// MoveTimeController.java
 package com.mytrip.mytripservice.controller;
 
 import com.mytrip.mytripservice.dto.MoveTimeDTO;
@@ -38,7 +39,7 @@ public class MoveTimeController {
         return ResponseEntity.ok(createdMoveTime);
     }
 
-    @PutMapping("/{id}")
+    @PatchMapping("/{id}")
     public ResponseEntity<MoveTimeDTO> updateMoveTime(@PathVariable Long id, @RequestBody MoveTimeDTO moveTimeDTO) {
         MoveTimeDTO updatedMoveTime = moveTimeService.updateMoveTime(id, moveTimeDTO);
         return ResponseEntity.ok(updatedMoveTime);

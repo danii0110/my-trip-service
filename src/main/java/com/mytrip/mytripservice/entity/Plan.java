@@ -49,14 +49,5 @@ public class Plan {
     private List<DailySchedule> dailySchedules;
 
     @OneToMany(mappedBy = "plan", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Accommodation> accommodations;
-
-    @OneToMany(mappedBy = "plan", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<MoveTime> moveTimes;
-
-    // 기본 public 생성자 추가
-    public Plan(Long planId) {
-        this.planId = planId;
-    }
 }
-
