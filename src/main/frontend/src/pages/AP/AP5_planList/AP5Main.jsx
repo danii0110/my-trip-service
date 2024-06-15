@@ -7,8 +7,12 @@ import KakakoMap from '../../../modules/api/KakaoMap/KakaoMap';
 import { useState } from 'react';
 import PlanCont from './PlanCont';
 import CartModal from './CartModal';
+import { useLocation } from 'react-router-dom';
 
 const AP5Main = () => {
+  const location = useLocation();
+  const { selectedDates, selectedRegion, selectedArea, tableData } = location.state || {};
+
   const [isUpArrow, setIsUpArrow] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [modalContents, setModalContents] = useState([
@@ -79,7 +83,7 @@ const AP5Main = () => {
           </div>
         </div>
         <div className={styles.rightCont}>
-          <KakakoMap />
+          <KakakoMap selectedRegion={selectedRegion} selectedArea={selectedArea} regionMap={{}} />
         </div>
       </div>
     </>
