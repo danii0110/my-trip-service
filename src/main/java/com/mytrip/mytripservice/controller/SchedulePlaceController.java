@@ -1,9 +1,8 @@
+// SchedulePlaceController.java
 package com.mytrip.mytripservice.controller;
 
-import com.mytrip.mytripservice.entity.SchedulePlace;
-import com.mytrip.mytripservice.entity.Place;
+import com.mytrip.mytripservice.dto.SchedulePlaceDTO;
 import com.mytrip.mytripservice.service.SchedulePlaceService;
-import com.mytrip.mytripservice.service.PlaceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -17,40 +16,33 @@ import java.util.Optional;
 public class SchedulePlaceController {
 
     private final SchedulePlaceService schedulePlaceService;
-    private final PlaceService placeService;
 
     @Autowired
-    public SchedulePlaceController(SchedulePlaceService schedulePlaceService, PlaceService placeService) {
+    public SchedulePlaceController(SchedulePlaceService schedulePlaceService) {
         this.schedulePlaceService = schedulePlaceService;
-        this.placeService = placeService;
     }
 
     @GetMapping
-    public ResponseEntity<List<SchedulePlace>> getAllSchedulePlaces() {
-        List<SchedulePlace> schedulePlaces = schedulePlaceService.getAllSchedulePlaces();
+    public ResponseEntity<List<SchedulePlaceDTO>> getAllSchedulePlaces() {
+        List<SchedulePlaceDTO> schedulePlaces = schedulePlaceService.getAllSchedulePlaces();
         return ResponseEntity.ok(schedulePlaces);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<SchedulePlace> getSchedulePlaceById(@PathVariable Long id) {
-        Optional<SchedulePlace> schedulePlace = schedulePlaceService.getSchedulePlaceById(id);
+    public ResponseEntity<SchedulePlaceDTO> getSchedulePlaceById(@PathVariable Long id) {
+        Optional<SchedulePlaceDTO> schedulePlace = schedulePlaceService.getSchedulePlaceById(id);
         return schedulePlace.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<SchedulePlace> createSchedulePlace(@RequestBody SchedulePlace schedulePlace) {
-        SchedulePlace createdSchedulePlace = schedulePlaceService.createSchedulePlace(schedulePlace);
-
-        // Fetch complete place details
-        Place place = placeService.getPlaceById(createdSchedulePlace.getPlace().getPlaceId()).orElse(null);
-        createdSchedulePlace.setPlace(place);
-
+    public ResponseEntity<SchedulePlaceDTO> createSchedulePlace(@RequestBody SchedulePlaceDTO schedulePlaceDTO) {
+        SchedulePlaceDTO createdSchedulePlace = schedulePlaceService.createSchedulePlace(schedulePlaceDTO);
         return ResponseEntity.ok(createdSchedulePlace);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<SchedulePlace> updateSchedulePlace(@PathVariable Long id, @RequestBody SchedulePlace schedulePlaceDetails) {
-        SchedulePlace updatedSchedulePlace = schedulePlaceService.updateSchedulePlace(id, schedulePlaceDetails);
+    @PatchMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<SchedulePlaceDTO> updateSchedulePlace(@PathVariable Long id, @RequestBody SchedulePlaceDTO schedulePlaceDetails) {
+        SchedulePlaceDTO updatedSchedulePlace = schedulePlaceService.updateSchedulePlace(id, schedulePlaceDetails);
         return ResponseEntity.ok(updatedSchedulePlace);
     }
 

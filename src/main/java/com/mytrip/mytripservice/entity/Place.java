@@ -1,3 +1,4 @@
+// Place.java
 package com.mytrip.mytripservice.entity;
 
 import jakarta.persistence.*;
@@ -22,8 +23,9 @@ public class Place {
     @Column(name = "address", nullable = false)
     private String address;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "category", nullable = false)
-    private String category;
+    private Category category;
 
     @Column(name = "image", nullable = false)
     private String image;
@@ -33,10 +35,6 @@ public class Place {
 
     @Column(name = "y_coordinate", nullable = false)
     private Double yCoordinate;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "place_type", nullable = false)
-    private PlaceType placeType;
 
     // 기본 public 생성자 추가
     public Place(Long placeId) {

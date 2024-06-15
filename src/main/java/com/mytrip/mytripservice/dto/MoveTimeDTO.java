@@ -1,8 +1,6 @@
+// MoveTimeDTO.java
 package com.mytrip.mytripservice.dto;
 
-import com.mytrip.mytripservice.entity.Place;
-import com.mytrip.mytripservice.entity.Plan;
-import com.mytrip.mytripservice.entity.DailySchedule;
 import lombok.Getter;
 import lombok.Setter;
 
