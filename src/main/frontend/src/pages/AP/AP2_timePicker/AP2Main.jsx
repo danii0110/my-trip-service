@@ -78,7 +78,14 @@ const AP2Main = () => {
 
   const handleConfirm = () => {
     setShowConfirmModal(false);
-    navigate('/plan-list/areaName');
+    navigate('/plan-list/areaName', {
+      state: {
+        selectedDates,
+        selectedRegion,
+        selectedArea,
+        tableData,
+      },
+    });
   };
 
   const handleClick = () => {
@@ -109,7 +116,11 @@ const AP2Main = () => {
 
   const renderRightComponent = () => {
     return (
-      <>
+      <div className={styles.rightContentWrapper}>
+        {isPlaceModalVisible && currentLeftComponent.type === AP3Left && (
+          <PlaceModalBox selectedDates={selectedDates} />
+        )}
+        {isHotelModalVisible && currentLeftComponent.type === AP4Left && <HotelModalBox />}
         <div className={styles.buttonContainer}>
           {currentLeftComponent.type === AP3Left && (
             <Button className={styles.modalBtn} onClick={handleClick}>
@@ -130,12 +141,8 @@ const AP2Main = () => {
             </Button>
           )}
         </div>
-        {isPlaceModalVisible && currentLeftComponent.type === AP3Left && (
-          <PlaceModalBox selectedDates={selectedDates} />
-        )}
-        {isHotelModalVisible && currentLeftComponent.type === AP4Left && <HotelModalBox />}
         <KakakoMap selectedRegion={selectedRegion} selectedArea={selectedArea} regionMap={regionMap} />
-      </>
+      </div>
     );
   };
 

@@ -2,15 +2,26 @@ import styles from './TransportModal.module.scss';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useState } from 'react';
 import { Button, Modal } from 'react-bootstrap';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const TransportModal = ({ show, onHide }) => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const { selectedDates, selectedRegion, selectedArea, tableData } = location.state || {};
+
   const [selectedTransport, setSelectedTransport] = useState('public');
 
   const goToAP6 = () => {
     onHide();
-    navigate('/itinerary/areaName');
+    navigate('/itinerary/areaName', {
+      state: {
+        selectedDates,
+        selectedRegion,
+        selectedArea,
+        tableData,
+        selectedTransport,
+      },
+    });
   };
 
   const handleTransportClick = (transport) => {
@@ -52,4 +63,5 @@ const TransportModal = ({ show, onHide }) => {
     </div>
   );
 };
+
 export default TransportModal;
