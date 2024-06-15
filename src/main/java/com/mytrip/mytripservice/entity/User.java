@@ -47,6 +47,7 @@ public class User {
     @Column(name = "role_type", nullable = false)
     private RoleType roleType;
 
+    // Plan과의 일대다 관계 설정 추가
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnoreProperties("user")
     private List<Plan> plans;
