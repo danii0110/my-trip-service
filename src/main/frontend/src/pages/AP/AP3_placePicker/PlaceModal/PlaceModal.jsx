@@ -6,25 +6,28 @@ import AddPlaceBox from './AddPlaceBox';
 import { useState, useEffect } from 'react';
 import DailyDatePickerModal from '../DailyDatePicker/DailyDatePickerModal';
 
-const PlaceModal = ({ selectedDates = { start: null, end: null }, selectedPlaces = [], onPlaceSelect }) => {
+const PlaceModal = ({
+  selectedDates = { start: null, end: null },
+  selectedPlaces = [],
+  onPlaceSelect,
+  onDateChange,
+  currentSelectedDate,
+}) => {
   const [places, setPlaces] = useState(selectedPlaces);
   const [isDatePickerVisible, setIsDatePickerVisible] = useState(false);
-  const [selectedDate, setSelectedDate] = useState(
-    selectedDates.start ? new Date(selectedDates.start).toLocaleDateString('ko-KR') : ''
-  );
+  const [selectedDate, setSelectedDate] = useState(currentSelectedDate);
 
   useEffect(() => {
     setPlaces(selectedPlaces);
   }, [selectedPlaces]);
 
+  useEffect(() => {
+    setSelectedDate(currentSelectedDate);
+    console.log('currentSelectedDate:', currentSelectedDate);
+  }, [currentSelectedDate]);
+
   const handleDelete = (id) => {
-    console.log('2. PlaceModal > handleDelete 실행');
     onPlaceSelect(id, false);
-    // 해당 PlaceBox 컴포넌트의 handleClick 함수 호출
-    const placeBoxElement = document.getElementById(`place-box-${id}`);
-    if (placeBoxElement) {
-      placeBoxElement.querySelector('button').click();
-    }
   };
 
   const toggleDatePicker = () => {
@@ -34,7 +37,10 @@ const PlaceModal = ({ selectedDates = { start: null, end: null }, selectedPlaces
   const handleDatePickerClose = (data) => {
     setIsDatePickerVisible(false);
     if (data && data.selectedDate) {
-      setSelectedDate(data.selectedDate.toLocaleDateString('ko-KR'));
+      const newDate = new Date(data.selectedDate);
+      const formattedDate = newDate.toLocaleDateString('ko-KR');
+      setSelectedDate(formattedDate);
+      onDateChange(newDate);
     }
   };
 
@@ -43,7 +49,9 @@ const PlaceModal = ({ selectedDates = { start: null, end: null }, selectedPlaces
     const startDate = new Date(selectedDates.start);
     const prevDate = new Date(currentDate.setDate(currentDate.getDate() - 1));
     if (prevDate >= startDate) {
-      setSelectedDate(prevDate.toLocaleDateString('ko-KR'));
+      const formattedDate = prevDate.toLocaleDateString('ko-KR');
+      setSelectedDate(formattedDate);
+      onDateChange(prevDate);
     }
   };
 
@@ -52,7 +60,9 @@ const PlaceModal = ({ selectedDates = { start: null, end: null }, selectedPlaces
     const endDate = new Date(selectedDates.end);
     const nextDate = new Date(currentDate.setDate(currentDate.getDate() + 1));
     if (nextDate <= endDate) {
-      setSelectedDate(nextDate.toLocaleDateString('ko-KR'));
+      const formattedDate = nextDate.toLocaleDateString('ko-KR');
+      setSelectedDate(formattedDate);
+      onDateChange(nextDate);
     }
   };
 

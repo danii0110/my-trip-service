@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
 import styles from './AP2Main.module.scss';
@@ -42,7 +42,16 @@ const AP2Main = () => {
   const [selectedRegion, setSelectedRegion] = useState(initialState.selectedRegion);
   const [selectedArea, setSelectedArea] = useState(initialState.selectedArea);
   const [tableData, setTableData] = useState([]);
-  const [selectedPlaces, setSelectedPlaces] = useState([]);
+  const [selectedPlaces, setSelectedPlaces] = useState({});
+  const [currentSelectedDate, setCurrentSelectedDate] = useState(
+    selectedDates.start ? new Date(selectedDates.start).toLocaleDateString('ko-KR') : ''
+  );
+
+  const currentSelectedDateRef = useRef(currentSelectedDate);
+
+  useEffect(() => {
+    currentSelectedDateRef.current = currentSelectedDate;
+  }, [currentSelectedDate]);
 
   const regionMap = {
     0: '서울',
@@ -82,6 +91,7 @@ const AP2Main = () => {
             onPlaceSelect={handlePlaceSelect}
             placesData={placesData}
             selectedPlaces={selectedPlaces}
+            currentSelectedDate={currentSelectedDate}
           />
         );
         break;
@@ -95,12 +105,30 @@ const AP2Main = () => {
 
   const handlePlaceSelect = (placeId, isSelected) => {
     setSelectedPlaces((prevPlaces) => {
+      const updatedPlaces = { ...prevPlaces };
+      console.log(`Place selection changed. currentSelectedDate: ${currentSelectedDateRef.current}`); // ref 사용
       if (isSelected) {
         const placeToAdd = placesData.find((place) => place.id === placeId);
-        return [...prevPlaces, placeToAdd];
+        if (!updatedPlaces[currentSelectedDateRef.current]) {
+          updatedPlaces[currentSelectedDateRef.current] = [];
+        }
+        updatedPlaces[currentSelectedDateRef.current].push(placeToAdd);
+        console.log(`Place added on ${currentSelectedDateRef.current}:`, updatedPlaces[currentSelectedDateRef.current]);
       } else {
-        return prevPlaces.filter((place) => place.id !== placeId);
+        if (updatedPlaces[currentSelectedDateRef.current]) {
+          updatedPlaces[currentSelectedDateRef.current] = updatedPlaces[currentSelectedDateRef.current].filter(
+            (place) => place.id !== placeId
+          );
+          if (updatedPlaces[currentSelectedDateRef.current].length === 0) {
+            delete updatedPlaces[currentSelectedDateRef.current];
+          }
+          console.log(
+            `Place removed from ${currentSelectedDateRef.current}:`,
+            updatedPlaces[currentSelectedDateRef.current]
+          );
+        }
       }
+      return updatedPlaces;
     });
   };
 
@@ -123,6 +151,12 @@ const AP2Main = () => {
 
   const handleHotelClick = () => {
     setIsHotelModalVisible(!isHotelModalVisible);
+  };
+
+  const handleDateChange = (newDate) => {
+    const formattedDate = new Date(newDate).toLocaleDateString('ko-KR');
+    console.log(`Date changed to: ${formattedDate}`);
+    setCurrentSelectedDate(formattedDate);
   };
 
   const renderNextButton = () => {
@@ -148,8 +182,10 @@ const AP2Main = () => {
         {isPlaceModalVisible && currentLeftComponent.type === AP3Left && (
           <PlaceModalBox
             selectedDates={selectedDates}
-            selectedPlaces={selectedPlaces}
+            selectedPlaces={selectedPlaces[currentSelectedDate] || []}
             onPlaceSelect={handlePlaceSelect}
+            currentSelectedDate={currentSelectedDate}
+            onDateChange={handleDateChange}
           />
         )}
         {isHotelModalVisible && currentLeftComponent.type === AP4Left && <HotelModalBox />}
@@ -186,6 +222,9 @@ const AP2Main = () => {
       setSelectedRegion(data.selectedRegion);
       setSelectedArea(data.selectedArea);
       setTableData([]); // 새로 날짜를 선택하면 tableData를 초기화
+      const newDate = new Date(data.selectedDates.start).toLocaleDateString('ko-KR');
+      setCurrentSelectedDate(newDate);
+      currentSelectedDateRef.current = newDate; // ref 업데이트
       navigate('/planning/areaName', {
         state: {
           selectedDates: data.selectedDates,
@@ -207,7 +246,10 @@ const AP2Main = () => {
           selectedRegion,
           selectedArea,
           tableData,
+          selectedPlaces,
+          currentSelectedDate,
           onTableDataChange: setTableData, // 테이블 데이터 변경 핸들러
+          onPlaceSelect: handlePlaceSelect,
           openDatePickerModal: () => setShowDatePickerModal(true),
         })}
         {renderNextButton()}
