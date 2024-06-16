@@ -10,6 +10,7 @@ const PlaceBox = ({ id, placeName, category, address, onSelect, isInitiallyCheck
   }, [isInitiallyChecked]);
 
   const handleClick = () => {
+    if (isChecked) return; // 이미 선택된 경우 추가 방지
     console.log('AddBtn 클릭됨:', id);
     const newCheckedState = !isChecked;
     setIsChecked(newCheckedState);

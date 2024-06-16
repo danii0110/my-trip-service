@@ -40,7 +40,9 @@ const AP3Left = ({
   });
 
   const isPlaceChecked = (placeId) => {
-    return Array.isArray(selectedPlaces) && selectedPlaces.some((place) => place.id === placeId);
+    return Object.values(selectedPlaces)
+      .flat()
+      .some((place) => place.id === placeId);
   };
 
   return (

@@ -246,7 +246,10 @@ const AP2Main = () => {
           selectedRegion,
           selectedArea,
           tableData,
+          selectedPlaces,
+          currentSelectedDate,
           onTableDataChange: setTableData, // 테이블 데이터 변경 핸들러
+          onPlaceSelect: handlePlaceSelect,
           openDatePickerModal: () => setShowDatePickerModal(true),
         })}
         {renderNextButton()}
