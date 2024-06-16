@@ -1,12 +1,18 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styles from './PlaceBox.module.scss';
 import AddBtn from './AddBtn';
 
-const PlaceBox = ({ placeName, category, address }) => {
-  const [isChecked, setIsChecked] = useState(false);
+const PlaceBox = ({ id, placeName, category, address, onSelect, isSelected }) => {
+  const [isChecked, setIsChecked] = useState(isSelected);
+
+  useEffect(() => {
+    setIsChecked(isSelected);
+  }, [isSelected]);
 
   const handleClick = () => {
-    setIsChecked(!isChecked);
+    const newCheckedState = !isChecked;
+    setIsChecked(newCheckedState);
+    onSelect(id, newCheckedState);
   };
 
   return (

@@ -6,24 +6,19 @@ import AddPlaceBox from './AddPlaceBox';
 import { useState, useEffect } from 'react';
 import DailyDatePickerModal from '../DailyDatePicker/DailyDatePickerModal';
 
-const initialPlaces = [
-  { id: 1, placeName: '성산 일출봉', category: '명소', address: '대한민국 서귀포시 성산 일출봉' },
-  { id: 2, placeName: '제주 돌하르방 공원', category: '명소', address: '대한민국 제주특별자치도 제주시' },
-  { id: 3, placeName: '흑돼지 거리', category: '식당', address: '대한민국 제주특별자치도 제주시' },
-  { id: 4, placeName: '제주 아르떼 뮤지엄', category: '문화시설', address: '대한민국 제주특별자치도 제주시' },
-  { id: 5, placeName: '한라산 국립공원', category: '레포츠', address: '대한민국 제주특별자치도 제주시' },
-];
-
-const PlaceModal = ({ selectedDates = { start: null, end: null } }) => {
-  // 기본값 설정
-  const [places, setPlaces] = useState(initialPlaces);
+const PlaceModal = ({ selectedDates = { start: null, end: null }, selectedPlaces = [], onPlaceSelect }) => {
+  const [places, setPlaces] = useState(selectedPlaces);
   const [isDatePickerVisible, setIsDatePickerVisible] = useState(false);
   const [selectedDate, setSelectedDate] = useState(
     selectedDates.start ? new Date(selectedDates.start).toLocaleDateString('ko-KR') : ''
   );
 
+  useEffect(() => {
+    setPlaces(selectedPlaces);
+  }, [selectedPlaces]);
+
   const handleDelete = (id) => {
-    setPlaces(places.filter((place) => place.id !== id));
+    onPlaceSelect(id, false);
   };
 
   const toggleDatePicker = () => {
@@ -81,6 +76,7 @@ const PlaceModal = ({ selectedDates = { start: null, end: null } }) => {
               category={place.category}
               address={place.address}
               onDelete={handleDelete}
+              onPlaceSelect={onPlaceSelect} // 여기서 onPlaceSelect 전달
             />
           ))
         )}

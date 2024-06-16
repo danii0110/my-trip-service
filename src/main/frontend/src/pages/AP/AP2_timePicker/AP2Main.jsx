@@ -13,6 +13,19 @@ import ConfirmModal from '../AP4_hotelPicker/ConfirmModal/ConfirmModal';
 import LeftArrowIcon from '../../../assets/leftArrow.svg';
 import RightArrowIcon from '../../../assets/rightArrow.svg';
 
+const placesData = [
+  { id: 1, placeName: '성산 일출봉', category: '여행지', address: '대한민국 서귀포시 성산 일출봉' },
+  { id: 2, placeName: '제주 돌하르방 공원', category: '여행지', address: '대한민국 제주특별자치도 제주시' },
+  { id: 3, placeName: '흑돼지 거리', category: '음식점', address: '대한민국 제주특별자치도 제주시' },
+  { id: 4, placeName: '제주 아르떼 뮤지엄', category: '문화시설', address: '대한민국 제주특별자치도 제주시' },
+  { id: 5, placeName: '한라산 국립공원', category: '레포츠', address: '대한민국 제주특별자치도 제주시' },
+  { id: 6, placeName: '동문 재래시장', category: '쇼핑', address: '대한민국 제주특별자치도 제주시' },
+  { id: 7, placeName: '섭지코지', category: '여행지', address: '대한민국 제주특별자치도 서귀포시' },
+  { id: 8, placeName: '우도 잠수함', category: '레포츠', address: '대한민국 제주특별자치도 제주시' },
+  { id: 9, placeName: '제주 현대 미술관', category: '문화시설', address: '대한민국 제주특별자치도 제주시' },
+  { id: 10, placeName: '비자림', category: '여행지', address: '대한민국 제주특별자치도 제주시' },
+];
+
 const AP2Main = () => {
   const [showDatePickerModal, setShowDatePickerModal] = useState(true);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
@@ -29,6 +42,7 @@ const AP2Main = () => {
   const [selectedRegion, setSelectedRegion] = useState(initialState.selectedRegion);
   const [selectedArea, setSelectedArea] = useState(initialState.selectedArea);
   const [tableData, setTableData] = useState([]);
+  const [selectedPlaces, setSelectedPlaces] = useState([]);
 
   const regionMap = {
     0: '서울',
@@ -65,6 +79,8 @@ const AP2Main = () => {
             selectedRegion={selectedRegion}
             selectedArea={selectedArea}
             tableData={tableData}
+            onPlaceSelect={handlePlaceSelect}
+            placesData={placesData}
           />
         );
         break;
@@ -74,6 +90,17 @@ const AP2Main = () => {
       default:
         setCurrentLeftComponent(<AP2Left regionMap={regionMap} />);
     }
+  };
+
+  const handlePlaceSelect = (placeId, isSelected) => {
+    setSelectedPlaces((prevPlaces) => {
+      if (isSelected) {
+        const placeToAdd = placesData.find((place) => place.id === placeId);
+        return [...prevPlaces, placeToAdd];
+      } else {
+        return prevPlaces.filter((place) => place.id !== placeId);
+      }
+    });
   };
 
   const handleConfirm = () => {
@@ -118,7 +145,12 @@ const AP2Main = () => {
     return (
       <div className={styles.rightContentWrapper}>
         {isPlaceModalVisible && currentLeftComponent.type === AP3Left && (
-          <PlaceModalBox selectedDates={selectedDates} />
+          <PlaceModalBox
+            selectedDates={selectedDates}
+            selectedPlaces={selectedPlaces}
+            placesData={placesData}
+            onPlaceSelect={handlePlaceSelect}
+          />
         )}
         {isHotelModalVisible && currentLeftComponent.type === AP4Left && <HotelModalBox />}
         <div className={styles.buttonContainer}>
