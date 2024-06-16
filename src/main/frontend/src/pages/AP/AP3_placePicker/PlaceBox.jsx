@@ -1,16 +1,23 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styles from './PlaceBox.module.scss';
 import AddBtn from './AddBtn';
 
-const PlaceBox = ({ placeName, category, address }) => {
-  const [isChecked, setIsChecked] = useState(false);
+const PlaceBox = ({ id, placeName, category, address, onSelect, isInitiallyChecked = false }) => {
+  const [isChecked, setIsChecked] = useState(isInitiallyChecked);
+
+  useEffect(() => {
+    setIsChecked(isInitiallyChecked);
+  }, [isInitiallyChecked]);
 
   const handleClick = () => {
-    setIsChecked(!isChecked);
+    console.log('AddBtn 클릭됨:', id);
+    const newCheckedState = !isChecked;
+    setIsChecked(newCheckedState);
+    onSelect(id, newCheckedState);
   };
 
   return (
-    <div className={styles.container}>
+    <div className={styles.container} id={`place-box-${id}`}>
       <div className={styles.placeImg}></div>
       <div className={styles.detailsCont}>
         <div className={styles.placeName}>{placeName}</div>

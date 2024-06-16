@@ -1,11 +1,12 @@
+// AddPlaceBox.jsx
 import styles from './AddPlaceBox.module.scss';
 import TrashIcon from '../../../../assets/trashIcon.svg';
 import { Button } from 'react-bootstrap';
 
-const AddPlaceBox = ({ id, onDelete, placeName, category, address }) => {
+const AddPlaceBox = ({ id, number, onDelete, placeName, category, address }) => {
   return (
     <div className={styles.container}>
-      <div className={styles.numberCont}>{id}</div>
+      <div className={styles.numberCont}>{number}</div> {/* 수정된 부분 */}
       <div className={styles.boxCont}>
         <div className={styles.placeImg}></div>
         <div className={styles.detailsCont}>
