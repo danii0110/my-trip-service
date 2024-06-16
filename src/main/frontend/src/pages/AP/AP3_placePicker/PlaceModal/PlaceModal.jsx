@@ -1,4 +1,3 @@
-// PlaceModal.jsx
 import styles from './PlaceModal.module.scss';
 import LeftArrowIcon from '../../../../assets/leftArrow.svg';
 import RightArrowIcon from '../../../../assets/rightArrow.svg';
@@ -19,7 +18,13 @@ const PlaceModal = ({ selectedDates = { start: null, end: null }, selectedPlaces
   }, [selectedPlaces]);
 
   const handleDelete = (id) => {
+    console.log('2. PlaceModal > handleDelete 실행');
     onPlaceSelect(id, false);
+    // 해당 PlaceBox 컴포넌트의 handleClick 함수 호출
+    const placeBoxElement = document.getElementById(`place-box-${id}`);
+    if (placeBoxElement) {
+      placeBoxElement.querySelector('button').click();
+    }
   };
 
   const toggleDatePicker = () => {
