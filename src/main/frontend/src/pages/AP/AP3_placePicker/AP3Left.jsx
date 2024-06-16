@@ -14,6 +14,7 @@ const AP3Left = ({
   onPlaceSelect,
   placesData,
   selectedPlaces,
+  currentSelectedDate,
 }) => {
   const [selectedCategory, setSelectedCategory] = useState('추천 장소');
   const [searchTerm, setSearchTerm] = useState('');
@@ -39,7 +40,7 @@ const AP3Left = ({
   });
 
   const isPlaceChecked = (placeId) => {
-    return selectedPlaces.some((place) => place.id === placeId);
+    return Array.isArray(selectedPlaces) && selectedPlaces.some((place) => place.id === placeId);
   };
 
   return (

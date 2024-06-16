@@ -1,10 +1,16 @@
 import styles from './PlaceModalBox.module.scss';
 import PlaceModal from './PlaceModal';
 
-const PlaceModalBox = ({ selectedDates, selectedPlaces, onPlaceSelect }) => {
+const PlaceModalBox = ({ selectedDates, selectedPlaces, onPlaceSelect, currentSelectedDate, onDateChange }) => {
   return (
     <div className={styles.container}>
-      <PlaceModal selectedDates={selectedDates} selectedPlaces={selectedPlaces} onPlaceSelect={onPlaceSelect} />
+      <PlaceModal
+        selectedDates={selectedDates}
+        selectedPlaces={selectedPlaces}
+        onPlaceSelect={onPlaceSelect}
+        currentSelectedDate={currentSelectedDate}
+        onDateChange={onDateChange}
+      />
     </div>
   );
 };

@@ -17,7 +17,7 @@ const PlaceBox = ({ id, placeName, category, address, onSelect, isInitiallyCheck
   };
 
   return (
-    <div className={styles.container} id={`place-box-${id}`}>
+    <div className={styles.container}>
       <div className={styles.placeImg}></div>
       <div className={styles.detailsCont}>
         <div className={styles.placeName}>{placeName}</div>
