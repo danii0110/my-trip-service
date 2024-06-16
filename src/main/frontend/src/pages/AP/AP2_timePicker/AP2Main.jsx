@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
 import styles from './AP2Main.module.scss';
@@ -81,6 +81,7 @@ const AP2Main = () => {
             tableData={tableData}
             onPlaceSelect={handlePlaceSelect}
             placesData={placesData}
+            selectedPlaces={selectedPlaces}
           />
         );
         break;
@@ -148,7 +149,6 @@ const AP2Main = () => {
           <PlaceModalBox
             selectedDates={selectedDates}
             selectedPlaces={selectedPlaces}
-            placesData={placesData}
             onPlaceSelect={handlePlaceSelect}
           />
         )}

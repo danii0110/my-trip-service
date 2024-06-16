@@ -1,3 +1,4 @@
+// PlaceModal.jsx
 import styles from './PlaceModal.module.scss';
 import LeftArrowIcon from '../../../../assets/leftArrow.svg';
 import RightArrowIcon from '../../../../assets/rightArrow.svg';
@@ -68,15 +69,15 @@ const PlaceModal = ({ selectedDates = { start: null, end: null }, selectedPlaces
         {places.length === 0 ? (
           <div className={styles.noPlaceCont}>장소를 선택해주세요</div>
         ) : (
-          places.map((place) => (
+          places.map((place, index) => (
             <AddPlaceBox
               key={place.id}
               id={place.id}
+              number={index + 1} // 인덱스 기반 번호 부여
               placeName={place.placeName}
               category={place.category}
               address={place.address}
               onDelete={handleDelete}
-              onPlaceSelect={onPlaceSelect} // 여기서 onPlaceSelect 전달
             />
           ))
         )}

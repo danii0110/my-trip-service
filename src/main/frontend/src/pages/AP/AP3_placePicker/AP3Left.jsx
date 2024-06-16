@@ -5,7 +5,16 @@ import CategoryBtn from './CategoryBtn';
 import SearchBar from './SearchBar/SearchBar';
 import PlaceBox from './PlaceBox';
 
-const AP3Left = ({ regionMap, selectedDates, selectedRegion, selectedArea, tableData, onPlaceSelect, placesData }) => {
+const AP3Left = ({
+  regionMap,
+  selectedDates,
+  selectedRegion,
+  selectedArea,
+  tableData,
+  onPlaceSelect,
+  placesData,
+  selectedPlaces,
+}) => {
   const [selectedCategory, setSelectedCategory] = useState('추천 장소');
   const [searchTerm, setSearchTerm] = useState('');
 
@@ -28,6 +37,10 @@ const AP3Left = ({ regionMap, selectedDates, selectedRegion, selectedArea, table
 
     return matchesSearch && matchesCategory;
   });
+
+  const isPlaceChecked = (placeId) => {
+    return selectedPlaces.some((place) => place.id === placeId);
+  };
 
   return (
     <div className={styles.container}>
@@ -72,6 +85,7 @@ const AP3Left = ({ regionMap, selectedDates, selectedRegion, selectedArea, table
                 category={place.category}
                 address={place.address}
                 onSelect={onPlaceSelect}
+                isInitiallyChecked={isPlaceChecked(place.id)}
               />
             ))
           ) : (
