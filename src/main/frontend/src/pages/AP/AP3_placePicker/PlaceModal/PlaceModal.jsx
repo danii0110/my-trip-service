@@ -3,7 +3,7 @@ import LeftArrowIcon from '../../../../assets/leftArrow.svg';
 import RightArrowIcon from '../../../../assets/rightArrow.svg';
 import CalendarIcon from '../../../../assets/calendarIcon.svg';
 import AddPlaceBox from './AddPlaceBox';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import DailyDatePickerModal from '../DailyDatePicker/DailyDatePickerModal';
 
 const initialPlaces = [
@@ -37,15 +37,33 @@ const PlaceModal = ({ selectedDates = { start: null, end: null } }) => {
     }
   };
 
+  const handlePreviousDate = () => {
+    const currentDate = new Date(selectedDate);
+    const startDate = new Date(selectedDates.start);
+    const prevDate = new Date(currentDate.setDate(currentDate.getDate() - 1));
+    if (prevDate >= startDate) {
+      setSelectedDate(prevDate.toLocaleDateString('ko-KR'));
+    }
+  };
+
+  const handleNextDate = () => {
+    const currentDate = new Date(selectedDate);
+    const endDate = new Date(selectedDates.end);
+    const nextDate = new Date(currentDate.setDate(currentDate.getDate() + 1));
+    if (nextDate <= endDate) {
+      setSelectedDate(nextDate.toLocaleDateString('ko-KR'));
+    }
+  };
+
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        <img className={styles.arrowIcon} src={LeftArrowIcon} alt='left-arrow-icon' />
+        <img className={styles.arrowIcon} src={LeftArrowIcon} alt='left-arrow-icon' onClick={handlePreviousDate} />
         <div className={styles.headerCenter}>
           <img className={styles.calendarIcon} src={CalendarIcon} alt='calendar-icon' onClick={toggleDatePicker} />
           <div className={styles.selectDateCont}>{selectedDate}</div>
         </div>
-        <img className={styles.arrowIcon} src={RightArrowIcon} alt='right-arrow-icon' />
+        <img className={styles.arrowIcon} src={RightArrowIcon} alt='right-arrow-icon' onClick={handleNextDate} />
       </div>
       <div className={styles.subHeader}>
         <div>9:00 ~ 12:00</div>
