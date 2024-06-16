@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import styles from './DailyDatePickerModal.module.scss';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Button, Modal } from 'react-bootstrap';
-import Calendar from './DailyCalendar';
+import DailyCalendar from './DailyCalendar';
 
 const DailyDatePickerModal = ({ show, onHide, startDate, endDate }) => {
   const [selectedDate, setSelectedDate] = useState(null);
@@ -43,7 +43,7 @@ const DailyDatePickerModal = ({ show, onHide, startDate, endDate }) => {
             <p>여행 기간(여행지 도착 날짜, 여행지 출발 날짜)으로 입력해 주세요.</p>
           </div>
           <div className={styles.mainCont}>
-            <Calendar startDate={startDate} endDate={endDate} onSelect={handleDateSelect} />
+            <DailyCalendar startDate={startDate} endDate={endDate} onSelect={handleDateSelect} />
           </div>
           <Button id={styles.nextBtn} className={styles.nextBtn} onClick={handleConfirm} disabled={!selectedDate}>
             다음 &gt;
