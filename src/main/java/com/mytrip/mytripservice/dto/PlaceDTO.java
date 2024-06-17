@@ -1,4 +1,3 @@
-// PlaceDTO.java
 package com.mytrip.mytripservice.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;

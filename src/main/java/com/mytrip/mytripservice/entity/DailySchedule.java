@@ -1,4 +1,3 @@
-// DailySchedule.java
 package com.mytrip.mytripservice.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -6,7 +5,6 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.List;
 
 @Entity
@@ -30,15 +28,6 @@ public class DailySchedule {
 
     @Column(name = "date", nullable = false)
     private LocalDate date;
-
-    @Column(name = "start_time", nullable = false)
-    private LocalTime startTime;
-
-    @Column(name = "end_time", nullable = false)
-    private LocalTime endTime;
-
-    @Column(name = "duration", nullable = false)
-    private Integer duration;
 
     @OneToMany(mappedBy = "dailySchedule", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnoreProperties("dailySchedule")

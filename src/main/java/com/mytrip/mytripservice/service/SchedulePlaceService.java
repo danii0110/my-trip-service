@@ -1,10 +1,11 @@
-// SchedulePlaceService.java
 package com.mytrip.mytripservice.service;
 
 import com.mytrip.mytripservice.dto.SchedulePlaceDTO;
 import com.mytrip.mytripservice.entity.DailySchedule;
 import com.mytrip.mytripservice.entity.Place;
 import com.mytrip.mytripservice.entity.SchedulePlace;
+import com.mytrip.mytripservice.repository.DailyScheduleRepository;
+import com.mytrip.mytripservice.repository.PlaceRepository;
 import com.mytrip.mytripservice.repository.SchedulePlaceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,10 +18,14 @@ import java.util.stream.Collectors;
 @Service
 public class SchedulePlaceService {
     private final SchedulePlaceRepository schedulePlaceRepository;
+    private final DailyScheduleRepository dailyScheduleRepository;
+    private final PlaceRepository placeRepository;
 
     @Autowired
-    public SchedulePlaceService(SchedulePlaceRepository schedulePlaceRepository) {
+    public SchedulePlaceService(SchedulePlaceRepository schedulePlaceRepository, DailyScheduleRepository dailyScheduleRepository, PlaceRepository placeRepository) {
         this.schedulePlaceRepository = schedulePlaceRepository;
+        this.dailyScheduleRepository = dailyScheduleRepository;
+        this.placeRepository = placeRepository;
     }
 
     public List<SchedulePlaceDTO> getAllSchedulePlaces() {
@@ -44,6 +49,9 @@ public class SchedulePlaceService {
         return schedulePlaceRepository.findById(id).map(schedulePlace -> {
             schedulePlace.setDailySchedule(new DailySchedule(schedulePlaceDetails.getScheduleId()));
             schedulePlace.setPlace(new Place(schedulePlaceDetails.getPlaceId()));
+            schedulePlace.setDuration(schedulePlaceDetails.getDuration());
+            schedulePlace.setStartTime(schedulePlaceDetails.getStartTime());
+            schedulePlace.setEndTime(schedulePlaceDetails.getEndTime());
             return toDTO(schedulePlaceRepository.save(schedulePlace));
         }).orElseThrow(() -> new RuntimeException("SchedulePlace not found"));
     }
@@ -58,14 +66,21 @@ public class SchedulePlaceService {
         schedulePlaceDTO.setSchedulePlaceId(schedulePlace.getSchedulePlaceId());
         schedulePlaceDTO.setScheduleId(schedulePlace.getDailySchedule().getScheduleId());
         schedulePlaceDTO.setPlaceId(schedulePlace.getPlace().getPlaceId());
+        schedulePlaceDTO.setDuration(schedulePlace.getDuration());
+        schedulePlaceDTO.setStartTime(schedulePlace.getStartTime());
+        schedulePlaceDTO.setEndTime(schedulePlace.getEndTime());
         return schedulePlaceDTO;
     }
 
     private SchedulePlace toEntity(SchedulePlaceDTO schedulePlaceDTO) {
         SchedulePlace schedulePlace = new SchedulePlace();
-        schedulePlace.setSchedulePlaceId(schedulePlaceDTO.getSchedulePlaceId());
-        schedulePlace.setDailySchedule(new DailySchedule(schedulePlaceDTO.getScheduleId()));
-        schedulePlace.setPlace(new Place(schedulePlaceDTO.getPlaceId()));
+        schedulePlace.setDailySchedule(dailyScheduleRepository.findById(schedulePlaceDTO.getScheduleId())
+                .orElseThrow(() -> new RuntimeException("DailySchedule not found")));
+        schedulePlace.setPlace(placeRepository.findById(schedulePlaceDTO.getPlaceId())
+                .orElseThrow(() -> new RuntimeException("Place not found")));
+        schedulePlace.setDuration(schedulePlaceDTO.getDuration());
+        schedulePlace.setStartTime(schedulePlaceDTO.getStartTime());
+        schedulePlace.setEndTime(schedulePlaceDTO.getEndTime());
         return schedulePlace;
     }
 }

@@ -1,4 +1,3 @@
-// MoveTimeService.java
 package com.mytrip.mytripservice.service;
 
 import com.mytrip.mytripservice.dto.MoveTimeDTO;
@@ -6,7 +5,6 @@ import com.mytrip.mytripservice.entity.MoveTime;
 import com.mytrip.mytripservice.repository.MoveTimeRepository;
 import com.mytrip.mytripservice.repository.PlaceRepository;
 import com.mytrip.mytripservice.repository.PlanRepository;
-import com.mytrip.mytripservice.repository.DailyScheduleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,14 +19,12 @@ public class MoveTimeService {
     private final MoveTimeRepository moveTimeRepository;
     private final PlanRepository planRepository;
     private final PlaceRepository placeRepository;
-    private final DailyScheduleRepository dailyScheduleRepository;
 
     @Autowired
-    public MoveTimeService(MoveTimeRepository moveTimeRepository, PlanRepository planRepository, PlaceRepository placeRepository, DailyScheduleRepository dailyScheduleRepository) {
+    public MoveTimeService(MoveTimeRepository moveTimeRepository, PlanRepository planRepository, PlaceRepository placeRepository) {
         this.moveTimeRepository = moveTimeRepository;
         this.planRepository = planRepository;
         this.placeRepository = placeRepository;
-        this.dailyScheduleRepository = dailyScheduleRepository;
     }
 
     public List<MoveTimeDTO> getAllMoveTimes() {
@@ -70,9 +66,6 @@ public class MoveTimeService {
         moveTime.setFromPlace(placeRepository.findById(moveTimeDTO.getFromPlaceId()).orElseThrow(() -> new RuntimeException("From Place not found")));
         moveTime.setToPlace(placeRepository.findById(moveTimeDTO.getToPlaceId()).orElseThrow(() -> new RuntimeException("To Place not found")));
         moveTime.setMoveTime(moveTimeDTO.getMoveTime());
-        if (moveTimeDTO.getDailyScheduleId() != null) {
-            moveTime.setDailySchedule(dailyScheduleRepository.findById(moveTimeDTO.getDailyScheduleId()).orElse(null));
-        }
         return moveTime;
     }
 
@@ -83,9 +76,6 @@ public class MoveTimeService {
         moveTimeDTO.setFromPlaceId(moveTime.getFromPlace().getPlaceId());
         moveTimeDTO.setToPlaceId(moveTime.getToPlace().getPlaceId());
         moveTimeDTO.setMoveTime(moveTime.getMoveTime());
-        if (moveTime.getDailySchedule() != null) {
-            moveTimeDTO.setDailyScheduleId(moveTime.getDailySchedule().getScheduleId());
-        }
         return moveTimeDTO;
     }
 }
