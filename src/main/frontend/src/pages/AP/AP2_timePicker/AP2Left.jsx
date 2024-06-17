@@ -14,13 +14,13 @@ const AP2Left = ({
   selectedArea,
   openDatePickerModal,
   onTableDataChange,
+  tableData,
 }) => {
   const [showTimePicker, setShowTimePicker] = useState(false);
   const [totalTime, setTotalTime] = useState('총00시간 00분');
   const [currentCell, setCurrentCell] = useState(null);
   const [popupPosition, setPopupPosition] = useState({ top: 0, left: 0 });
   const timeTableRef = useRef(null);
-  const [tableData, setTableData] = useState([]);
 
   useEffect(() => {
     console.log('AP2Left loaded with:', {
@@ -31,7 +31,7 @@ const AP2Left = ({
   }, [selectedRegion, selectedArea, selectedDates]);
 
   useEffect(() => {
-    if (selectedDates.start && selectedDates.end) {
+    if (selectedDates.start && selectedDates.end && tableData.length === 0) {
       const startDate = new Date(selectedDates.start);
       const endDate = new Date(selectedDates.end);
       const daysArray = [];
@@ -40,10 +40,9 @@ const AP2Left = ({
         const dayString = day.toLocaleDateString('ko-KR', { weekday: 'short' });
         daysArray.push([day.toLocaleDateString(), dayString, '오전 10:00', '오후 10:00']);
       }
-      setTableData(daysArray);
       onTableDataChange(daysArray); // 변경된 데이터 전달
     }
-  }, [selectedDates]);
+  }, [selectedDates, onTableDataChange, tableData]);
 
   useEffect(() => {
     const calculateTotalTime = () => {
@@ -105,7 +104,7 @@ const AP2Left = ({
   const handleCloseTimePicker = (e) => {
     const time = e.target.value;
     if (time && currentCell) {
-      setTableData((prevData) => {
+      onTableDataChange((prevData) => {
         const newData = [...prevData];
         const formattedTime = parseTimeToAmPm(time);
         if (currentCell.cellIndex === 2) {
@@ -124,7 +123,6 @@ const AP2Left = ({
           }
         }
         newData[currentCell.rowIndex][currentCell.cellIndex] = formattedTime;
-        onTableDataChange(newData); // 변경된 데이터 전달
         return newData;
       });
     }

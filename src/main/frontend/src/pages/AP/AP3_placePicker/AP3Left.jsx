@@ -25,7 +25,7 @@ const AP3Left = ({
       selectedRegion,
       selectedArea,
       selectedDates,
-      selectedTimes, // 추가된 부분
+      selectedTimes,
       tableData,
     });
   }, [selectedRegion, selectedArea, selectedDates, selectedTimes, tableData]);
@@ -58,6 +58,11 @@ const AP3Left = ({
           {selectedDates.start && selectedDates.end
             ? `${selectedDates.start.toLocaleDateString()} - ${selectedDates.end.toLocaleDateString()}`
             : '날짜를 선택하세요'}
+        </div>
+        <div className={styles.showTime}>
+          {selectedTimes && selectedTimes[currentSelectedDate]
+            ? `${selectedTimes[currentSelectedDate].start} ~ ${selectedTimes[currentSelectedDate].end}`
+            : '시간 정보 없음'}
         </div>
         <div className={styles.searchBar}>
           <SearchBar onChange={handleSearchChange} />

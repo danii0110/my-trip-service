@@ -43,7 +43,7 @@ const AP2Main = () => {
   const [selectedArea, setSelectedArea] = useState(initialState.selectedArea);
   const [tableData, setTableData] = useState([]);
   const [selectedPlaces, setSelectedPlaces] = useState({});
-  const [selectedTimes, setSelectedTimes] = useState({}); // 추가된 부분
+  const [selectedTimes, setSelectedTimes] = useState({});
   const [currentSelectedDate, setCurrentSelectedDate] = useState(
     selectedDates.start ? new Date(selectedDates.start).toLocaleDateString('ko-KR') : ''
   );
@@ -134,12 +134,25 @@ const AP2Main = () => {
     });
   };
 
+  const handleTableDataChange = (newTableData) => {
+    setTableData(newTableData);
+    const times = {};
+    newTableData.forEach((row) => {
+      const date = row[0];
+      times[date] = {
+        start: row[2],
+        end: row[3],
+      };
+    });
+    setSelectedTimes(times);
+  };
+
   const handleConfirm = () => {
     setShowConfirmModal(false);
     navigate('/plan-list/areaName', {
       state: {
         selectedDates,
-        selectedTimes, // 추가된 부분
+        selectedTimes,
         selectedRegion,
         selectedArea,
         tableData,
@@ -160,15 +173,6 @@ const AP2Main = () => {
     const formattedDate = new Date(newDate).toLocaleDateString('ko-KR');
     console.log(`Date changed to: ${formattedDate}`);
     setCurrentSelectedDate(formattedDate);
-  };
-
-  const handleTableDataChange = (data) => {
-    setTableData(data);
-    const newSelectedTimes = {};
-    data.forEach(([date, , start, end]) => {
-      newSelectedTimes[date] = { start, end };
-    });
-    setSelectedTimes(newSelectedTimes);
   };
 
   const renderNextButton = () => {
@@ -194,12 +198,11 @@ const AP2Main = () => {
         {isPlaceModalVisible && currentLeftComponent.type === AP3Left && (
           <PlaceModalBox
             selectedDates={selectedDates}
+            selectedTimes={selectedTimes} // 추가된 부분
             selectedPlaces={selectedPlaces[currentSelectedDate] || []}
             onPlaceSelect={handlePlaceSelect}
             currentSelectedDate={currentSelectedDate}
             onDateChange={handleDateChange}
-            placeDurations={{}} // 기본 값을 제공하거나 적절한 데이터를 넣어야 합니다
-            selectedTimes={selectedTimes} // 추가된 부분
           />
         )}
         {isHotelModalVisible && currentLeftComponent.type === AP4Left && <HotelModalBox />}
