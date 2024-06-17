@@ -1,25 +1,25 @@
-// PlaceModalBox.jsx
 import styles from './PlaceModalBox.module.scss';
 import PlaceModal from './PlaceModal';
 
 const PlaceModalBox = ({
   selectedDates,
-  selectedTimes,
   selectedPlaces,
   onPlaceSelect,
   currentSelectedDate,
   onDateChange,
+  placeDurations,
+  selectedTimes, // 추가된 부분
 }) => {
-  console.log('PlaceModalBox - selectedTimes:', selectedTimes); // 콘솔 추가
   return (
     <div className={styles.container}>
       <PlaceModal
         selectedDates={selectedDates}
-        selectedTimes={selectedTimes} // 추가된 부분
         selectedPlaces={selectedPlaces}
         onPlaceSelect={onPlaceSelect}
         currentSelectedDate={currentSelectedDate}
         onDateChange={onDateChange}
+        placeDurations={placeDurations} // 전달
+        selectedTimes={selectedTimes} // 전달
       />
     </div>
   );

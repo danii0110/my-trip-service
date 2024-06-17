@@ -8,7 +8,6 @@ import PlaceBox from './PlaceBox';
 const AP3Left = ({
   regionMap,
   selectedDates,
-  selectedTimes,
   selectedRegion,
   selectedArea,
   tableData,
@@ -16,6 +15,7 @@ const AP3Left = ({
   placesData,
   selectedPlaces,
   currentSelectedDate,
+  selectedTimes,
 }) => {
   const [selectedCategory, setSelectedCategory] = useState('추천 장소');
   const [searchTerm, setSearchTerm] = useState('');
@@ -26,9 +26,8 @@ const AP3Left = ({
       selectedArea,
       selectedDates,
       tableData,
-      selectedTimes, // 추가된 데이터 확인
     });
-  }, [selectedRegion, selectedArea, selectedDates, tableData, selectedTimes]);
+  }, [selectedRegion, selectedArea, selectedDates, tableData]);
 
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
@@ -58,9 +57,6 @@ const AP3Left = ({
           {selectedDates.start && selectedDates.end
             ? `${selectedDates.start.toLocaleDateString()} - ${selectedDates.end.toLocaleDateString()}`
             : '날짜를 선택하세요'}
-        </div>
-        <div className={styles.showTime}>
-          {selectedTimes[currentSelectedDate]?.start || ''} ~ {selectedTimes[currentSelectedDate]?.end || ''}
         </div>
         <div className={styles.searchBar}>
           <SearchBar onChange={handleSearchChange} />
