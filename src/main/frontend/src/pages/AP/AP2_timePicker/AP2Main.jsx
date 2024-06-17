@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
 import styles from './AP2Main.module.scss';
@@ -39,6 +39,7 @@ const AP2Main = () => {
   const initialState = location.state || {};
 
   const [selectedDates, setSelectedDates] = useState(initialState.selectedDates || { start: null, end: null });
+  const [selectedTimes, setSelectedTimes] = useState({});
   const [selectedRegion, setSelectedRegion] = useState(initialState.selectedRegion);
   const [selectedArea, setSelectedArea] = useState(initialState.selectedArea);
   const [tableData, setTableData] = useState([]);
@@ -85,6 +86,7 @@ const AP2Main = () => {
           <AP3Left
             regionMap={regionMap}
             selectedDates={selectedDates}
+            selectedTimes={selectedTimes}
             selectedRegion={selectedRegion}
             selectedArea={selectedArea}
             tableData={tableData}
@@ -137,6 +139,7 @@ const AP2Main = () => {
     navigate('/plan-list/areaName', {
       state: {
         selectedDates,
+        selectedTimes,
         selectedRegion,
         selectedArea,
         tableData,
@@ -157,6 +160,18 @@ const AP2Main = () => {
     const formattedDate = new Date(newDate).toLocaleDateString('ko-KR');
     console.log(`Date changed to: ${formattedDate}`);
     setCurrentSelectedDate(formattedDate);
+  };
+
+  const handleTableDataChange = (newTableData) => {
+    setTableData(newTableData);
+    const newTimes = { ...selectedTimes };
+    newTableData.forEach((row) => {
+      const date = row[0];
+      const startTime = row[2];
+      const endTime = row[3];
+      newTimes[date] = { start: startTime, end: endTime };
+    });
+    setSelectedTimes(newTimes);
   };
 
   const renderNextButton = () => {
@@ -186,6 +201,7 @@ const AP2Main = () => {
             onPlaceSelect={handlePlaceSelect}
             currentSelectedDate={currentSelectedDate}
             onDateChange={handleDateChange}
+            selectedTimes={selectedTimes}
           />
         )}
         {isHotelModalVisible && currentLeftComponent.type === AP4Left && <HotelModalBox />}
@@ -243,13 +259,11 @@ const AP2Main = () => {
         {React.cloneElement(currentLeftComponent, {
           regionMap,
           selectedDates,
+          selectedTimes,
           selectedRegion,
           selectedArea,
           tableData,
-          selectedPlaces,
-          currentSelectedDate,
-          onTableDataChange: setTableData, // 테이블 데이터 변경 핸들러
-          onPlaceSelect: handlePlaceSelect,
+          onTableDataChange: handleTableDataChange, // 테이블 데이터 변경 핸들러
           openDatePickerModal: () => setShowDatePickerModal(true),
         })}
         {renderNextButton()}

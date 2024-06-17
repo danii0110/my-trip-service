@@ -8,6 +8,7 @@ import PlaceBox from './PlaceBox';
 const AP3Left = ({
   regionMap,
   selectedDates,
+  selectedTimes,
   selectedRegion,
   selectedArea,
   tableData,
@@ -25,8 +26,9 @@ const AP3Left = ({
       selectedArea,
       selectedDates,
       tableData,
+      selectedTimes, // 추가된 데이터 확인
     });
-  }, [selectedRegion, selectedArea, selectedDates, tableData]);
+  }, [selectedRegion, selectedArea, selectedDates, tableData, selectedTimes]);
 
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
@@ -40,9 +42,7 @@ const AP3Left = ({
   });
 
   const isPlaceChecked = (placeId) => {
-    return Object.values(selectedPlaces)
-      .flat()
-      .some((place) => place.id === placeId);
+    return Array.isArray(selectedPlaces) && selectedPlaces.some((place) => place.id === placeId);
   };
 
   return (
@@ -58,6 +58,9 @@ const AP3Left = ({
           {selectedDates.start && selectedDates.end
             ? `${selectedDates.start.toLocaleDateString()} - ${selectedDates.end.toLocaleDateString()}`
             : '날짜를 선택하세요'}
+        </div>
+        <div className={styles.showTime}>
+          {selectedTimes[currentSelectedDate]?.start || ''} ~ {selectedTimes[currentSelectedDate]?.end || ''}
         </div>
         <div className={styles.searchBar}>
           <SearchBar onChange={handleSearchChange} />
@@ -101,6 +104,10 @@ const AP3Left = ({
           <p>Area: {selectedArea}</p>
           <p>Start Date: {selectedDates.start ? selectedDates.start.toLocaleDateString() : '없음'}</p>
           <p>End Date: {selectedDates.end ? selectedDates.end.toLocaleDateString() : '없음'}</p>
+          <p>
+            Time:{' '}
+            {`${selectedTimes[currentSelectedDate]?.start || ''} ~ ${selectedTimes[currentSelectedDate]?.end || ''}`}
+          </p>
           <p>Table Data: {JSON.stringify(tableData)}</p>
         </div>
       </div>
