@@ -1,6 +1,6 @@
-// Place.java
 package com.mytrip.mytripservice.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -30,9 +30,11 @@ public class Place {
     @Column(name = "image", nullable = false)
     private String image;
 
+    @JsonProperty("xCoordinate")
     @Column(name = "x_coordinate", nullable = false)
     private Double xCoordinate;
 
+    @JsonProperty("yCoordinate")
     @Column(name = "y_coordinate", nullable = false)
     private Double yCoordinate;
 

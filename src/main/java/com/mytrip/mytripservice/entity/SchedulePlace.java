@@ -1,9 +1,10 @@
-// SchedulePlace.java
 package com.mytrip.mytripservice.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.time.LocalTime;
 
 @Entity
 @Getter
@@ -28,4 +29,13 @@ public class SchedulePlace {
     @JoinColumn(name = "place_id", nullable = false)
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "schedulePlaces"})
     private Place place;
+
+    @Column(name = "duration", nullable = false)
+    private Integer duration;
+
+    @Column(name = "start_time")
+    private LocalTime startTime;
+
+    @Column(name = "end_time")
+    private LocalTime endTime;
 }

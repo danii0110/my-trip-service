@@ -1,10 +1,8 @@
-// PlaceController.java
 package com.mytrip.mytripservice.controller;
 
 import com.mytrip.mytripservice.dto.PlaceDTO;
 import com.mytrip.mytripservice.service.PlaceService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,6 +20,12 @@ public class PlaceController {
         this.placeService = placeService;
     }
 
+    @PostMapping
+    public ResponseEntity<PlaceDTO> createPlace(@RequestBody PlaceDTO placeDTO) {
+        PlaceDTO createdPlace = placeService.createPlace(placeDTO);
+        return ResponseEntity.ok(createdPlace);
+    }
+
     @GetMapping
     public ResponseEntity<List<PlaceDTO>> getAllPlaces() {
         List<PlaceDTO> places = placeService.getAllPlaces();
@@ -34,13 +38,7 @@ public class PlaceController {
         return place.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<PlaceDTO> createPlace(@RequestBody PlaceDTO placeDTO) {
-        PlaceDTO createdPlace = placeService.createPlace(placeDTO);
-        return ResponseEntity.ok(createdPlace);
-    }
-
-    @PatchMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PatchMapping("/{id}")
     public ResponseEntity<PlaceDTO> updatePlace(@PathVariable Long id, @RequestBody PlaceDTO placeDetails) {
         PlaceDTO updatedPlace = placeService.updatePlace(id, placeDetails);
         return ResponseEntity.ok(updatedPlace);

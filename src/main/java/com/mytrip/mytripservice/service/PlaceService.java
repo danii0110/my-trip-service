@@ -1,4 +1,3 @@
-// PlaceService.java
 package com.mytrip.mytripservice.service;
 
 import com.mytrip.mytripservice.dto.PlaceDTO;
