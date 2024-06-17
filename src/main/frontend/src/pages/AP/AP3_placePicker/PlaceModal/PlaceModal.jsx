@@ -80,19 +80,30 @@ const PlaceModal = ({
     }
   };
 
-  const formatTime = (timeString) => {
-    const [period, time] = timeString.split(' ');
-    let [hours, minutes] = time.split(':').map(Number);
-    if (period === '오후' && hours !== 12) hours += 12;
-    if (period === '오전' && hours === 12) hours = 0;
-    return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+  const handleDurationChange = (id, newDuration) => {
+    setPlaceDurations((prevDurations) => ({
+      ...prevDurations,
+      [id]: parseInt(newDuration, 10),
+    }));
   };
 
-  const getTotalMinutes = (startTime, endTime) => {
-    const [startHours, startMinutes] = formatTime(startTime).split(':').map(Number);
-    const [endHours, endMinutes] = formatTime(endTime).split(':').map(Number);
-    return endHours * 60 + endMinutes - (startHours * 60 + startMinutes);
+  const parseTimeToMinutes = (time) => {
+    const [period, timeStr] = time.split(' ');
+    let [hours, minutes] = timeStr.split(':').map(Number);
+    if (period === '오후' && hours !== 12) hours += 12;
+    if (period === '오전' && hours === 12) hours = 0;
+    return hours * 60 + minutes;
   };
+
+  const startTimeInMinutes =
+    selectedTimes && selectedTimes[currentSelectedDate]
+      ? parseTimeToMinutes(selectedTimes[currentSelectedDate].start)
+      : 0;
+  const endTimeInMinutes =
+    selectedTimes && selectedTimes[currentSelectedDate]
+      ? parseTimeToMinutes(selectedTimes[currentSelectedDate].end)
+      : 0;
+  const totalTimeInMinutes = endTimeInMinutes - startTimeInMinutes;
 
   return (
     <div className={styles.container}>
@@ -111,12 +122,8 @@ const PlaceModal = ({
             : ''}
         </div>
         <div>{`${totalDuration}분 / ${
-          selectedTimes && selectedTimes[currentSelectedDate]
-            ? `${Math.floor(
-                getTotalMinutes(selectedTimes[currentSelectedDate].start, selectedTimes[currentSelectedDate].end) / 60
-              )}시간 ${
-                getTotalMinutes(selectedTimes[currentSelectedDate].start, selectedTimes[currentSelectedDate].end) % 60
-              }분`
+          totalTimeInMinutes > 0
+            ? `${Math.floor(totalTimeInMinutes / 60)}시간 ${totalTimeInMinutes % 60}분`
             : '시간 정보 없음'
         }`}</div>
       </div>
@@ -134,6 +141,7 @@ const PlaceModal = ({
               address={place.address}
               onDelete={handleDelete}
               duration={placeDurations[place.id] || 120}
+              onDurationChange={handleDurationChange}
             />
           ))
         )}
