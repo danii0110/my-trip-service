@@ -14,13 +14,13 @@ const AP2Left = ({
   selectedArea,
   openDatePickerModal,
   onTableDataChange,
-  tableData,
 }) => {
   const [showTimePicker, setShowTimePicker] = useState(false);
   const [totalTime, setTotalTime] = useState('총00시간 00분');
   const [currentCell, setCurrentCell] = useState(null);
   const [popupPosition, setPopupPosition] = useState({ top: 0, left: 0 });
   const timeTableRef = useRef(null);
+  const [tableData, setTableData] = useState([]);
 
   useEffect(() => {
     console.log('AP2Left loaded with:', {
@@ -31,7 +31,7 @@ const AP2Left = ({
   }, [selectedRegion, selectedArea, selectedDates]);
 
   useEffect(() => {
-    if (selectedDates.start && selectedDates.end && tableData.length === 0) {
+    if (selectedDates.start && selectedDates.end) {
       const startDate = new Date(selectedDates.start);
       const endDate = new Date(selectedDates.end);
       const daysArray = [];
@@ -40,9 +40,10 @@ const AP2Left = ({
         const dayString = day.toLocaleDateString('ko-KR', { weekday: 'short' });
         daysArray.push([day.toLocaleDateString(), dayString, '오전 10:00', '오후 10:00']);
       }
+      setTableData(daysArray);
       onTableDataChange(daysArray); // 변경된 데이터 전달
     }
-  }, [selectedDates, onTableDataChange, tableData]);
+  }, [selectedDates]);
 
   useEffect(() => {
     const calculateTotalTime = () => {
@@ -101,10 +102,27 @@ const AP2Left = ({
     setShowTimePicker(true);
   };
 
+  const handleTableDataChange = (newTableData) => {
+    if (!Array.isArray(newTableData)) {
+      console.error('handleTableDataChange received data that is not an array:', newTableData);
+      return;
+    }
+
+    newTableData.forEach((row) => {
+      if (!Array.isArray(row)) {
+        console.error('handleTableDataChange received a row that is not an array:', row);
+        return;
+      }
+    });
+
+    setTableData(newTableData);
+    onTableDataChange(newTableData);
+  };
+
   const handleCloseTimePicker = (e) => {
     const time = e.target.value;
     if (time && currentCell) {
-      onTableDataChange((prevData) => {
+      setTableData((prevData) => {
         const newData = [...prevData];
         const formattedTime = parseTimeToAmPm(time);
         if (currentCell.cellIndex === 2) {
@@ -123,6 +141,7 @@ const AP2Left = ({
           }
         }
         newData[currentCell.rowIndex][currentCell.cellIndex] = formattedTime;
+        handleTableDataChange(newData); // 변경된 데이터 전달
         return newData;
       });
     }

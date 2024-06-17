@@ -1,11 +1,34 @@
+import { useState } from 'react';
 import styles from './AddPlaceBox.module.scss';
 import TrashIcon from '../../../../assets/trashIcon.svg';
 import { Button } from 'react-bootstrap';
 
-const AddPlaceBox = ({ id, number, onDelete, placeName, category, address, duration = 120 }) => {
+const AddPlaceBox = ({ id, number, onDelete, placeName, category, address, duration, onDurationChange }) => {
+  const [isEditing, setIsEditing] = useState(false);
+  const [newDuration, setNewDuration] = useState(duration);
+
+  const handleEditClick = () => {
+    setIsEditing(true);
+  };
+
+  const handleDurationChange = (e) => {
+    const value = e.target.value;
+    setNewDuration(value);
+  };
+
+  const handleSaveClick = () => {
+    onDurationChange(id, newDuration);
+    setIsEditing(false);
+  };
+
+  const handleCancelClick = () => {
+    setNewDuration(duration);
+    setIsEditing(false);
+  };
+
   return (
     <div className={styles.container}>
-      <div className={styles.numberCont}>{number}</div> {/* 수정된 부분 */}
+      <div className={styles.numberCont}>{number}</div>
       <div className={styles.boxCont}>
         <div className={styles.placeImg}></div>
         <div className={styles.detailsCont}>
@@ -16,7 +39,26 @@ const AddPlaceBox = ({ id, number, onDelete, placeName, category, address, durat
           </div>
         </div>
         <div className={styles.editBtns}>
-          <Button id={styles.editBtn}>{`${Math.floor(duration / 60)}시간 ${duration % 60}분`}</Button>
+          {isEditing ? (
+            <>
+              <input
+                type='number'
+                value={newDuration}
+                onChange={handleDurationChange}
+                className={styles.durationInput}
+              />
+              <Button id={styles.saveBtn} onClick={handleSaveClick}>
+                저장
+              </Button>
+              <Button id={styles.cancelBtn} onClick={handleCancelClick}>
+                취소
+              </Button>
+            </>
+          ) : (
+            <Button id={styles.editBtn} onClick={handleEditClick}>{`${Math.floor(duration / 60)}시간 ${
+              duration % 60
+            }분`}</Button>
+          )}
         </div>
         <img className={styles.trashIcon} src={TrashIcon} alt='trash-icon' onClick={() => onDelete(id)} />
       </div>

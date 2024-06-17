@@ -80,13 +80,18 @@ const PlaceModal = ({
     }
   };
 
-  const parseTime = (timeString) => {
-    if (!timeString) return 0;
+  const formatTime = (timeString) => {
     const [period, time] = timeString.split(' ');
     let [hours, minutes] = time.split(':').map(Number);
     if (period === '오후' && hours !== 12) hours += 12;
     if (period === '오전' && hours === 12) hours = 0;
-    return hours * 60 + minutes;
+    return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+  };
+
+  const getTotalMinutes = (startTime, endTime) => {
+    const [startHours, startMinutes] = formatTime(startTime).split(':').map(Number);
+    const [endHours, endMinutes] = formatTime(endTime).split(':').map(Number);
+    return endHours * 60 + endMinutes - (startHours * 60 + startMinutes);
   };
 
   return (
@@ -108,13 +113,9 @@ const PlaceModal = ({
         <div>{`${totalDuration}분 / ${
           selectedTimes && selectedTimes[currentSelectedDate]
             ? `${Math.floor(
-                (parseTime(selectedTimes[currentSelectedDate].end) -
-                  parseTime(selectedTimes[currentSelectedDate].start)) /
-                  60
+                getTotalMinutes(selectedTimes[currentSelectedDate].start, selectedTimes[currentSelectedDate].end) / 60
               )}시간 ${
-                (parseTime(selectedTimes[currentSelectedDate].end) -
-                  parseTime(selectedTimes[currentSelectedDate].start)) %
-                60
+                getTotalMinutes(selectedTimes[currentSelectedDate].start, selectedTimes[currentSelectedDate].end) % 60
               }분`
             : '시간 정보 없음'
         }`}</div>
