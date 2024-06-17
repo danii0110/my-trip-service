@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
 import styles from './AP2Main.module.scss';
@@ -39,11 +39,11 @@ const AP2Main = () => {
   const initialState = location.state || {};
 
   const [selectedDates, setSelectedDates] = useState(initialState.selectedDates || { start: null, end: null });
-  const [selectedTimes, setSelectedTimes] = useState({});
   const [selectedRegion, setSelectedRegion] = useState(initialState.selectedRegion);
   const [selectedArea, setSelectedArea] = useState(initialState.selectedArea);
   const [tableData, setTableData] = useState([]);
   const [selectedPlaces, setSelectedPlaces] = useState({});
+  const [selectedTimes, setSelectedTimes] = useState({}); // 추가된 부분
   const [currentSelectedDate, setCurrentSelectedDate] = useState(
     selectedDates.start ? new Date(selectedDates.start).toLocaleDateString('ko-KR') : ''
   );
@@ -86,7 +86,7 @@ const AP2Main = () => {
           <AP3Left
             regionMap={regionMap}
             selectedDates={selectedDates}
-            selectedTimes={selectedTimes}
+            selectedTimes={selectedTimes} // 추가된 부분
             selectedRegion={selectedRegion}
             selectedArea={selectedArea}
             tableData={tableData}
@@ -139,7 +139,7 @@ const AP2Main = () => {
     navigate('/plan-list/areaName', {
       state: {
         selectedDates,
-        selectedTimes,
+        selectedTimes, // 추가된 부분
         selectedRegion,
         selectedArea,
         tableData,
@@ -162,16 +162,13 @@ const AP2Main = () => {
     setCurrentSelectedDate(formattedDate);
   };
 
-  const handleTableDataChange = (newTableData) => {
-    setTableData(newTableData);
-    const newTimes = { ...selectedTimes };
-    newTableData.forEach((row) => {
-      const date = row[0];
-      const startTime = row[2];
-      const endTime = row[3];
-      newTimes[date] = { start: startTime, end: endTime };
+  const handleTableDataChange = (data) => {
+    setTableData(data);
+    const newSelectedTimes = {};
+    data.forEach(([date, , start, end]) => {
+      newSelectedTimes[date] = { start, end };
     });
-    setSelectedTimes(newTimes);
+    setSelectedTimes(newSelectedTimes);
   };
 
   const renderNextButton = () => {
@@ -201,7 +198,8 @@ const AP2Main = () => {
             onPlaceSelect={handlePlaceSelect}
             currentSelectedDate={currentSelectedDate}
             onDateChange={handleDateChange}
-            selectedTimes={selectedTimes}
+            placeDurations={{}} // 기본 값을 제공하거나 적절한 데이터를 넣어야 합니다
+            selectedTimes={selectedTimes} // 추가된 부분
           />
         )}
         {isHotelModalVisible && currentLeftComponent.type === AP4Left && <HotelModalBox />}
@@ -259,11 +257,10 @@ const AP2Main = () => {
         {React.cloneElement(currentLeftComponent, {
           regionMap,
           selectedDates,
-          selectedTimes,
           selectedRegion,
           selectedArea,
           tableData,
-          onTableDataChange: handleTableDataChange, // 테이블 데이터 변경 핸들러
+          onTableDataChange: handleTableDataChange, // 변경된 부분
           openDatePickerModal: () => setShowDatePickerModal(true),
         })}
         {renderNextButton()}

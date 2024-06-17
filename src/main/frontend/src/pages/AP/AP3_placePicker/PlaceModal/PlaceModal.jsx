@@ -1,4 +1,3 @@
-// PlaceModal.jsx
 import styles from './PlaceModal.module.scss';
 import LeftArrowIcon from '../../../../assets/leftArrow.svg';
 import RightArrowIcon from '../../../../assets/rightArrow.svg';
@@ -9,11 +8,12 @@ import DailyDatePickerModal from '../DailyDatePicker/DailyDatePickerModal';
 
 const PlaceModal = ({
   selectedDates = { start: null, end: null },
-  selectedTimes = {},
   selectedPlaces = [],
   onPlaceSelect,
   onDateChange,
   currentSelectedDate,
+  placeDurations,
+  selectedTimes, // selectedTimes 추가
 }) => {
   const [places, setPlaces] = useState(selectedPlaces);
   const [isDatePickerVisible, setIsDatePickerVisible] = useState(false);
@@ -26,8 +26,7 @@ const PlaceModal = ({
   useEffect(() => {
     setSelectedDate(currentSelectedDate);
     console.log('currentSelectedDate:', currentSelectedDate);
-    console.log('selectedTimes:', selectedTimes); // 콘솔 추가
-  }, [currentSelectedDate, selectedTimes]);
+  }, [currentSelectedDate]);
 
   const handleDelete = (id) => {
     onPlaceSelect(id, false);
@@ -81,8 +80,11 @@ const PlaceModal = ({
       </div>
       <div className={styles.subHeader}>
         <div>
-          {selectedTimes[currentSelectedDate]?.start || ''} ~ {selectedTimes[currentSelectedDate]?.end || ''}
+          {selectedTimes && selectedTimes[currentSelectedDate]
+            ? `${selectedTimes[currentSelectedDate].start} ~ ${selectedTimes[currentSelectedDate].end}`
+            : ''}
         </div>
+        <div>소요 시간/총 시간</div>
       </div>
       <div className={styles.main}>
         {places.length === 0 ? (
@@ -97,6 +99,7 @@ const PlaceModal = ({
               category={place.category}
               address={place.address}
               onDelete={handleDelete}
+              duration={placeDurations[place.id] || 120} // 기본 2시간 (120분) 적용
             />
           ))
         )}
