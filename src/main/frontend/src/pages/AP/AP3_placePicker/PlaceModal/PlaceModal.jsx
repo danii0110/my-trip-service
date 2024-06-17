@@ -1,3 +1,4 @@
+// PlaceModal.jsx
 import styles from './PlaceModal.module.scss';
 import LeftArrowIcon from '../../../../assets/leftArrow.svg';
 import RightArrowIcon from '../../../../assets/rightArrow.svg';
@@ -8,6 +9,7 @@ import DailyDatePickerModal from '../DailyDatePicker/DailyDatePickerModal';
 
 const PlaceModal = ({
   selectedDates = { start: null, end: null },
+  selectedTimes = {},
   selectedPlaces = [],
   onPlaceSelect,
   onDateChange,
@@ -24,7 +26,8 @@ const PlaceModal = ({
   useEffect(() => {
     setSelectedDate(currentSelectedDate);
     console.log('currentSelectedDate:', currentSelectedDate);
-  }, [currentSelectedDate]);
+    console.log('selectedTimes:', selectedTimes); // 콘솔 추가
+  }, [currentSelectedDate, selectedTimes]);
 
   const handleDelete = (id) => {
     onPlaceSelect(id, false);
@@ -77,8 +80,9 @@ const PlaceModal = ({
         <img className={styles.arrowIcon} src={RightArrowIcon} alt='right-arrow-icon' onClick={handleNextDate} />
       </div>
       <div className={styles.subHeader}>
-        <div>9:00 ~ 12:00</div>
-        <div>소요 시간/총 시간</div>
+        <div>
+          {selectedTimes[currentSelectedDate]?.start || ''} ~ {selectedTimes[currentSelectedDate]?.end || ''}
+        </div>
       </div>
       <div className={styles.main}>
         {places.length === 0 ? (
