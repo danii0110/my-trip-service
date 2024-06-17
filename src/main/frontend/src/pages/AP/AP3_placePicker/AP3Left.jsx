@@ -8,6 +8,7 @@ import PlaceBox from './PlaceBox';
 const AP3Left = ({
   regionMap,
   selectedDates,
+  selectedTimes,
   selectedRegion,
   selectedArea,
   tableData,
@@ -15,7 +16,6 @@ const AP3Left = ({
   placesData,
   selectedPlaces,
   currentSelectedDate,
-  selectedTimes,
 }) => {
   const [selectedCategory, setSelectedCategory] = useState('추천 장소');
   const [searchTerm, setSearchTerm] = useState('');
@@ -25,9 +25,10 @@ const AP3Left = ({
       selectedRegion,
       selectedArea,
       selectedDates,
+      selectedTimes, // 추가된 부분
       tableData,
     });
-  }, [selectedRegion, selectedArea, selectedDates, tableData]);
+  }, [selectedRegion, selectedArea, selectedDates, selectedTimes, tableData]);
 
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
