@@ -1,9 +1,12 @@
 import { useState, useEffect } from 'react';
+import axios from 'axios';
 import CheckHeader from '../AP2_timePicker/CheckHeader/CheckHeader';
 import styles from './AP3Left.module.scss';
 import CategoryBtn from './CategoryBtn';
 import SearchBar from './SearchBar/SearchBar';
 import PlaceBox from './PlaceBox';
+import Pagination from '../../../components/Element/Pagination';
+import { Button } from 'react-bootstrap';
 
 const AP3Left = ({
   regionMap,
@@ -13,30 +16,71 @@ const AP3Left = ({
   selectedArea,
   tableData,
   onPlaceSelect,
-  placesData,
   selectedPlaces,
   currentSelectedDate,
+  onNextButtonClick,
 }) => {
-  const [selectedCategory, setSelectedCategory] = useState('추천 장소');
+  const [selectedCategory, setSelectedCategory] = useState('전체');
   const [searchTerm, setSearchTerm] = useState('');
+  const [isNextButtonEnabled, setIsNextButtonEnabled] = useState(false);
+  const [placesData, setPlacesData] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
+
+  const categories = ['전체', '여행지', '음식점', '문화시설', '레포츠', '쇼핑'];
 
   useEffect(() => {
-    console.log('AP3Left loaded with:', {
-      selectedRegion,
-      selectedArea,
-      selectedDates,
-      selectedTimes,
-      tableData,
-    });
-  }, [selectedRegion, selectedArea, selectedDates, selectedTimes, tableData]);
+    const fetchPlacesData = async () => {
+      try {
+        const sigunguCode = regionMap[selectedArea];
+
+        console.log('Fetching places data with:', {
+          apiUri: '/areaBasedList1',
+          areaCode: selectedRegion,
+          sigunguCode: sigunguCode,
+          numOfRows: '10',
+          pageNo: currentPage,
+          MobileOS: 'ETC',
+          MobileApp: 'AppTest',
+          _type: 'json',
+          serviceKey: 'xfTv5roElI6j77MLdvBEhCeQDEA9GwcdF59ysvJFye/lDKCxP/vqULXRSnkZGw2ngYigvFHKTaAvyud86FuJYw==',
+        });
+
+        const response = await axios.get('/data/list', {
+          params: {
+            apiUri: '/areaBasedList1',
+            areaCode: selectedRegion,
+            sigunguCode: sigunguCode,
+            numOfRows: '10',
+            pageNo: currentPage,
+            MobileOS: 'ETC',
+            MobileApp: 'AppTest',
+            _type: 'json',
+            serviceKey: 'xfTv5roElI6j77MLdvBEhCeQDEA9GwcdF59ysvJFye/lDKCxP/vqULXRSnkZGw2ngYigvFHKTaAvyud86FuJYw==',
+          },
+        });
+
+        const items = response.data.response.body.items?.item || [];
+        console.log('Fetched items:', items);
+        setPlacesData(items);
+        setTotalPages(Math.ceil(response.data.response.body.totalCount / 10));
+      } catch (error) {
+        console.error('Error fetching places data:', error);
+      }
+    };
+
+    if (selectedRegion && selectedArea) {
+      fetchPlacesData();
+    }
+  }, [selectedRegion, selectedArea, currentPage]);
 
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
   };
 
   const filteredPlaces = placesData.filter((place) => {
-    const matchesSearch = searchTerm === '' || place.placeName.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesCategory = selectedCategory === '추천 장소' || place.category === selectedCategory;
+    const matchesSearch = searchTerm === '' || place.title.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesCategory = selectedCategory === '전체' || place.cat3 === selectedCategory;
 
     return matchesSearch && matchesCategory;
   });
@@ -44,6 +88,18 @@ const AP3Left = ({
   const isPlaceChecked = (placeId) => {
     return Array.isArray(selectedPlaces) && selectedPlaces.some((place) => place.id === placeId);
   };
+
+  const handlePlaceSelect = (id, place) => {
+    const isSelected = isPlaceChecked(id);
+    onPlaceSelect(id, place, !isSelected);
+  };
+
+  useEffect(() => {
+    const hasSelectedPlacesForAllDates = Object.keys(selectedTimes).every(
+      (date) => Array.isArray(selectedPlaces) && selectedPlaces.some((place) => place.date === date)
+    );
+    setIsNextButtonEnabled(hasSelectedPlacesForAllDates);
+  }, [selectedPlaces, selectedTimes]);
 
   return (
     <div className={styles.container}>
@@ -63,38 +119,33 @@ const AP3Left = ({
           <SearchBar onChange={handleSearchChange} />
         </div>
         <div className={styles.categoryBtns}>
-          <CategoryBtn
-            content='추천 장소'
-            selectedCategory={selectedCategory}
-            setSelectedCategory={setSelectedCategory}
-          />
-          <CategoryBtn content='여행지' selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory} />
-          <CategoryBtn content='음식점' selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory} />
-          <CategoryBtn
-            content='문화시설'
-            selectedCategory={selectedCategory}
-            setSelectedCategory={setSelectedCategory}
-          />
-          <CategoryBtn content='레포츠' selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory} />
-          <CategoryBtn content='쇼핑' selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory} />
+          {categories.map((category) => (
+            <CategoryBtn
+              key={category}
+              content={category}
+              selectedCategory={selectedCategory}
+              setSelectedCategory={setSelectedCategory}
+            />
+          ))}
         </div>
         <div className={styles.places}>
           {filteredPlaces.length > 0 ? (
             filteredPlaces.map((place) => (
               <PlaceBox
-                key={place.id}
-                id={place.id}
-                placeName={place.placeName}
-                category={place.category}
-                address={place.address}
-                onSelect={onPlaceSelect}
-                isInitiallyChecked={isPlaceChecked(place.id)}
+                key={place.contentid}
+                id={place.contentid}
+                placeName={place.title}
+                category={place.cat3}
+                address={place.addr1}
+                onSelect={() => handlePlaceSelect(place.contentid, place)}
+                isInitiallyChecked={isPlaceChecked(place.contentid)}
               />
             ))
           ) : (
             <div className={styles.noResults}>검색 결과가 없습니다.</div>
           )}
         </div>
+        <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} />
         <div>
           <h3>전달된 데이터 확인:</h3>
           <p>Region: {selectedRegion !== undefined && selectedRegion !== null ? regionMap[selectedRegion] : '없음'}</p>
@@ -107,6 +158,9 @@ const AP3Left = ({
           </p>
           <p>Table Data: {JSON.stringify(tableData)}</p>
         </div>
+        <Button onClick={onNextButtonClick} disabled={!isNextButtonEnabled}>
+          다음
+        </Button>
       </div>
     </div>
   );

@@ -7,24 +7,13 @@ import AP3Left from '../AP3_placePicker/AP3Left';
 import AP4Left from '../AP4_hotelPicker/AP4Left';
 import DatePickerModal from './DatePicker/DatePickerModal';
 import KakakoMap from '../../../modules/api/KakaoMap/KakaoMap';
+import PlaceKakaoMap from '../../../modules/api/PlaceKakaoMap/PlaceKakaoMap';
 import PlaceModalBox from '../AP3_placePicker/PlaceModal/PlaceModalBox';
 import HotelModalBox from '../AP4_hotelPicker/HotelModal/HotelModalBox';
 import ConfirmModal from '../AP4_hotelPicker/ConfirmModal/ConfirmModal';
 import LeftArrowIcon from '../../../assets/leftArrow.svg';
 import RightArrowIcon from '../../../assets/rightArrow.svg';
-
-const placesData = [
-  { id: 1, placeName: '성산 일출봉', category: '여행지', address: '대한민국 서귀포시 성산 일출봉' },
-  { id: 2, placeName: '제주 돌하르방 공원', category: '여행지', address: '대한민국 제주특별자치도 제주시' },
-  { id: 3, placeName: '흑돼지 거리', category: '음식점', address: '대한민국 제주특별자치도 제주시' },
-  { id: 4, placeName: '제주 아르떼 뮤지엄', category: '문화시설', address: '대한민국 제주특별자치도 제주시' },
-  { id: 5, placeName: '한라산 국립공원', category: '레포츠', address: '대한민국 제주특별자치도 제주시' },
-  { id: 6, placeName: '동문 재래시장', category: '쇼핑', address: '대한민국 제주특별자치도 제주시' },
-  { id: 7, placeName: '섭지코지', category: '여행지', address: '대한민국 제주특별자치도 서귀포시' },
-  { id: 8, placeName: '우도 잠수함', category: '레포츠', address: '대한민국 제주특별자치도 제주시' },
-  { id: 9, placeName: '제주 현대 미술관', category: '문화시설', address: '대한민국 제주특별자치도 제주시' },
-  { id: 10, placeName: '비자림', category: '여행지', address: '대한민국 제주특별자치도 제주시' },
-];
+import regionMap from '../../../modules/utils/regionMap'; // regionMap import
 
 const AP2Main = () => {
   const [showDatePickerModal, setShowDatePickerModal] = useState(true);
@@ -54,26 +43,6 @@ const AP2Main = () => {
     currentSelectedDateRef.current = currentSelectedDate;
   }, [currentSelectedDate]);
 
-  const regionMap = {
-    0: '서울',
-    1: '부산',
-    2: '대구',
-    3: '인천',
-    4: '광주',
-    5: '대전',
-    6: '울산',
-    7: '세종',
-    8: '경기',
-    9: '강원',
-    10: '충북',
-    11: '충남',
-    12: '전북',
-    13: '전남',
-    14: '경북',
-    15: '경남',
-    16: '제주',
-  };
-
   const handleNextButtonClick = () => {
     if (currentLeftComponent.type === AP4Left) {
       setShowConfirmModal(true);
@@ -86,12 +55,11 @@ const AP2Main = () => {
           <AP3Left
             regionMap={regionMap}
             selectedDates={selectedDates}
-            selectedTimes={selectedTimes} // 추가된 부분
+            selectedTimes={selectedTimes}
             selectedRegion={selectedRegion}
             selectedArea={selectedArea}
             tableData={tableData}
             onPlaceSelect={handlePlaceSelect}
-            placesData={placesData}
             selectedPlaces={selectedPlaces}
             currentSelectedDate={currentSelectedDate}
           />
@@ -105,21 +73,20 @@ const AP2Main = () => {
     }
   };
 
-  const handlePlaceSelect = (placeId, isSelected) => {
+  const handlePlaceSelect = (placeId, place, isSelected) => {
     setSelectedPlaces((prevPlaces) => {
       const updatedPlaces = { ...prevPlaces };
       console.log(`Place selection changed. currentSelectedDate: ${currentSelectedDateRef.current}`); // ref 사용
       if (isSelected) {
-        const placeToAdd = placesData.find((place) => place.id === placeId);
         if (!updatedPlaces[currentSelectedDateRef.current]) {
           updatedPlaces[currentSelectedDateRef.current] = [];
         }
-        updatedPlaces[currentSelectedDateRef.current].push(placeToAdd);
+        updatedPlaces[currentSelectedDateRef.current].push(place);
         console.log(`Place added on ${currentSelectedDateRef.current}:`, updatedPlaces[currentSelectedDateRef.current]);
       } else {
         if (updatedPlaces[currentSelectedDateRef.current]) {
           updatedPlaces[currentSelectedDateRef.current] = updatedPlaces[currentSelectedDateRef.current].filter(
-            (place) => place.id !== placeId
+            (p) => p.id !== placeId
           );
           if (updatedPlaces[currentSelectedDateRef.current].length === 0) {
             delete updatedPlaces[currentSelectedDateRef.current];
@@ -198,7 +165,7 @@ const AP2Main = () => {
         {isPlaceModalVisible && currentLeftComponent.type === AP3Left && (
           <PlaceModalBox
             selectedDates={selectedDates}
-            selectedTimes={selectedTimes} // 추가된 부분
+            selectedTimes={selectedTimes}
             selectedPlaces={selectedPlaces[currentSelectedDate] || []}
             onPlaceSelect={handlePlaceSelect}
             currentSelectedDate={currentSelectedDate}
@@ -226,7 +193,11 @@ const AP2Main = () => {
             </Button>
           )}
         </div>
-        <KakakoMap selectedRegion={selectedRegion} selectedArea={selectedArea} regionMap={regionMap} />
+        {currentLeftComponent.type === AP3Left || currentLeftComponent.type === AP4Left ? (
+          <PlaceKakaoMap selectedPlaces={selectedPlaces[currentSelectedDate] || []} />
+        ) : (
+          <KakakoMap selectedRegion={selectedRegion} selectedArea={selectedArea} regionMap={regionMap} />
+        )}
       </div>
     );
   };
@@ -263,8 +234,11 @@ const AP2Main = () => {
           selectedRegion,
           selectedArea,
           tableData,
-          onTableDataChange: handleTableDataChange, // 변경된 부분
+          onTableDataChange: handleTableDataChange,
           openDatePickerModal: () => setShowDatePickerModal(true),
+          onPlaceSelect: handlePlaceSelect,
+          selectedPlaces,
+          currentSelectedDate,
         })}
         {renderNextButton()}
       </div>

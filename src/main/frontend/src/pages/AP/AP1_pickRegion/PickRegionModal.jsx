@@ -7,8 +7,9 @@ import LeftArrow from '../../../assets/leftArrow.svg';
 import RightArrow from '../../../assets/rightArrow.svg';
 import AreaBtn from './AreaBtn';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios'; // axios를 추가합니다.
-import { getImageName } from '../../../modules/utils/importImages'; // getImageName 함수를 추가합니다.
+import axios from 'axios';
+import { getImageName } from '../../../modules/utils/importImages';
+import regionMap from '../../../modules/utils/regionMap'; // regionMap import
 
 const ITEMS_PER_PAGE = 9;
 
@@ -21,7 +22,6 @@ const PickRegionModal = ({ show, onHide }) => {
   const [currentPage, setCurrentPage] = useState(0);
   const [areaList, setAreaList] = useState({});
 
-  // fetchAreaName 함수를 추가하여 백엔드에서 데이터를 가져옵니다.
   const fetchAreaName = async () => {
     try {
       const response = await axios.get('/area/areaCode');
@@ -33,29 +33,27 @@ const PickRegionModal = ({ show, onHide }) => {
         return acc;
       }, {});
       setAreaList(areaSigunguMap);
-      setRegions(Object.keys(areaSigunguMap).map((key) => areaSigunguMap[key]['0'])); // 지역명만 추출
+      setRegions(Object.keys(areaSigunguMap).map((key) => ({ code: key, name: regionMap[key] })));
     } catch (error) {
       console.log(error);
     }
   };
 
   useEffect(() => {
-    fetchAreaName(); // 컴포넌트가 처음 렌더링될 때 fetchAreaName을 호출합니다.
+    fetchAreaName();
   }, []);
 
-  const handleRegionClick = (index, regionName) => {
-    setSelectedRegion(index);
+  const handleRegionClick = (index, region) => {
+    setSelectedRegion(region.code);
     setSelectedAreaBtn(null);
-
-    const selectedAreaCode = Object.keys(areaList).find((key) => areaList[key]['0'] === regionName);
-    setAreas(areaList[selectedAreaCode] ? Object.values(areaList[selectedAreaCode]) : []);
+    setAreas(areaList[region.code] ? Object.entries(areaList[region.code]).filter(([key]) => key !== '0') : []);
   };
 
   const goToAP2 = () => {
     if (selectedAreaBtn !== null) {
-      const selectedArea = areas[selectedAreaBtn];
+      const selectedAreaName = areas[selectedAreaBtn][1];
       onHide();
-      navigate('/planning/areaName', { state: { selectedRegion, selectedArea } }); // navigate 함수의 state를 사용하여 상태 전달
+      navigate('/planning/areaName', { state: { selectedRegion, selectedArea: selectedAreaName } });
     }
   };
 
@@ -86,13 +84,13 @@ const PickRegionModal = ({ show, onHide }) => {
               alt='left-arrow'
               onClick={handlePreviousPage}
             />
-            {currentRegions.map((regionName, index) => (
+            {currentRegions.map((region, index) => (
               <Region
-                key={index + startIndex}
-                name={regionName}
-                selected={selectedRegion === index + startIndex}
-                imageSrc={getImageName(regionName)} // 이미지 경로를 추가합니다.
-                onClick={() => handleRegionClick(index + startIndex, regionName)}
+                key={region.code}
+                name={region.name}
+                selected={selectedRegion === region.code}
+                imageSrc={getImageName(region.name)}
+                onClick={() => handleRegionClick(index + startIndex, region)}
               />
             ))}
             <img
@@ -105,7 +103,7 @@ const PickRegionModal = ({ show, onHide }) => {
             />
           </div>
           <div className={styles.regionSubCont}>
-            {areas.map((areaName, index) => (
+            {areas.map(([code, areaName], index) => (
               <AreaBtn
                 key={index}
                 name={areaName}
