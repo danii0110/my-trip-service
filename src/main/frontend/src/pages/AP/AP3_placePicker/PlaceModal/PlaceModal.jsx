@@ -1,3 +1,4 @@
+// PlaceModal.jsx
 import { useState, useEffect } from 'react';
 import styles from './PlaceModal.module.scss';
 import LeftArrowIcon from '../../../../assets/leftArrow.svg';
@@ -133,16 +134,16 @@ const PlaceModal = ({
         ) : (
           places.map((place, index) => (
             <AddPlaceBox
-              key={place.id} // key 속성 추가
+              key={place.id} // 고유한 key 추가
               id={place.id}
               number={index + 1}
               placeName={place.title}
               category={place.category}
               address={place.addr1}
-              image={place.firstimage}
               onDelete={handleDelete}
               duration={placeDurations[place.id] || 120}
               onDurationChange={handleDurationChange}
+              image={place.firstimage}
             />
           ))
         )}

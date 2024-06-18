@@ -30,18 +30,14 @@ const AddPlaceBox = ({ id, number, onDelete, placeName, category, address, image
     <div className={styles.container}>
       <div className={styles.numberCont}>{number}</div>
       <div className={styles.boxCont}>
-        {!isEditing && (
-          <>
-            <div className={styles.placeImg} style={{ backgroundImage: `url(${image})` }}></div>
-            <div className={styles.detailsCont}>
-              <div className={styles.placeName}>{placeName}</div>
-              <div className={styles.subDetails}>
-                <div className={styles.category}>{category}</div>
-                <div className={styles.address}>{address}</div>
-              </div>
-            </div>
-          </>
-        )}
+        <div className={styles.placeImg} style={{ backgroundImage: `url(${image})` }}></div>
+        <div className={styles.detailsCont}>
+          <div className={styles.placeName}>{placeName}</div>
+          <div className={styles.subDetails}>
+            <div className={styles.category}>{category}</div>
+            <div className={styles.address}>{address}</div>
+          </div>
+        </div>
         <div className={styles.editBtns}>
           {isEditing ? (
             <div className={styles.editContainer}>

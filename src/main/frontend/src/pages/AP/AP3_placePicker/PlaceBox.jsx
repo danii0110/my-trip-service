@@ -14,7 +14,19 @@ const PlaceBox = ({ id, placeName, category, address, image, mapX, mapY, onSelec
     console.log('AddBtn 클릭됨:', id);
     const newCheckedState = !isChecked;
     setIsChecked(newCheckedState);
-    onSelect(id, { id, placeName, category, address, image, mapX, mapY, isChecked: newCheckedState });
+    onSelect(
+      id,
+      {
+        id,
+        placeName,
+        category,
+        address,
+        mapx: image.mapx, // 혹시 모를 경우를 대비해 로그를 추가합니다
+        mapy: image.mapy, // 혹시 모를 경우를 대비해 로그를 추가합니다
+        image,
+      },
+      newCheckedState
+    );
   };
 
   return (

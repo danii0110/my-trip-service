@@ -26,7 +26,7 @@ const AP3Left = ({
   onPlaceSelect,
   selectedPlaces,
   currentSelectedDate,
-  onNextButtonClick,
+  // onNextButtonClick,
 }) => {
   const [selectedCategory, setSelectedCategory] = useState('전체');
   const [searchTerm, setSearchTerm] = useState('');
@@ -192,9 +192,9 @@ const AP3Left = ({
           </p>
           <p>Table Data: {JSON.stringify(tableData)}</p>
         </div>
-        <Button onClick={onNextButtonClick} disabled={!isNextButtonEnabled}>
+        {/* <Button onClick={onNextButtonClick} disabled={!isNextButtonEnabled}>
           다음
-        </Button>
+        </Button> */}
       </div>
     </div>
   );

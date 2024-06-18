@@ -1,3 +1,4 @@
+// AP2Main.jsx
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
@@ -13,7 +14,7 @@ import HotelModalBox from '../AP4_hotelPicker/HotelModal/HotelModalBox';
 import ConfirmModal from '../AP4_hotelPicker/ConfirmModal/ConfirmModal';
 import LeftArrowIcon from '../../../assets/leftArrow.svg';
 import RightArrowIcon from '../../../assets/rightArrow.svg';
-import regionMap from '../../../modules/utils/regionMap'; // regionMap import
+import regionMap from '../../../modules/utils/regionMap';
 
 const AP2Main = () => {
   const [showDatePickerModal, setShowDatePickerModal] = useState(true);
@@ -81,12 +82,7 @@ const AP2Main = () => {
         if (!updatedPlaces[currentSelectedDateRef.current]) {
           updatedPlaces[currentSelectedDateRef.current] = [];
         }
-        updatedPlaces[currentSelectedDateRef.current].push({
-          ...place,
-          id: placeId,
-          mapX: place.mapx,
-          mapY: place.mapy,
-        });
+        updatedPlaces[currentSelectedDateRef.current].push(place);
         console.log(`Place added on ${currentSelectedDateRef.current}:`, updatedPlaces[currentSelectedDateRef.current]);
       } else {
         if (updatedPlaces[currentSelectedDateRef.current]) {
@@ -102,6 +98,7 @@ const AP2Main = () => {
           );
         }
       }
+      console.log('Updated Places:', updatedPlaces);
       return updatedPlaces;
     });
   };
