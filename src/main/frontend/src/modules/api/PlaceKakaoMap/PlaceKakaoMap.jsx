@@ -9,8 +9,8 @@ const PlaceKakaoMap = ({ selectedPlaces }) => {
   useEffect(() => {
     if (selectedPlaces.length > 0) {
       const coords = selectedPlaces.map((place) => ({
-        lat: parseFloat(place.mapY),
-        lng: parseFloat(place.mapX),
+        lat: parseFloat(place.mapy),
+        lng: parseFloat(place.mapx),
       }));
       setCoordinates(coords);
       setCenter(coords[0]); // 첫 번째 좌표를 지도 중심으로 설정
