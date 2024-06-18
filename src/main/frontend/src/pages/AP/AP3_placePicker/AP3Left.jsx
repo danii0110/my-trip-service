@@ -7,9 +7,17 @@ import SearchBar from './SearchBar/SearchBar';
 import PlaceBox from './PlaceBox';
 import Pagination from '../../../components/Element/Pagination';
 import { Button } from 'react-bootstrap';
+import regionMap from '../../../modules/utils/regionMap';
+const categoryMap = {
+  A0101: '여행지',
+  A0102: '관광지',
+  A0201: '문화시설',
+  A0202: '레포츠',
+  A0203: '음식점',
+  A0204: '쇼핑',
+};
 
 const AP3Left = ({
-  regionMap,
   selectedDates,
   selectedTimes,
   selectedRegion,
@@ -29,10 +37,30 @@ const AP3Left = ({
 
   const categories = ['전체', '여행지', '음식점', '문화시설', '레포츠', '쇼핑'];
 
+  const fetchAreaName = async () => {
+    try {
+      const response = await axios.get('/area/areaCode');
+      const areaSigunguMap = response.data.reduce((acc, curr) => {
+        if (!acc[curr.areacode]) {
+          acc[curr.areacode] = {};
+        }
+        acc[curr.areacode][curr.sigungucode || '0'] = curr.name;
+        return acc;
+      }, {});
+      return areaSigunguMap;
+    } catch (error) {
+      console.error('Error fetching area names:', error);
+      return {};
+    }
+  };
+
   useEffect(() => {
     const fetchPlacesData = async () => {
       try {
-        const sigunguCode = regionMap[selectedArea];
+        const areaMap = await fetchAreaName();
+        const sigunguCode = Object.keys(areaMap[selectedRegion]).find(
+          (key) => areaMap[selectedRegion][key] === selectedArea
+        );
 
         console.log('Fetching places data with:', {
           apiUri: '/areaBasedList1',
@@ -80,7 +108,7 @@ const AP3Left = ({
 
   const filteredPlaces = placesData.filter((place) => {
     const matchesSearch = searchTerm === '' || place.title.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesCategory = selectedCategory === '전체' || place.cat3 === selectedCategory;
+    const matchesCategory = selectedCategory === '전체' || categoryMap[place.cat3] === selectedCategory;
 
     return matchesSearch && matchesCategory;
   });
@@ -135,8 +163,9 @@ const AP3Left = ({
                 key={place.contentid}
                 id={place.contentid}
                 placeName={place.title}
-                category={place.cat3}
+                category={categoryMap[place.cat3]}
                 address={place.addr1}
+                image={place.firstimage}
                 onSelect={() => handlePlaceSelect(place.contentid, place)}
                 isInitiallyChecked={isPlaceChecked(place.contentid)}
               />

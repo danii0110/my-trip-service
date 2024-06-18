@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import styles from './PlaceBox.module.scss';
 import AddBtn from './AddBtn';
 
-const PlaceBox = ({ id, placeName, category, address, onSelect, isInitiallyChecked = false }) => {
+const PlaceBox = ({ id, placeName, category, address, image, onSelect, isInitiallyChecked = false }) => {
   const [isChecked, setIsChecked] = useState(isInitiallyChecked);
 
   useEffect(() => {
@@ -19,7 +19,9 @@ const PlaceBox = ({ id, placeName, category, address, onSelect, isInitiallyCheck
 
   return (
     <div className={styles.container}>
-      <div className={styles.placeImg}></div>
+      <div className={styles.placeImg}>
+        {image ? <img src={image} alt={placeName} className={styles.placeImg} /> : null}
+      </div>
       <div className={styles.detailsCont}>
         <div className={styles.placeName}>{placeName}</div>
         <div className={styles.subDetails}>
