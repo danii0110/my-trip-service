@@ -40,3 +40,4 @@ out/
 application.yaml
 application.properties
 application-test.yaml
+src/main/java/com/mytrip/service/controller/ServiceKeyController.java

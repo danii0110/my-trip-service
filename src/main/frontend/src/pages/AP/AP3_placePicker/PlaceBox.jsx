@@ -19,9 +19,7 @@ const PlaceBox = ({ id, placeName, category, address, image, onSelect, isInitial
 
   return (
     <div className={styles.container}>
-      <div className={styles.placeImg}>
-        {image ? <img src={image} alt={placeName} className={styles.placeImg} /> : null}
-      </div>
+      <div className={styles.placeImg} style={{ backgroundImage: `url(${image})` }}></div>
       <div className={styles.detailsCont}>
         <div className={styles.placeName}>{placeName}</div>
         <div className={styles.subDetails}>
