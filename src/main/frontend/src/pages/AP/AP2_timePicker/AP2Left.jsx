@@ -102,6 +102,23 @@ const AP2Left = ({
     setShowTimePicker(true);
   };
 
+  const handleTableDataChange = (newTableData) => {
+    if (!Array.isArray(newTableData)) {
+      console.error('handleTableDataChange received data that is not an array:', newTableData);
+      return;
+    }
+
+    newTableData.forEach((row) => {
+      if (!Array.isArray(row)) {
+        console.error('handleTableDataChange received a row that is not an array:', row);
+        return;
+      }
+    });
+
+    setTableData(newTableData);
+    onTableDataChange(newTableData);
+  };
+
   const handleCloseTimePicker = (e) => {
     const time = e.target.value;
     if (time && currentCell) {
@@ -124,7 +141,7 @@ const AP2Left = ({
           }
         }
         newData[currentCell.rowIndex][currentCell.cellIndex] = formattedTime;
-        onTableDataChange(newData); // 변경된 데이터 전달
+        handleTableDataChange(newData); // 변경된 데이터 전달
         return newData;
       });
     }

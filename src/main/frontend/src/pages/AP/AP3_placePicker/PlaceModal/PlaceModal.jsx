@@ -1,9 +1,9 @@
+import { useState, useEffect } from 'react';
 import styles from './PlaceModal.module.scss';
 import LeftArrowIcon from '../../../../assets/leftArrow.svg';
 import RightArrowIcon from '../../../../assets/rightArrow.svg';
 import CalendarIcon from '../../../../assets/calendarIcon.svg';
 import AddPlaceBox from './AddPlaceBox';
-import { useState, useEffect } from 'react';
 import DailyDatePickerModal from '../DailyDatePicker/DailyDatePickerModal';
 
 const PlaceModal = ({
@@ -12,12 +12,13 @@ const PlaceModal = ({
   onPlaceSelect,
   onDateChange,
   currentSelectedDate,
-  placeDurations,
-  selectedTimes, // selectedTimes 추가
+  selectedTimes,
 }) => {
   const [places, setPlaces] = useState(selectedPlaces);
   const [isDatePickerVisible, setIsDatePickerVisible] = useState(false);
   const [selectedDate, setSelectedDate] = useState(currentSelectedDate);
+  const [placeDurations, setPlaceDurations] = useState({});
+  const [totalDuration, setTotalDuration] = useState(0);
 
   useEffect(() => {
     setPlaces(selectedPlaces);
@@ -25,11 +26,22 @@ const PlaceModal = ({
 
   useEffect(() => {
     setSelectedDate(currentSelectedDate);
-    console.log('currentSelectedDate:', currentSelectedDate);
   }, [currentSelectedDate]);
+
+  useEffect(() => {
+    const totalDurationForDate = places.reduce((total, place) => {
+      return total + (placeDurations[place.id] || 120);
+    }, 0);
+    setTotalDuration(totalDurationForDate);
+  }, [places, placeDurations]);
 
   const handleDelete = (id) => {
     onPlaceSelect(id, false);
+    setPlaceDurations((prevDurations) => {
+      const updatedDurations = { ...prevDurations };
+      delete updatedDurations[id];
+      return updatedDurations;
+    });
   };
 
   const toggleDatePicker = () => {
@@ -68,6 +80,31 @@ const PlaceModal = ({
     }
   };
 
+  const handleDurationChange = (id, newDuration) => {
+    setPlaceDurations((prevDurations) => ({
+      ...prevDurations,
+      [id]: parseInt(newDuration, 10),
+    }));
+  };
+
+  const parseTimeToMinutes = (time) => {
+    const [period, timeStr] = time.split(' ');
+    let [hours, minutes] = timeStr.split(':').map(Number);
+    if (period === '오후' && hours !== 12) hours += 12;
+    if (period === '오전' && hours === 12) hours = 0;
+    return hours * 60 + minutes;
+  };
+
+  const startTimeInMinutes =
+    selectedTimes && selectedTimes[currentSelectedDate]
+      ? parseTimeToMinutes(selectedTimes[currentSelectedDate].start)
+      : 0;
+  const endTimeInMinutes =
+    selectedTimes && selectedTimes[currentSelectedDate]
+      ? parseTimeToMinutes(selectedTimes[currentSelectedDate].end)
+      : 0;
+  const totalTimeInMinutes = endTimeInMinutes - startTimeInMinutes;
+
   return (
     <div className={styles.container}>
       <div className={styles.header}>
@@ -84,7 +121,11 @@ const PlaceModal = ({
             ? `${selectedTimes[currentSelectedDate].start} ~ ${selectedTimes[currentSelectedDate].end}`
             : ''}
         </div>
-        <div>소요 시간/총 시간</div>
+        <div>{`${totalDuration}분 / ${
+          totalTimeInMinutes > 0
+            ? `${Math.floor(totalTimeInMinutes / 60)}시간 ${totalTimeInMinutes % 60}분`
+            : '시간 정보 없음'
+        }`}</div>
       </div>
       <div className={styles.main}>
         {places.length === 0 ? (
@@ -94,12 +135,13 @@ const PlaceModal = ({
             <AddPlaceBox
               key={place.id}
               id={place.id}
-              number={index + 1} // 인덱스 기반 번호 부여
+              number={index + 1}
               placeName={place.placeName}
               category={place.category}
               address={place.address}
               onDelete={handleDelete}
-              duration={placeDurations[place.id] || 120} // 기본 2시간 (120분) 적용
+              duration={placeDurations[place.id] || 120}
+              onDurationChange={handleDurationChange}
             />
           ))
         )}
