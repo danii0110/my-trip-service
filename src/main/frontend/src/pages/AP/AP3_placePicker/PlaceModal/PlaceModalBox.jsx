@@ -8,7 +8,7 @@ const PlaceModalBox = ({
   currentSelectedDate,
   onDateChange,
   placeDurations,
-  selectedTimes, // 추가된 부분
+  selectedTimes,
 }) => {
   return (
     <div className={styles.container}>
@@ -18,8 +18,8 @@ const PlaceModalBox = ({
         onPlaceSelect={onPlaceSelect}
         currentSelectedDate={currentSelectedDate}
         onDateChange={onDateChange}
-        placeDurations={placeDurations} // 전달
-        selectedTimes={selectedTimes} // 전달
+        placeDurations={placeDurations}
+        selectedTimes={selectedTimes}
       />
     </div>
   );

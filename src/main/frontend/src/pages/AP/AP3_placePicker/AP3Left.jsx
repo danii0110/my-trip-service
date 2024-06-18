@@ -169,6 +169,8 @@ const AP3Left = ({
                 category={categoryMap[place.contenttypeid]}
                 address={place.addr1}
                 image={place.firstimage}
+                mapX={place.mapx}
+                mapY={place.mapy}
                 onSelect={() => handlePlaceSelect(place.contentid, place)}
                 isInitiallyChecked={isPlaceChecked(place.contentid)}
               />
