@@ -133,12 +133,13 @@ const PlaceModal = ({
         ) : (
           places.map((place, index) => (
             <AddPlaceBox
-              key={place.id}
+              key={place.id} // key 속성 추가
               id={place.id}
               number={index + 1}
-              placeName={place.placeName}
+              placeName={place.title}
               category={place.category}
-              address={place.address}
+              address={place.addr1}
+              image={place.firstimage}
               onDelete={handleDelete}
               duration={placeDurations[place.id] || 120}
               onDurationChange={handleDurationChange}

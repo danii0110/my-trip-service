@@ -3,7 +3,7 @@ import styles from './AddPlaceBox.module.scss';
 import TrashIcon from '../../../../assets/trashIcon.svg';
 import { Button } from 'react-bootstrap';
 
-const AddPlaceBox = ({ id, number, onDelete, placeName, category, address, duration, onDurationChange }) => {
+const AddPlaceBox = ({ id, number, onDelete, placeName, category, address, image, duration, onDurationChange }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [newDuration, setNewDuration] = useState(duration);
 
@@ -32,7 +32,7 @@ const AddPlaceBox = ({ id, number, onDelete, placeName, category, address, durat
       <div className={styles.boxCont}>
         {!isEditing && (
           <>
-            <div className={styles.placeImg}></div>
+            <div className={styles.placeImg} style={{ backgroundImage: `url(${image})` }}></div>
             <div className={styles.detailsCont}>
               <div className={styles.placeName}>{placeName}</div>
               <div className={styles.subDetails}>

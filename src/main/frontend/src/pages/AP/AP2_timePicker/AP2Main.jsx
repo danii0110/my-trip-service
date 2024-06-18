@@ -81,7 +81,12 @@ const AP2Main = () => {
         if (!updatedPlaces[currentSelectedDateRef.current]) {
           updatedPlaces[currentSelectedDateRef.current] = [];
         }
-        updatedPlaces[currentSelectedDateRef.current].push(place);
+        updatedPlaces[currentSelectedDateRef.current].push({
+          ...place,
+          id: placeId,
+          mapX: place.mapx,
+          mapY: place.mapy,
+        });
         console.log(`Place added on ${currentSelectedDateRef.current}:`, updatedPlaces[currentSelectedDateRef.current]);
       } else {
         if (updatedPlaces[currentSelectedDateRef.current]) {
