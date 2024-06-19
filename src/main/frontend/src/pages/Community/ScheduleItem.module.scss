@@ -1,0 +1,58 @@
+.scheduleItem {
+  display: flex;
+  margin-bottom: 10px;
+  align-items: center;
+}
+
+.scheduleIndex {
+  background-color: #8ea05d;
+  color: black;
+  border: 1px solid black;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 20px;
+  font-weight: bold;
+}
+
+.scheduleContent {
+  flex: 1;
+  display: flex;
+  background-color: #F4F6F7;
+  border: 1px solid black;
+  border-radius: 5px;
+  align-items: center;
+}
+
+.scheduleImage {
+  padding: 10px;
+}
+
+.scheduleInfo {
+  flex: 1;
+  padding: 10px;
+}
+
+.scheduleInfo h3 {
+  font-size: 18px;
+  margin: 3px 0;
+}
+
+.scheduleInfo p {
+  font-size: 15px;
+  color: gray;
+}
+
+.scheduleTime {
+  padding: 0 15px;
+}
+
+.scheduleTime p {
+  font-size: 15px;
+}
+
+
+

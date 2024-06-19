@@ -23,12 +23,10 @@ const Chat = ({messages, onSendMessage, activeRoom, setActiveRoom, toggleSidebar
         scrollToBottom();
     }, [messages, activeRoom]);
 
-    // const handleSendMessage = (text) => {
-    //     onSendMessage(activeRoom || 'New Chat Room', text);
-    // };
 
     const handleSendMessage = (text) => {
-        onSendMessage(activeRoom, text);
+        // onSendMessage(activeRoom, text);
+        onSendMessage(activeRoom.chattingRoomId, text);
     };
 
     const Welcome = () => {
@@ -58,11 +56,12 @@ const Chat = ({messages, onSendMessage, activeRoom, setActiveRoom, toggleSidebar
                                                                                                   alt="sidebar"/>
                             </button>
                             <button className={styles.newChatButton} onClick={handleNewChatButton}><img src={newChat}
-                                                                                                         alt="newChat"/>
+                                                                                                        alt="newChat"/>
                             </button>
                         </div>
                     }
-                    <span>{activeRoom ? `Chat Room ${activeRoom}` : 'Welcome'}</span>
+                    <span>{activeRoom ? activeRoom.chattingTitle : 'Welcome'}</span>
+                    {/*<span>{activeRoom ? `Chat Room ${activeRoom}` : 'Welcome'}</span>*/}
                 </div>
             </div>
             <div className={styles.messageContainer}>

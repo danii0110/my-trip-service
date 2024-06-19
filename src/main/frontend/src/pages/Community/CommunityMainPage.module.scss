@@ -1,0 +1,125 @@
+.info {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  padding-left: 55px;
+  padding-top: 40px;
+  color: white;
+}
+
+.info h2 {
+  font-size: 35px;
+  margin-left: 0;
+}
+
+.info h3 {
+  font-size: 20px;
+}
+
+.info button {
+  margin-top: 10px;
+  padding: 10px;
+  background-color: #F4F6F7;
+  width: 150px;
+  border: none;
+  border-radius: 5px;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 85%;
+  justify-content: center;
+  align-items: center;
+  margin: 30px auto 100px auto;
+}
+
+.buttons {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.buttons button {
+  padding: 0 10px;
+  font-size: 16px;
+  background-color: transparent;
+
+}
+
+.orderButtons{
+
+}
+
+.orderButtons button {
+  border-radius: 5px;
+  margin-right: 10px;
+}
+
+.orderButtons .selected {
+  background-color: black;
+  color: #fff;
+}
+
+.filterButtons {
+  display: flex;
+}
+
+.filterButtons button {
+  border-radius: 30px;
+  margin-left: 10px;
+}
+
+.filterButtons svg {
+  margin-bottom: 3px;
+}
+
+.dropdown,
+.regionDropdown {
+  position: absolute;
+  top: 180px;
+  background: #fff;
+  border: 1px solid #ccc;
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 10;
+}
+
+.dropdown {
+  width: 100px;
+  right: 17.5%;
+}
+
+.regionDropdown {
+  display: flex;
+}
+
+.regionList {
+  min-width: 150px;
+}
+
+.subRegionList {
+  min-width: 150px;
+}
+
+.dropdown div,
+.regionDropdown div {
+  padding: 10px;
+  cursor: pointer;
+}
+
+.dropdown div:hover,
+.regionList div:hover,
+.subRegionList div:hover {
+  background-color: #f0f0f0;
+}
+
+.postList {
+  display: grid;
+  width: 100%;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 25px;
+  justify-content: space-between;
+  margin-top: 30px;
+  margin-bottom: 10px;
+}

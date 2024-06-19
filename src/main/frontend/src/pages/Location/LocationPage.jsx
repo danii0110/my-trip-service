@@ -98,7 +98,7 @@ const LocationPage = () => {
                     params: {
                         apiUri: "/areaBasedList1",
                         pageNo: "1",
-                        numOfRows: "6",
+                        numOfRows: "4",
                         arrange: "D",
                         contentTypeId: "12",
                         areaCode: areaCode,

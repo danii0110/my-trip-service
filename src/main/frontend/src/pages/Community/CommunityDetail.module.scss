@@ -1,0 +1,262 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 100px;
+}
+
+.imageContainer {
+  margin-top: 50px;
+  display: flex;
+  justify-content: flex-end; /* 컨테이너 내부의 요소들을 오른쪽으로 정렬 */
+  align-items: flex-start;  /* 컨테이너 내부의 요소들을 위쪽으로 정렬 */
+  position: relative;
+}
+
+.imageContainer img {
+  max-width: 100%;
+  max-height: 500px;
+  display: block;
+  flex-shrink: 0;
+}
+
+.form {
+  display: flex;
+  width: 90%;
+  margin-top: 50px;
+  justify-content: center;
+}
+
+.form h3 {
+  font-size: 20px;
+}
+
+.form p {
+  font-size: 18px;
+}
+
+.leftSection {
+  display: flex;
+  width: 70%;
+  flex-direction: column;
+  margin-right: 20px;
+}
+
+.rightSection {
+  flex: 1;
+  display: flex;
+  padding-left: 50px;
+  flex-direction: column;
+}
+
+.titleContainer {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.title {
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.title h3 {
+  font-size: 25px;
+  margin: 0;
+}
+
+.title p {
+  color: gray;
+  font-size: 18px;
+}
+
+.titleButton {
+  display: flex;
+}
+
+.titleButton button{
+  width: 40px;
+  height: 40px;
+  margin-left: 10px;
+  background-color: transparent;
+  border: 2px solid black;
+  border-radius: 5px;
+  padding: 0;
+}
+
+.dateLocationContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.dateLocation {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-bottom: 10px;
+  background-color: #F4F6F7;
+  border: 2px solid black;
+  border-radius: 5px;
+}
+
+.dateLocation .date,
+.dateLocation .location{
+  display: flex;
+  font-size: 20px;
+  padding: 10px;
+}
+
+.dateLocation img {
+  max-height: 25px;
+  max-width: 25px;
+}
+
+.dateLocation p {
+  padding-left: 10px;
+}
+
+.detail {
+  display: flex;
+  flex-direction: column;
+  margin-top: 15px;
+}
+
+.detail textarea {
+  width: 100%;
+  height: 300px;
+  padding: 10px;
+  background-color: #F4F6F7;
+  border: 2px solid black;
+  border-radius: 5px;
+  font-size: 18px;
+  resize: none;
+  overflow: hidden;
+}
+
+.detail textarea:focus {
+  outline: none;
+}
+
+.commentContainer {
+  margin-top: 25px;
+}
+
+.commentInputContainer {
+  display: flex;
+  background-color: #F4F6F7;
+  color: black;
+  border: 2px solid black;
+  border-radius: 5px;
+  width: 100%;
+  font-size: 18px;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.commentInput {
+  background-color: transparent;
+  border: none;
+  padding: 10px;
+  flex: 1;
+  overflow: auto;
+  resize: none;
+}
+
+.commentInput:focus {
+  outline: none;
+}
+
+.commentInputButton {
+  background-color: transparent;
+  border: none;
+  color: gray;
+  align-self: center;
+  padding-right: 20px;
+}
+
+.comments {
+  display: flex;
+  flex-direction: column;
+}
+
+.user {
+  background-color: #F4F6F7;
+  color: black;
+  border: 2px solid black;
+  border-radius: 5px;
+  width: 100%;
+  display: flex;
+  padding: 20px 15px;
+}
+
+.userInfoImg {
+  width: 40px;
+  height: 40px;
+}
+
+.userInfoImg img {
+  width: 100%;
+  height: 100%;
+}
+
+.userInfo {
+  padding-left: 10px;
+}
+
+.userInfo h3 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.userInfo p {
+  color: gray;
+  font-size: 15px;
+}
+
+.plan {
+  flex: 1;
+  margin-top: 40px;
+}
+
+.planDetail {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 200px;
+  background-color: #F4F6F7;
+  color: black;
+  border: 2px solid black;
+  border-radius: 5px;
+  padding: 10px;
+}
+
+.planDetail img {
+  width: 100%;
+}
+
+.planDetail h3 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.planDetail p {
+  font-size: 15px;
+  color: gray;
+}
+
+.planInfo {
+  margin-bottom: 10px;
+}
+
+.goPlan {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+}
+
+.goPlan p {
+  font-size: 13px;
+  color: black;
+}
+

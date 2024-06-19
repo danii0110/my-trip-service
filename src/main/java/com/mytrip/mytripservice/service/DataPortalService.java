@@ -24,7 +24,7 @@ public class DataPortalService {
     @Value("${public-data.korservice.url}")
     private String serviceURL;
 
-    private final WebClient webClient;
+    private final WebClient web;
 
     public DataPortalService() {
         ObjectMapper objectMapper = Jackson2ObjectMapperBuilder.json()
@@ -33,7 +33,7 @@ public class DataPortalService {
                 .featuresToEnable(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT)
                 .build();
         // WebClient 빌더 설정
-        this.webClient = WebClient.builder()
+        this.web = WebClient.builder()
                 .codecs(configurer -> configurer.defaultCodecs().jackson2JsonDecoder(
                         new Jackson2JsonDecoder(objectMapper)))
                 .build();
@@ -134,7 +134,7 @@ public class DataPortalService {
 
     public <T> Mono<T> fetchData(String url, Class<T> responseType) throws UnsupportedEncodingException {
         System.out.println("url: " + url);
-        return webClient.get()
+        return web.get()
                 .uri(url)
                 .retrieve()
                 .bodyToMono(responseType) // JSON을 해당 데이터 모델로 자동 파싱

@@ -1,0 +1,243 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 100px;
+}
+
+.imageContainer {
+  margin-top: 50px;
+  display: flex;
+  justify-content: flex-end; /* 컨테이너 내부의 요소들을 오른쪽으로 정렬 */
+  align-items: flex-start;  /* 컨테이너 내부의 요소들을 위쪽으로 정렬 */
+  position: relative;
+}
+
+.imageContainer img {
+  max-width: 100%;
+  max-height: 500px;
+  display: block;
+  flex-shrink: 0;
+}
+
+.removeButton {
+  background-color: darkgray;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 25px;
+  height: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  z-index: 10;
+  margin-left: -35px; /* 버튼을 이미지의 오른쪽 위로 겹치도록 위치 조정 */
+  margin-top: 10px;
+}
+
+.form {
+  display: flex;
+  width: 90%;
+  margin-top: 50px;
+  justify-content: center;
+}
+
+.form h3 {
+  font-size: 20px;
+}
+
+.form p {
+  font-size: 18px;
+}
+
+.leftSection {
+  display: flex;
+  width: 70%;
+  flex-direction: column;
+  margin-right: 20px;
+}
+
+.rightSection {
+  flex: 1;
+  display: flex;
+  padding-left: 50px;
+  flex-direction: column;
+}
+
+.title h3 {
+  font-size: 25px;
+}
+
+.title input {
+  width: 100%;
+  background-color: #F4F6F7;
+  border: 2px solid black;
+  border-radius: 5px;
+  font-size: 18px;
+}
+
+.titleInput {
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.companionSelection,
+.selection {
+  display: flex;
+  margin-bottom: 10px;
+}
+
+.buttonContainer {
+  display: flex;
+  flex-direction: row;
+}
+
+.genderSelection,
+.ageSelection,
+.companionSelection,
+.detail {
+  display: flex;
+  flex-direction: column;
+  margin-top: 15px;
+}
+
+.ageSelection {
+  padding-left: 30px;
+}
+
+.genderSelection button,
+.ageSelection button,
+.companionSelection button {
+  padding: 5px 10px;
+  margin-right: 5px;
+  cursor: pointer;
+  background-color: #F4F6F7;
+  border: 2px solid black;
+  border-radius: 5px;
+}
+
+.genderSelection button.active,
+.ageSelection button.active,
+.companionSelection button.active {
+  background-color: #D5D7DB;
+  color: black;
+  border-color: black;
+}
+
+.detail textarea {
+  width: 100%;
+  height: 300px;
+  background-color: #F4F6F7;
+  border: 2px solid black;
+  border-radius: 5px;
+  font-size: 18px;
+  resize: none;
+  overflow: hidden;
+}
+
+.detailInput {
+  padding: 10px;
+  height: 200px;
+  resize: none;
+}
+
+.buttons {
+  margin-top: 20px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.buttons button {
+  padding: 5px 45px;
+  margin-right: 10px;
+  cursor: pointer;
+  background-color: #F4F6F7;
+  color: black;
+  border: 2px solid black;
+  border-radius: 5px;
+}
+
+.buttons button:last-child {
+  margin-right: 0;
+}
+
+.dateLocation {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+  background-color: #F4F6F7;
+  border: 2px solid black;
+  border-radius: 5px;
+}
+
+.dateLocation .date,
+.dateLocation .location{
+  display: flex;
+  font-size: 20px;
+  padding: 10px;
+}
+
+.dateLocation img {
+  max-height: 25px;
+  max-width: 25px;
+}
+
+.dateLocation p {
+  padding-left: 10px;
+}
+
+.dateLocation label {
+  margin-bottom: 5px;
+}
+
+.dateLocation input {
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.plan {
+  flex: 1;
+  margin-top: 40px;
+}
+
+.planDetail {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 200px;
+  background-color: #F4F6F7;
+  color: black;
+  border: 2px solid black;
+  border-radius: 5px;
+  padding: 10px;
+}
+
+.planDetail img {
+  width: 100%;
+}
+
+.planDetail h3 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.planDetail p {
+  font-size: 15px;
+  color: gray;
+}
+
+.planInfo {
+  margin-bottom: 10px;
+}
+
+.goPlan {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+}
+
+.goPlan p {
+  font-size: 13px;
+  color: black;
+}

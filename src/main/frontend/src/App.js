@@ -15,7 +15,10 @@ import Profile from './pages/MyTrip/Profile/Profile';
 import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import { loadUser } from './modules/api/Login/userActions';
-import TripPlanPage from './pages/TripPlan/TripPlanPage';
+import CommunityMainPage from "./pages/Community/CommunityMainPage";
+import CommunityPost from "./pages/Community/CommunityPost";
+import CommunityDetail from "./pages/Community/CommunityDetail";
+import CommunityDetailPlan from "./pages/Community/CommunityDetailPlan";
 
 function App() {
   return (
@@ -31,12 +34,15 @@ function App() {
         <Route path='callback/kakao' element={<OAuth2Redirection />} />
         <Route path='my-trip' element={<MyTripMain />} />
         <Route path='my-trip/profile' element={<Profile />} />
-        <Route path='trip-plan' element={<TripPlanPage />}></Route>
-        <Route path='/search' element={<SearchPage />}></Route>
         <Route path='/trip-plan' element={<TripPlanPage />}></Route>
         <Route path='/search' element={<SearchPage />}></Route>
         <Route path='/ai-chat' element={<AIChatPage />}></Route>
         <Route path='/location' element={<LocationPage />}></Route>
+        <Route path='/community' element={<CommunityMainPage />}></Route>
+        <Route path='/community/post' element={<CommunityPost />}></Route>
+        <Route path='/community/edit' element={<CommunityPost />}></Route>
+        <Route path='/community/detail' element={<CommunityDetail />}></Route>
+        <Route path='/community/detail/plan' element={<CommunityDetailPlan />}></Route>
       </Routes>
     </div>
   );

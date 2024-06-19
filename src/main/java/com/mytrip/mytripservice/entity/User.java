@@ -1,31 +1,41 @@
 package com.mytrip.mytripservice.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Table(name = "users")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // 가상 pk 식별번호
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
-    private Long id; // 1 2 3 4 5 6
+    private Long userId;
 
-    @Column(name = "kakao_id", nullable = false, unique = true) // pk 역할
-    private String kakaoId; // 카카오 사용자 ID를 저장할 필드 추가 // dain@kakao.com hs@kakaoo.com
+    @Column(name = "kakao_id", nullable = false, unique = true)
+    private String kakaoId;
 
-    //액세스 토큰 추가 예정
-    //리프레시 토큰 추가 예정
-
-    @Column(name = "user_nickname", length = 255, nullable = false)
+    @Column(name = "nickname", nullable = false)
     private String nickname;
+
+    @Column(name = "access_token")
+    private String accessToken;
+
+    @Column(name = "refresh_token")
+    private String refreshToken;
+
+    @Column(name = "token_expiry_time")
+    private LocalDateTime tokenExpiryTime;
 
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
@@ -37,23 +47,34 @@ public class User {
     @Column(name = "role_type", nullable = false)
     private RoleType roleType;
 
-    @Builder
-    public User(String kakaoId, String nickname, RoleType roleType) {
-        this.kakaoId = kakaoId;
-        this.nickname = nickname;
-        this.createdAt = LocalDateTime.now();
-        this.updatedAt = LocalDateTime.now();
-        this.roleType = roleType;
-    }
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<ChatRoom> chatRooms;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<Plan> plans;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<Community> communities;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<Comment> comments;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<Scrap> scraps;
 
     @PrePersist
     protected void onCreate() {
-        this.createdAt = LocalDateTime.now();
-        this.updatedAt = LocalDateTime.now();
+        createdAt = LocalDateTime.now();
+        updatedAt = LocalDateTime.now();
     }
 
     @PreUpdate
     protected void onUpdate() {
-        this.updatedAt = LocalDateTime.now();
+        updatedAt = LocalDateTime.now();
     }
 }

@@ -1,0 +1,57 @@
+.comment {
+  display: flex;
+  width: 100%;
+  background-color: #F4F6F7;
+  color: black;
+  border: 2px solid black;
+  border-radius: 5px;
+  margin: 10px 0;
+  padding: 10px;
+  justify-content: space-between;
+  position: relative;
+}
+
+.commentDetail h3 {
+  margin: 0;
+}
+
+.commentDetail p{
+  font-size: 15px;
+  color: gray;
+}
+
+.commentButton {
+  position: relative; /* 추가 */
+}
+
+.commentButton button{
+  background-color: transparent;
+  border: none;
+}
+
+.dropdownMenu {
+  position: absolute;
+  right: -70px;
+  top: 3px;
+  background-color: white;
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid black;
+  border-radius: 5px;
+  white-space: nowrap;
+}
+
+.dropdownMenu button {
+  padding: 3px 16px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  text-align: left;
+  width: 100%;
+}
+
+.dropdownMenu button:hover {
+  background-color: #ddd;
+}

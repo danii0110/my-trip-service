@@ -118,7 +118,7 @@ const TripPlanPage = () => {
             const buttons = Object.keys(areaList).map(areacode => {
                 const sigungucode = "0";
                 let locationName = areaList[areacode][sigungucode];
-                locationName = processLocationName(locationName);
+                //locationName = processLocationName(locationName);
                 return (
                     <CircleButton
                         key={locationName}

@@ -4,9 +4,7 @@ import React, {useEffect, useState} from "react";
 import Chat from "./Chat";
 import Sidebar from "./Sidebar";
 import {useLocation, useNavigate, useParams} from "react-router-dom";
-import axios from "axios";
 import {getChatRooms, createChatRoom, deleteChatRoom, renameChatRoom, getMessages, saveMessage, getChatResponse} from './chatApi';
-import message from "./Message";
 
 const AIChatPage = () => {
     const userId = 1; // 하드코딩된 유저 ID, 나중에 로그인 기능으로 대체
@@ -26,21 +24,26 @@ const AIChatPage = () => {
 
     useEffect(() => {
         if (roomId) {
-            setActiveRoom(roomId);
+            const activeRoomDetails = chatRooms.find(room => room.chattingRoomId === Number(roomId));
+            setActiveRoom(activeRoomDetails);
             fetchMessages(roomId);
-            console.log("fetch" + roomId + "messages");
         }
+        // if (roomId) {
+        //     setActiveRoom(roomId);
+        //     fetchMessages(roomId);
+        // }
+        // console.log(`Active room changed to: ${activeRoom}`);
+        // console.log(`Active roomId changed to: ${roomId}`);
     }, [roomId, activeRoom]);
 
     useEffect(() => {
-        console.log("Updated messages:", messages);
-    }, [messages]);
+        console.log("message: " + messages);
+    }, [messages])
 
     const fetchChatRooms = async () => {
         try {
             const response = await getChatRooms(userId);
             setChatRooms(response.data ? response.data : []);
-            console.log(chatRooms);
         } catch (error) {
             console.error("Failed to fetch chat rooms:", error); // 오류 처리 추가
         }
@@ -56,7 +59,6 @@ const AIChatPage = () => {
                 sender: msg.createdBy.toLowerCase()
             }));
             setMessages(fetchedMessages.length > 0 ? fetchedMessages : []);
-            console.log("fetchMessages: " + messages);
         } catch (error) {
             console.error("Failed to fetch chat messages:", error);
         }
@@ -83,11 +85,11 @@ const AIChatPage = () => {
             await deleteChatRoom(roomId);
             await fetchChatRooms();
 
-            console.log(activeRoom +" " + roomId);
-            if (String(activeRoom) === String(roomId)) {
+            if (String(activeRoom.chattingRoomId) === String(roomId)) {
                 setActiveRoom(null);
                 navigate('/ai-chat');
             }
+
         } catch (error) {
             console.error("Failed to delete chat room:", error); // 오류 처리 추가
         }
@@ -122,30 +124,37 @@ const AIChatPage = () => {
         let roomId = room;
         let newRoom = null;
 
+        console.log(messages);
+
         if (!activeRoom) {
             newRoom = await handleCreateChatRoom("New Chat Room");
             roomId = newRoom.chattingRoomId;
+            setActiveRoom(roomId);
             navigate(`/ai-chat?room-id=${roomId}`);
+            fetchMessages(roomId);
+            console.log("newActiveRoom: " + messages);
         }
 
-        console.log(messages);
+
         if (!messages.length) {
             setMessages([]);
         }
 
-        const newMessage = { id: messages.length ? messages.length + 1 : 1, text: text, sender: "user" };
+        const newMessage = { id: messages.length ? messages.length + 1 : 0, text: text, sender: "user" };
         setMessages(prevMessages => [...prevMessages, newMessage]);
 
-        console.log("new: "+messages);
-
-        const botMessage = { id: newMessage.id + 1, text: "답변을 입력 중입니다...", sender: "bot" };
-        setMessages(prevMessages => [...prevMessages, botMessage]);
+        // console.log("newMessage: "+ messages.length + messages);
 
         try {
             await saveMessage(roomId, text, "USER"); // 메시지 저장
         } catch (error) {
             console.error("Failed to save user message:", error); // 오류 처리 추가
         }
+
+        const botMessage = { id: newMessage.id + 1, text: "답변을 입력 중입니다...", sender: "bot" };
+        setMessages(prevMessages => [...prevMessages, botMessage]);
+
+        // console.log("botMessage: " + messages.length +  messages);
 
         await fetchBotResponse(text, async (chunk) => {
             setMessages(prevMessages => prevMessages.map(msg =>
