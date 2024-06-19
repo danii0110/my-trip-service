@@ -24,6 +24,7 @@ import CommunityDetailPlan from "./pages/Community/CommunityDetailPlan";
 // import TripPlanPage from './pages/TripPlan/TripPlanPage';
 import Scrap from './pages/MyTrip/Scrap/Scrap';
 import axios from 'axios';
+import AIChatPage from "./pages/AIChat/AIChatPage";
 
 // Axios 인터셉터 설정
 const refreshToken = async () => {
@@ -70,12 +71,12 @@ function App() {
         <Route path='my-trip/profile' element={<Profile />} />
           
         <Route path='my-trip/scrap' element={<Scrap />} />
-        <Route path='trip-plan' element={<TripPlanPage />}></Route>
+        <Route path='/trip-plan' element={<TripPlanPage />}></Route>
         <Route path='/search' element={<SearchPage />}></Route>
 
-        //<Route path='/trip-plan' element={<TripPlanPage />}></Route>
-        //<Route path='/search' element={<SearchPage />}></Route>
-        {/* <Route path='/ai-chat' element={<AIChatPage />}></Route> */}
+        {/*<Route path='/trip-plan' element={<TripPlanPage />}></Route>*/}
+        {/*<Route path='/search' element={<SearchPage />}></Route>*/}
+        <Route path='/ai-chat' element={<AIChatPage />}></Route>
         <Route path='/location' element={<LocationPage />}></Route>
         <Route path='/community' element={<CommunityMainPage />}></Route>
         <Route path='/community/post' element={<CommunityPost />}></Route>
