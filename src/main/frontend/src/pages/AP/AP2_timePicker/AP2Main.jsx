@@ -1,4 +1,3 @@
-// AP2Main.jsx
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
@@ -63,11 +62,23 @@ const AP2Main = () => {
             onPlaceSelect={handlePlaceSelect}
             selectedPlaces={selectedPlaces}
             currentSelectedDate={currentSelectedDate}
+            onNextButtonClick={handleNextButtonClick}
           />
         );
         break;
       case AP3Left:
-        setCurrentLeftComponent(<AP4Left regionMap={regionMap} />);
+        setCurrentLeftComponent(
+          <AP4Left
+            regionMap={regionMap}
+            selectedDates={selectedDates}
+            selectedTimes={selectedTimes}
+            selectedRegion={selectedRegion}
+            selectedArea={selectedArea}
+            tableData={tableData}
+            selectedPlaces={selectedPlaces}
+            currentSelectedDate={currentSelectedDate}
+          />
+        );
         break;
       default:
         setCurrentLeftComponent(<AP2Left regionMap={regionMap} />);

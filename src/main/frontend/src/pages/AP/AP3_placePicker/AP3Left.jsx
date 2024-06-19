@@ -26,7 +26,7 @@ const AP3Left = ({
   onPlaceSelect,
   selectedPlaces,
   currentSelectedDate,
-  // onNextButtonClick,
+  onNextButtonClick,
 }) => {
   const [selectedCategory, setSelectedCategory] = useState('전체');
   const [searchTerm, setSearchTerm] = useState('');
