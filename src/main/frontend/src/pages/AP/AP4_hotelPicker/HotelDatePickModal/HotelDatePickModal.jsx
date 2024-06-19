@@ -5,7 +5,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import XIcon from '../../../../assets/xIcon.svg';
 import HotelCont from './HotelCont';
 
-const HotelDatePickModal = ({ show, onHide, onConfirm, selectedDates, hotelName }) => {
+const HotelDatePickModal = ({ show, onHide, onConfirm, selectedDates, hotelName, selectedHotel }) => {
   const [hotelData, setHotelData] = useState([]);
   const [selectedHotels, setSelectedHotels] = useState([]);
 
@@ -19,6 +19,7 @@ const HotelDatePickModal = ({ show, onHide, onConfirm, selectedDates, hotelName 
         dataList.push({
           date: `${d.getMonth() + 1}.${d.getDate()}`,
           name: '호텔 선택',
+          image: null,
         });
       }
 
@@ -26,13 +27,14 @@ const HotelDatePickModal = ({ show, onHide, onConfirm, selectedDates, hotelName 
     }
   }, [selectedDates]);
 
-  const handleHotelSelect = (index) => {
-    const updatedHotels = [...selectedHotels];
-    if (updatedHotels.includes(index)) {
-      updatedHotels.splice(updatedHotels.indexOf(index), 1);
-    } else {
-      updatedHotels.push(index);
-    }
+  const handleHotelSelect = (index, hotel) => {
+    const updatedHotels = [...hotelData];
+    updatedHotels[index] = {
+      ...updatedHotels[index],
+      name: hotel.title,
+      image: hotel.firstimage,
+    };
+    setHotelData(updatedHotels);
     setSelectedHotels(updatedHotels);
   };
 
@@ -54,8 +56,9 @@ const HotelDatePickModal = ({ show, onHide, onConfirm, selectedDates, hotelName 
                 key={index}
                 date={hotel.date}
                 hotelName={hotel.name}
-                isSelected={selectedHotels.includes(index)}
-                onSelect={() => handleHotelSelect(index)}
+                image={hotel.image}
+                isSelected={selectedHotels.includes(hotel)}
+                onSelect={() => handleHotelSelect(index, selectedHotel)}
               />
             ))}
           </div>

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import CheckHeader from '../AP2_timePicker/CheckHeader/CheckHeader';
 import styles from './AP4Left.module.scss';
@@ -7,7 +7,7 @@ import { Button } from 'react-bootstrap';
 import HotelBox from './HotelBox';
 import HotelDatePickModal from './HotelDatePickModal/HotelDatePickModal';
 import Pagination from '../../../components/Element/Pagination';
-// import regionMap from '../../../modules/utils/regionMap';
+import regionMap from '../../../modules/utils/regionMap';
 
 const categoryMap = {
   32: '숙박',
@@ -30,7 +30,7 @@ const AP4Left = ({
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const [showHotelDatePickModal, setShowHotelDatePickModal] = useState(false);
-  const [selectedHotelName, setSelectedHotelName] = useState('');
+  const [selectedHotel, setSelectedHotel] = useState(null);
   const [serviceKey, setServiceKey] = useState('');
 
   useEffect(() => {
@@ -106,14 +106,17 @@ const AP4Left = ({
   };
 
   const handleHotelBoxClick = (hotel) => {
-    setSelectedHotelName(hotel.title);
+    setSelectedHotel(hotel);
     setShowHotelDatePickModal(true);
     console.log('Hotel selected:', hotel); // 추가된 로그
     onHotelSelect(hotel);
   };
 
-  const handleModalClose = () => {
+  const handleModalClose = (selectedHotel) => {
     setShowHotelDatePickModal(false);
+    if (selectedHotel) {
+      setSelectedHotel(selectedHotel);
+    }
   };
 
   const filteredPlaces = placesData.filter((place) => {
@@ -154,6 +157,7 @@ const AP4Left = ({
                   address={place.addr1}
                   image={place.firstimage}
                   onAddClick={() => handleHotelBoxClick(place)}
+                  selectedHotel={selectedHotel} // 선택된 호텔 정보 전달
                 />
               ))
             ) : (
@@ -168,7 +172,8 @@ const AP4Left = ({
         onHide={handleModalClose}
         onConfirm={handleModalClose}
         selectedDates={selectedDates}
-        hotelName={selectedHotelName}
+        hotelName={selectedHotel?.title}
+        selectedHotel={selectedHotel} // 선택된 호텔 정보 전달
       />
       <div>
         <h3>전달된 데이터 확인:</h3>
