@@ -84,6 +84,23 @@ const TripPlanPage = () => {
     );
   }
 
+
+    const Carousel = () => {
+        const renderLocationButtons = () => {
+            const buttons = Object.keys(areaList).map(areacode => {
+                const sigungucode = "0";
+                let locationName = areaList[areacode][sigungucode];
+                //locationName = processLocationName(locationName);
+                return (
+                    <CircleButton
+                        key={locationName}
+                        name={locationName}
+                        imageSrc={getImageName(locationName)}
+                        onClick={() => handleContent(areacode, sigungucode)}
+                    />
+                );
+            }).filter(button => button.props.name); // 이름이 있는 버튼만 반환
+
   function GreenButton(props) {
     return (
       <div>
@@ -93,6 +110,7 @@ const TripPlanPage = () => {
       </div>
     );
   }
+
 
   const processLocationName = (name) => {
     // 1. '도'를 포함하면 '도' 삭제
