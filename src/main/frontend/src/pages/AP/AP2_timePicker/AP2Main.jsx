@@ -62,7 +62,6 @@ const AP2Main = () => {
             onPlaceSelect={handlePlaceSelect}
             selectedPlaces={selectedPlaces}
             currentSelectedDate={currentSelectedDate}
-            onNextButtonClick={handleNextButtonClick}
           />
         );
         break;
@@ -77,6 +76,7 @@ const AP2Main = () => {
             tableData={tableData}
             selectedPlaces={selectedPlaces}
             currentSelectedDate={currentSelectedDate}
+            openHotelModal={handleHotelClick} // 추가된 부분
           />
         );
         break;
@@ -185,7 +185,9 @@ const AP2Main = () => {
             onDateChange={handleDateChange}
           />
         )}
-        {isHotelModalVisible && currentLeftComponent.type === AP4Left && <HotelModalBox />}
+        {isHotelModalVisible && currentLeftComponent.type === AP4Left && (
+          <HotelModalBox selectedDates={selectedDates} />
+        )}
         <div className={styles.buttonContainer}>
           {currentLeftComponent.type === AP3Left && (
             <Button className={styles.modalBtn} onClick={handleClick}>
@@ -252,6 +254,7 @@ const AP2Main = () => {
           onPlaceSelect: handlePlaceSelect,
           selectedPlaces,
           currentSelectedDate,
+          openHotelModal: handleHotelClick, // 추가된 부분
         })}
         {renderNextButton()}
       </div>
