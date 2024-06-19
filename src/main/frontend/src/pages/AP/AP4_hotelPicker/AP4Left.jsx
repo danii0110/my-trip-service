@@ -1,10 +1,10 @@
-import React from 'react';
-import styles from './AP4Left.module.scss';
+import { useState } from 'react';
 import CheckHeader from '../AP2_timePicker/CheckHeader/CheckHeader';
+import styles from './AP4Left.module.scss';
 import SearchBar from '../AP3_placePicker/SearchBar/SearchBar';
 import { Button } from 'react-bootstrap';
 import HotelBox from './HotelBox';
-import { useState } from 'react';
+import HotelDatePickModal from './HotelDatePickModal/HotelDatePickModal';
 
 const placesData = [
   { placeName: '롯데 호텔 제주', category: '숙소', address: '대한민국 제주특별자치도 서귀포시 중문관광로 72번길 35' },
@@ -31,16 +31,32 @@ const placesData = [
   { placeName: '호텔 난타 제주', category: '숙소', address: '대한민국 제주특별자치도 제주시 1100로 474' },
 ];
 
-const AP4Left = ({ regionMap, selectedDates, selectedRegion, selectedArea, setHotelName, openHotelDatePickModal }) => {
+const AP4Left = ({
+  selectedDates,
+  selectedTimes,
+  selectedRegion,
+  selectedArea,
+  tableData,
+  selectedPlaces,
+  currentSelectedDate,
+  regionMap,
+  openHotelModal,
+}) => {
   const [searchTerm, setSearchTerm] = useState('');
+  const [showHotelDatePickModal, setShowHotelDatePickModal] = useState(false);
+  const [selectedHotelName, setSelectedHotelName] = useState('');
 
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
   };
 
-  const handleHotelBoxClick = (placeName) => {
-    setHotelName(placeName);
-    openHotelDatePickModal();
+  const handleHotelBoxClick = (hotelName) => {
+    setSelectedHotelName(hotelName);
+    setShowHotelDatePickModal(true);
+  };
+
+  const handleModalClose = () => {
+    setShowHotelDatePickModal(false);
   };
 
   const filteredPlaces = placesData.filter((place) => {
@@ -48,18 +64,17 @@ const AP4Left = ({ regionMap, selectedDates, selectedRegion, selectedArea, setHo
     return matchesSearch;
   });
 
+  const safeCurrentSelectedDate = currentSelectedDate || '';
+  const safeSelectedTimes = selectedTimes || {};
+
   return (
     <>
       <div className={styles.container}>
         <div className={styles.left}>
           <CheckHeader progress={100} firstColor='#aab1b8' secondColor='#aab1b8' thirdColor='#000000' />
           <div className={styles.leftHeader}>
-            <div className={styles.titleArea}>
-              {selectedRegion !== undefined && selectedRegion !== null
-                ? `${regionMap[selectedRegion]} ${selectedArea}`
-                : '지역 정보 없음'}
-            </div>
-            <Button id={styles.btnCommon} className={styles.reserveBtn}>
+            <div className={styles.titleArea}>{`${regionMap[selectedRegion]} ${selectedArea}`}</div>
+            <Button id={styles.btnCommon} className={styles.reserveBtn} onClick={openHotelModal}>
               숙소 예매
             </Button>
           </div>
@@ -80,7 +95,7 @@ const AP4Left = ({ regionMap, selectedDates, selectedRegion, selectedArea, setHo
                   placeName={place.placeName}
                   category={place.category}
                   address={place.address}
-                  onAddClick={handleHotelBoxClick}
+                  onAddClick={() => handleHotelBoxClick(place.placeName)}
                 />
               ))
             ) : (
@@ -88,6 +103,28 @@ const AP4Left = ({ regionMap, selectedDates, selectedRegion, selectedArea, setHo
             )}
           </div>
         </div>
+      </div>
+      <HotelDatePickModal
+        show={showHotelDatePickModal}
+        onHide={handleModalClose}
+        onConfirm={handleModalClose}
+        selectedDates={selectedDates}
+        hotelName={selectedHotelName}
+      />
+      <div>
+        <h3>전달된 데이터 확인:</h3>
+        <p>Region: {selectedRegion !== undefined && selectedRegion !== null ? regionMap[selectedRegion] : '없음'}</p>
+        <p>Area: {selectedArea}</p>
+        <p>Start Date: {selectedDates.start ? selectedDates.start.toLocaleDateString() : '없음'}</p>
+        <p>End Date: {selectedDates.end ? selectedDates.end.toLocaleDateString() : '없음'}</p>
+        <p>
+          Time:{' '}
+          {`${safeSelectedTimes[safeCurrentSelectedDate]?.start || ''} ~ ${
+            safeSelectedTimes[safeCurrentSelectedDate]?.end || ''
+          }`}
+        </p>
+        <p>Table Data: {JSON.stringify(tableData)}</p>
+        <p>Selected Places: {JSON.stringify(selectedPlaces)}</p>
       </div>
     </>
   );
