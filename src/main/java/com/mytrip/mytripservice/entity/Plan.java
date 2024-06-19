@@ -1,6 +1,7 @@
 // Plan.java
 package com.mytrip.mytripservice.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
@@ -15,6 +16,7 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @Table(name = "plans")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "communities", "scraps"}) //추가
 public class Plan {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,6 +25,7 @@ public class Plan {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
+    @JsonIgnore //추가
     private User user;
 
     @Column(name = "title", nullable = false)
@@ -50,4 +53,10 @@ public class Plan {
 
     @OneToMany(mappedBy = "plan", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<MoveTime> moveTimes;
+
+    @OneToMany(mappedBy = "plan", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Community> communities;
+
+    @OneToMany(mappedBy = "plan", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Scrap> scraps;
 }
