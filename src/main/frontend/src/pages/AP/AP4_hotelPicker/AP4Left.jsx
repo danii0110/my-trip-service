@@ -7,7 +7,7 @@ import { Button } from 'react-bootstrap';
 import HotelBox from './HotelBox';
 import HotelDatePickModal from './HotelDatePickModal/HotelDatePickModal';
 import Pagination from '../../../components/Element/Pagination';
-import regionMap from '../../../modules/utils/regionMap';
+// import regionMap from '../../../modules/utils/regionMap';
 
 const categoryMap = {
   32: '숙박',
@@ -23,6 +23,7 @@ const AP4Left = ({
   currentSelectedDate,
   regionMap,
   openHotelModal,
+  onHotelSelect, // 호텔 선택 함수
 }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [placesData, setPlacesData] = useState([]);
@@ -104,9 +105,11 @@ const AP4Left = ({
     setSearchTerm(e.target.value);
   };
 
-  const handleHotelBoxClick = (hotelName) => {
-    setSelectedHotelName(hotelName);
+  const handleHotelBoxClick = (hotel) => {
+    setSelectedHotelName(hotel.title);
     setShowHotelDatePickModal(true);
+    console.log('Hotel selected:', hotel); // 추가된 로그
+    onHotelSelect(hotel);
   };
 
   const handleModalClose = () => {
@@ -150,7 +153,7 @@ const AP4Left = ({
                   category={categoryMap[32]}
                   address={place.addr1}
                   image={place.firstimage}
-                  onAddClick={() => handleHotelBoxClick(place.title)}
+                  onAddClick={() => handleHotelBoxClick(place)}
                 />
               ))
             ) : (
