@@ -1,9 +1,9 @@
 .container {
-  width: 30%; // 한 줄에 3개씩 배치되도록 설정
+  width: 30%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 25px 0; // 세로 간격 조정
+  margin: 25px 0;
 }
 .date {
   background-color: #8ea05d;
@@ -22,12 +22,16 @@
   padding: none;
   margin: 0 0 10px 0;
   background-color: transparent;
-  cursor: pointer; // 추가: 클릭할 수 있도록 커서 스타일 추가
+  cursor: pointer;
 }
 .addBtnIcon {
-  width: 80px; // 추가: 아이콘 크기 설정
-  height: 80px; // 추가: 아이콘 크기 설정
+  width: 80px;
+  height: 80px;
 }
 .hotelName {
   font-size: 18px;
+}
+.selected {
+  background-color: #8ea05d;
+  border-radius: 50%;
 }

@@ -1,3 +1,4 @@
+// AP2Main.jsx
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
@@ -14,6 +15,7 @@ import ConfirmModal from '../AP4_hotelPicker/ConfirmModal/ConfirmModal';
 import LeftArrowIcon from '../../../assets/leftArrow.svg';
 import RightArrowIcon from '../../../assets/rightArrow.svg';
 import regionMap from '../../../modules/utils/regionMap';
+import HotelDatePickModal from '../AP4_hotelPicker/HotelDatePickModal/HotelDatePickModal';
 
 const AP2Main = () => {
   const [showDatePickerModal, setShowDatePickerModal] = useState(true);
@@ -21,7 +23,9 @@ const AP2Main = () => {
   const [currentLeftComponent, setCurrentLeftComponent] = useState(<AP2Left />);
   const [isPlaceModalVisible, setIsPlaceModalVisible] = useState(false);
   const [isHotelModalVisible, setIsHotelModalVisible] = useState(false);
+  const [isHotelDatePickModalVisible, setIsHotelDatePickModalVisible] = useState(false);
   const [isLeftArrow, setIsLeftArrow] = useState(true);
+  const [hotelName, setHotelName] = useState('');
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -70,13 +74,10 @@ const AP2Main = () => {
           <AP4Left
             regionMap={regionMap}
             selectedDates={selectedDates}
-            selectedTimes={selectedTimes}
             selectedRegion={selectedRegion}
             selectedArea={selectedArea}
-            tableData={tableData}
-            selectedPlaces={selectedPlaces}
-            currentSelectedDate={currentSelectedDate}
-            openHotelModal={handleHotelClick} // 추가된 부분
+            setHotelName={setHotelName}
+            openHotelDatePickModal={() => setIsHotelDatePickModalVisible(true)}
           />
         );
         break;
@@ -88,13 +89,11 @@ const AP2Main = () => {
   const handlePlaceSelect = (placeId, place, isSelected) => {
     setSelectedPlaces((prevPlaces) => {
       const updatedPlaces = { ...prevPlaces };
-      console.log(`Place selection changed. currentSelectedDate: ${currentSelectedDateRef.current}`); // ref 사용
       if (isSelected) {
         if (!updatedPlaces[currentSelectedDateRef.current]) {
           updatedPlaces[currentSelectedDateRef.current] = [];
         }
         updatedPlaces[currentSelectedDateRef.current].push(place);
-        console.log(`Place added on ${currentSelectedDateRef.current}:`, updatedPlaces[currentSelectedDateRef.current]);
       } else {
         if (updatedPlaces[currentSelectedDateRef.current]) {
           updatedPlaces[currentSelectedDateRef.current] = updatedPlaces[currentSelectedDateRef.current].filter(
@@ -103,13 +102,8 @@ const AP2Main = () => {
           if (updatedPlaces[currentSelectedDateRef.current].length === 0) {
             delete updatedPlaces[currentSelectedDateRef.current];
           }
-          console.log(
-            `Place removed from ${currentSelectedDateRef.current}:`,
-            updatedPlaces[currentSelectedDateRef.current]
-          );
         }
       }
-      console.log('Updated Places:', updatedPlaces);
       return updatedPlaces;
     });
   };
@@ -151,7 +145,6 @@ const AP2Main = () => {
 
   const handleDateChange = (newDate) => {
     const formattedDate = new Date(newDate).toLocaleDateString('ko-KR');
-    console.log(`Date changed to: ${formattedDate}`);
     setCurrentSelectedDate(formattedDate);
   };
 
@@ -218,7 +211,6 @@ const AP2Main = () => {
   };
 
   const handleCloseDatePicker = (data) => {
-    console.log('handleCloseDatePicker calling with:', data);
     setShowDatePickerModal(false);
     if (data.selectedDates.start && data.selectedDates.end) {
       setSelectedDates(data.selectedDates);
@@ -240,6 +232,11 @@ const AP2Main = () => {
     }
   };
 
+  const handleSelectHotels = (selectedHotels) => {
+    console.log('Selected Hotels:', selectedHotels);
+    setIsHotelDatePickModalVisible(false);
+  };
+
   return (
     <div className={styles.container}>
       <div className={styles.leftCont}>
@@ -254,13 +251,19 @@ const AP2Main = () => {
           onPlaceSelect: handlePlaceSelect,
           selectedPlaces,
           currentSelectedDate,
-          openHotelModal: handleHotelClick, // 추가된 부분
         })}
         {renderNextButton()}
       </div>
       <div className={styles.rightCont}>{renderRightComponent()}</div>
       <DatePickerModal show={showDatePickerModal} onHide={handleCloseDatePicker} />
       <ConfirmModal show={showConfirmModal} onHide={() => setShowConfirmModal(false)} onConfirm={handleConfirm} />
+      <HotelDatePickModal
+        show={isHotelDatePickModalVisible}
+        onHide={() => setIsHotelDatePickModalVisible(false)}
+        onConfirm={handleSelectHotels}
+        selectedDates={selectedDates}
+        hotelName={hotelName}
+      />
     </div>
   );
 };

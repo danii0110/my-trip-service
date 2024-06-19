@@ -8,7 +8,7 @@ const HotelBox = ({ placeName, category, address, onAddClick }) => {
   const handleClick = () => {
     setIsChecked(!isChecked);
     if (!isChecked) {
-      onAddClick();
+      onAddClick(placeName);
     }
   };
 
