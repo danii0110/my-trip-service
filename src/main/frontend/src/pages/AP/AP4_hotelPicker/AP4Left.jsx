@@ -1,9 +1,9 @@
-import styles from './AP4Left.module.scss';
+import { useState, useEffect } from 'react';
 import CheckHeader from '../AP2_timePicker/CheckHeader/CheckHeader';
+import styles from './AP4Left.module.scss';
 import SearchBar from '../AP3_placePicker/SearchBar/SearchBar';
 import { Button } from 'react-bootstrap';
 import HotelBox from './HotelBox';
-import { useState } from 'react';
 import HotelDatePickModal from './HotelDatePickModal/HotelDatePickModal';
 
 const placesData = [
@@ -31,7 +31,16 @@ const placesData = [
   { placeName: '호텔 난타 제주', category: '숙소', address: '대한민국 제주특별자치도 제주시 1100로 474' },
 ];
 
-const AP4Left = () => {
+const AP4Left = ({
+  selectedDates,
+  selectedTimes,
+  selectedRegion,
+  selectedArea,
+  tableData,
+  selectedPlaces,
+  currentSelectedDate,
+  regionMap,
+}) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [showHotelDatePickModal, setShowHotelDatePickModal] = useState(false);
 
@@ -52,18 +61,25 @@ const AP4Left = () => {
     return matchesSearch;
   });
 
+  const safeCurrentSelectedDate = currentSelectedDate || '';
+  const safeSelectedTimes = selectedTimes || {};
+
   return (
     <>
       <div className={styles.container}>
         <div className={styles.left}>
           <CheckHeader progress={100} firstColor='#aab1b8' secondColor='#aab1b8' thirdColor='#000000' />
           <div className={styles.leftHeader}>
-            <div className={styles.titleArea}>광주 동구</div>
+            <div className={styles.titleArea}>{`${regionMap[selectedRegion]} ${selectedArea}`}</div>
             <Button id={styles.btnCommon} className={styles.reserveBtn}>
               숙소 예매
             </Button>
           </div>
-          <div className={styles.showDate}>24.04.25(목) - 24.04.29(월)</div>
+          <div className={styles.showDate}>
+            {selectedDates.start && selectedDates.end
+              ? `${selectedDates.start.toLocaleDateString()} - ${selectedDates.end.toLocaleDateString()}`
+              : '날짜를 선택하세요'}
+          </div>
           <div className={styles.searchBar}>
             <SearchBar onChange={handleSearchChange} />
           </div>
@@ -86,6 +102,21 @@ const AP4Left = () => {
         </div>
       </div>
       <HotelDatePickModal show={showHotelDatePickModal} onHide={handleModalClose} onConfirm={handleModalClose} />
+      <div>
+        <h3>전달된 데이터 확인:</h3>
+        <p>Region: {selectedRegion !== undefined && selectedRegion !== null ? regionMap[selectedRegion] : '없음'}</p>
+        <p>Area: {selectedArea}</p>
+        <p>Start Date: {selectedDates.start ? selectedDates.start.toLocaleDateString() : '없음'}</p>
+        <p>End Date: {selectedDates.end ? selectedDates.end.toLocaleDateString() : '없음'}</p>
+        <p>
+          Time:{' '}
+          {`${safeSelectedTimes[safeCurrentSelectedDate]?.start || ''} ~ ${
+            safeSelectedTimes[safeCurrentSelectedDate]?.end || ''
+          }`}
+        </p>
+        <p>Table Data: {JSON.stringify(tableData)}</p>
+        <p>Selected Places: {JSON.stringify(selectedPlaces)}</p>
+      </div>
     </>
   );
 };
