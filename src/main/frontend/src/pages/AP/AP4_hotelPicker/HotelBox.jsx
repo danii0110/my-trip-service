@@ -1,8 +1,8 @@
+import { useState, useEffect } from 'react';
 import styles from './HotelBox.module.scss';
 import AddBtn from '../AP3_placePicker/AddBtn';
-import { useState } from 'react';
 
-const HotelBox = ({ placeName, category, address, onAddClick }) => {
+const HotelBox = ({ placeName, category, address, image, onAddClick }) => {
   const [isChecked, setIsChecked] = useState(false);
 
   const handleClick = () => {
@@ -14,7 +14,7 @@ const HotelBox = ({ placeName, category, address, onAddClick }) => {
 
   return (
     <div className={styles.container}>
-      <div className={styles.placeImg}></div>
+      <div className={styles.placeImg} style={{ backgroundImage: `url(${image})` }}></div>
       <div className={styles.detailsCont}>
         <div className={styles.placeName}>{placeName}</div>
         <div className={styles.subDetails}>

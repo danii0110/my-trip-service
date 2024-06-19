@@ -1,52 +1,128 @@
-import React from 'react';
-import styles from './AP4Left.module.scss';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 import CheckHeader from '../AP2_timePicker/CheckHeader/CheckHeader';
+import styles from './AP4Left.module.scss';
 import SearchBar from '../AP3_placePicker/SearchBar/SearchBar';
 import { Button } from 'react-bootstrap';
 import HotelBox from './HotelBox';
-import { useState } from 'react';
+import HotelDatePickModal from './HotelDatePickModal/HotelDatePickModal';
+import Pagination from '../../../components/Element/Pagination';
+// import regionMap from '../../../modules/utils/regionMap';
 
-const placesData = [
-  { placeName: '롯데 호텔 제주', category: '숙소', address: '대한민국 제주특별자치도 서귀포시 중문관광로 72번길 35' },
-  {
-    placeName: '해비치 호텔 & 리조트 제주',
-    category: '숙소',
-    address: '대한민국 제주특별자치도 서귀포시 표선면 민속해안로 537',
-  },
-  { placeName: '라마다 프라자 제주 호텔', category: '숙소', address: '대한민국 제주특별자치도 제주시 탑동로 66' },
-  { placeName: '메종 글래드 제주', category: '숙소', address: '대한민국 제주특별자치도 제주시 연동 263-15' },
-  { placeName: '그랜드 하얏트 제주', category: '숙소', address: '대한민국 제주특별자치도 제주시 노형동 102-8' },
-  { placeName: '켄싱턴 제주 호텔', category: '숙소', address: '대한민국 제주특별자치도 서귀포시 중문관광로72번길 60' },
-  {
-    placeName: '휘닉스 제주 섭지코지',
-    category: '숙소',
-    address: '대한민국 제주특별자치도 서귀포시 성산읍 섭지코지로 107',
-  },
-  { placeName: '롯데 시티 호텔 제주', category: '숙소', address: '대한민국 제주특별자치도 제주시 도령로 83' },
-  {
-    placeName: '제주 신화월드',
-    category: '숙소',
-    address: '대한민국 제주특별자치도 서귀포시 안덕면 신화역사로304번길 38',
-  },
-  { placeName: '호텔 난타 제주', category: '숙소', address: '대한민국 제주특별자치도 제주시 1100로 474' },
-];
+const categoryMap = {
+  32: '숙박',
+};
 
-const AP4Left = ({ regionMap, selectedDates, selectedRegion, selectedArea, setHotelName, openHotelDatePickModal }) => {
+const AP4Left = ({
+  selectedDates,
+  selectedTimes,
+  selectedRegion,
+  selectedArea,
+  tableData,
+  selectedPlaces,
+  currentSelectedDate,
+  regionMap,
+  openHotelModal,
+  onHotelSelect, // 호텔 선택 함수
+}) => {
   const [searchTerm, setSearchTerm] = useState('');
+  const [placesData, setPlacesData] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
+  const [showHotelDatePickModal, setShowHotelDatePickModal] = useState(false);
+  const [selectedHotelName, setSelectedHotelName] = useState('');
+  const [serviceKey, setServiceKey] = useState('');
+
+  useEffect(() => {
+    const fetchServiceKey = async () => {
+      try {
+        const response = await axios.get('/api/serviceKey');
+        setServiceKey(response.data);
+      } catch (error) {
+        console.error('Error fetching service key:', error);
+      }
+    };
+
+    fetchServiceKey();
+  }, []);
+
+  const fetchAreaName = async () => {
+    try {
+      const response = await axios.get('/area/areaCode');
+      const areaSigunguMap = response.data.reduce((acc, curr) => {
+        if (!acc[curr.areacode]) {
+          acc[curr.areacode] = {};
+        }
+        acc[curr.areacode][curr.sigungucode || '0'] = curr.name;
+        return acc;
+      }, {});
+      return areaSigunguMap;
+    } catch (error) {
+      console.error('Error fetching area names:', error);
+      return {};
+    }
+  };
+
+  useEffect(() => {
+    const fetchPlacesData = async () => {
+      if (!serviceKey) return;
+
+      try {
+        const areaMap = await fetchAreaName();
+        const sigunguCode = Object.keys(areaMap[selectedRegion]).find(
+          (key) => areaMap[selectedRegion][key] === selectedArea
+        );
+
+        const response = await axios.get('/data/list', {
+          params: {
+            apiUri: '/areaBasedList1',
+            areaCode: selectedRegion,
+            sigunguCode: sigunguCode,
+            numOfRows: '10',
+            pageNo: currentPage,
+            MobileOS: 'ETC',
+            MobileApp: 'AppTest',
+            _type: 'json',
+            serviceKey: serviceKey,
+            contentTypeId: 32, // 숙박 정보만 가져오기 위해 contentTypeId 추가
+          },
+        });
+
+        const items = response.data.response.body.items?.item || [];
+        setPlacesData(items);
+        setTotalPages(Math.ceil(response.data.response.body.totalCount / 10));
+      } catch (error) {
+        console.error('Error fetching places data:', error);
+      }
+    };
+
+    if (selectedRegion && selectedArea && serviceKey) {
+      fetchPlacesData();
+    }
+  }, [selectedRegion, selectedArea, currentPage, serviceKey]);
 
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
   };
 
-  const handleHotelBoxClick = (placeName) => {
-    setHotelName(placeName);
-    openHotelDatePickModal();
+  const handleHotelBoxClick = (hotel) => {
+    setSelectedHotelName(hotel.title);
+    setShowHotelDatePickModal(true);
+    console.log('Hotel selected:', hotel); // 추가된 로그
+    onHotelSelect(hotel);
+  };
+
+  const handleModalClose = () => {
+    setShowHotelDatePickModal(false);
   };
 
   const filteredPlaces = placesData.filter((place) => {
-    const matchesSearch = searchTerm === '' || place.placeName.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesSearch = searchTerm === '' || place.title.toLowerCase().includes(searchTerm.toLowerCase());
     return matchesSearch;
   });
+
+  const safeCurrentSelectedDate = currentSelectedDate || '';
+  const safeSelectedTimes = selectedTimes || {};
 
   return (
     <>
@@ -54,12 +130,8 @@ const AP4Left = ({ regionMap, selectedDates, selectedRegion, selectedArea, setHo
         <div className={styles.left}>
           <CheckHeader progress={100} firstColor='#aab1b8' secondColor='#aab1b8' thirdColor='#000000' />
           <div className={styles.leftHeader}>
-            <div className={styles.titleArea}>
-              {selectedRegion !== undefined && selectedRegion !== null
-                ? `${regionMap[selectedRegion]} ${selectedArea}`
-                : '지역 정보 없음'}
-            </div>
-            <Button id={styles.btnCommon} className={styles.reserveBtn}>
+            <div className={styles.titleArea}>{`${regionMap[selectedRegion]} ${selectedArea}`}</div>
+            <Button id={styles.btnCommon} className={styles.reserveBtn} onClick={openHotelModal}>
               숙소 예매
             </Button>
           </div>
@@ -74,20 +146,44 @@ const AP4Left = ({ regionMap, selectedDates, selectedRegion, selectedArea, setHo
           <div className={styles.categoryBtn}>추천 숙소</div>
           <div className={styles.places}>
             {filteredPlaces.length > 0 ? (
-              filteredPlaces.map((place, index) => (
+              filteredPlaces.map((place) => (
                 <HotelBox
-                  key={index}
-                  placeName={place.placeName}
-                  category={place.category}
-                  address={place.address}
-                  onAddClick={handleHotelBoxClick}
+                  key={place.contentid}
+                  placeName={place.title}
+                  category={categoryMap[32]}
+                  address={place.addr1}
+                  image={place.firstimage}
+                  onAddClick={() => handleHotelBoxClick(place)}
                 />
               ))
             ) : (
               <div className={styles.noResults}>검색 결과가 없습니다.</div>
             )}
           </div>
+          <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} />
         </div>
+      </div>
+      <HotelDatePickModal
+        show={showHotelDatePickModal}
+        onHide={handleModalClose}
+        onConfirm={handleModalClose}
+        selectedDates={selectedDates}
+        hotelName={selectedHotelName}
+      />
+      <div>
+        <h3>전달된 데이터 확인:</h3>
+        <p>Region: {selectedRegion !== undefined && selectedRegion !== null ? regionMap[selectedRegion] : '없음'}</p>
+        <p>Area: {selectedArea}</p>
+        <p>Start Date: {selectedDates.start ? selectedDates.start.toLocaleDateString() : '없음'}</p>
+        <p>End Date: {selectedDates.end ? selectedDates.end.toLocaleDateString() : '없음'}</p>
+        <p>
+          Time:{' '}
+          {`${safeSelectedTimes[safeCurrentSelectedDate]?.start || ''} ~ ${
+            safeSelectedTimes[safeCurrentSelectedDate]?.end || ''
+          }`}
+        </p>
+        <p>Table Data: {JSON.stringify(tableData)}</p>
+        <p>Selected Places: {JSON.stringify(selectedPlaces)}</p>
       </div>
     </>
   );

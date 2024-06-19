@@ -1,4 +1,3 @@
-// AP2Main.jsx
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
@@ -37,6 +36,7 @@ const AP2Main = () => {
   const [tableData, setTableData] = useState([]);
   const [selectedPlaces, setSelectedPlaces] = useState({});
   const [selectedTimes, setSelectedTimes] = useState({});
+  const [selectedHotels, setSelectedHotels] = useState([]); // AP4Left에서 선택된 호텔 정보를 저장하는 상태
   const [currentSelectedDate, setCurrentSelectedDate] = useState(
     selectedDates.start ? new Date(selectedDates.start).toLocaleDateString('ko-KR') : ''
   );
@@ -78,6 +78,7 @@ const AP2Main = () => {
             selectedArea={selectedArea}
             setHotelName={setHotelName}
             openHotelDatePickModal={() => setIsHotelDatePickModalVisible(true)}
+            onHotelSelect={handleHotelSelect} // 호텔 선택 함수 전달
           />
         );
         break;
@@ -105,6 +106,18 @@ const AP2Main = () => {
         }
       }
       return updatedPlaces;
+    });
+  };
+
+  const handleHotelSelect = (hotel) => {
+    setSelectedHotels((prevSelectedHotels) => {
+      const isAlreadySelected = prevSelectedHotels.some((h) => h.contentid === hotel.contentid);
+      if (isAlreadySelected) {
+        return prevSelectedHotels.filter((h) => h.contentid !== hotel.contentid);
+      } else {
+        console.log('Adding hotel:', hotel); // 추가된 로그
+        return [...prevSelectedHotels, hotel];
+      }
     });
   };
 
@@ -202,7 +215,7 @@ const AP2Main = () => {
           )}
         </div>
         {currentLeftComponent.type === AP3Left || currentLeftComponent.type === AP4Left ? (
-          <PlaceKakaoMap selectedPlaces={selectedPlaces[currentSelectedDate] || []} />
+          <PlaceKakaoMap selectedPlaces={selectedPlaces[currentSelectedDate] || []} selectedHotels={selectedHotels} />
         ) : (
           <KakakoMap selectedRegion={selectedRegion} selectedArea={selectedArea} regionMap={regionMap} />
         )}
@@ -251,6 +264,7 @@ const AP2Main = () => {
           onPlaceSelect: handlePlaceSelect,
           selectedPlaces,
           currentSelectedDate,
+          onHotelSelect: handleHotelSelect, // 호텔 선택 함수 전달
         })}
         {renderNextButton()}
       </div>
