@@ -44,12 +44,14 @@ const AP4Left = ({
 }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [showHotelDatePickModal, setShowHotelDatePickModal] = useState(false);
+  const [selectedHotelName, setSelectedHotelName] = useState('');
 
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
   };
 
-  const handleHotelBoxClick = () => {
+  const handleHotelBoxClick = (hotelName) => {
+    setSelectedHotelName(hotelName);
     setShowHotelDatePickModal(true);
   };
 
@@ -93,7 +95,7 @@ const AP4Left = ({
                   placeName={place.placeName}
                   category={place.category}
                   address={place.address}
-                  onAddClick={handleHotelBoxClick}
+                  onAddClick={() => handleHotelBoxClick(place.placeName)}
                 />
               ))
             ) : (
@@ -102,7 +104,13 @@ const AP4Left = ({
           </div>
         </div>
       </div>
-      <HotelDatePickModal show={showHotelDatePickModal} onHide={handleModalClose} onConfirm={handleModalClose} />
+      <HotelDatePickModal
+        show={showHotelDatePickModal}
+        onHide={handleModalClose}
+        onConfirm={handleModalClose}
+        selectedDates={selectedDates}
+        hotelName={selectedHotelName}
+      />
       <div>
         <h3>전달된 데이터 확인:</h3>
         <p>Region: {selectedRegion !== undefined && selectedRegion !== null ? regionMap[selectedRegion] : '없음'}</p>
