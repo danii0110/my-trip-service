@@ -19,7 +19,7 @@ const HotelModal = ({ selectedDates = { start: null, end: null } }) => {
           duration: `${d.toLocaleDateString('ko-KR').replaceAll('. ', '.')}-${nextDay
             .toLocaleDateString('ko-KR')
             .replaceAll('. ', '.')
-            .replace('.', '')}`,
+            .replace('.', '.')}`,
           placeName: '숙소를 추가해주세요.',
         });
       }

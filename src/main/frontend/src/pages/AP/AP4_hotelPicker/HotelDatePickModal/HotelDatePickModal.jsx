@@ -7,6 +7,7 @@ import HotelCont from './HotelCont';
 
 const HotelDatePickModal = ({ show, onHide, onConfirm, selectedDates, hotelName }) => {
   const [hotelData, setHotelData] = useState([]);
+  const [selectedHotels, setSelectedHotels] = useState([]);
 
   useEffect(() => {
     if (selectedDates.start && selectedDates.end) {
@@ -22,9 +23,23 @@ const HotelDatePickModal = ({ show, onHide, onConfirm, selectedDates, hotelName 
       }
 
       setHotelData(dataList);
-      console.log('Hotel Data List:', dataList); // 추가된 콘솔 로그
     }
   }, [selectedDates]);
+
+  const handleHotelSelect = (index) => {
+    const updatedHotels = [...selectedHotels];
+    if (updatedHotels.includes(index)) {
+      updatedHotels.splice(updatedHotels.indexOf(index), 1);
+    } else {
+      updatedHotels.push(index);
+    }
+    setSelectedHotels(updatedHotels);
+  };
+
+  const handleConfirm = () => {
+    onConfirm(selectedHotels);
+    onHide();
+  };
 
   return (
     <Modal show={show} onHide={onHide} size='lg' aria-labelledby='contained-modal-title-vcenter' centered>
@@ -35,12 +50,17 @@ const HotelDatePickModal = ({ show, onHide, onConfirm, selectedDates, hotelName 
           <div className={styles.hotelName}>{hotelName}</div>
           <div className={styles.hotelsCont}>
             {hotelData.map((hotel, index) => (
-              <HotelCont key={index} date={hotel.date} hotelName={hotel.name} />
+              <HotelCont
+                key={index}
+                date={hotel.date}
+                hotelName={hotel.name}
+                isSelected={selectedHotels.includes(index)}
+                onSelect={() => handleHotelSelect(index)}
+              />
             ))}
           </div>
           <div className={styles.btnsCont}>
-            <button className={styles.btn}>전체 선택</button>
-            <button className={styles.btn} onClick={onConfirm}>
+            <button className={styles.btn} onClick={handleConfirm}>
               완료
             </button>
           </div>
