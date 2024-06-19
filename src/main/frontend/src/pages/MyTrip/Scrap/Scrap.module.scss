@@ -1,0 +1,67 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  padding: 0 8rem;
+}
+
+.header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin: 2.5rem 0 1.8125rem 0;
+}
+
+.title {
+  font-size: 1.875rem;
+}
+
+.editBtn {
+  background-color: #8ea05d;
+  color: #fff;
+  font-size: 1.125rem;
+  width: 5.3125rem;
+  height: 2.0625rem;
+  border: none;
+  border-radius: 1.25rem;
+  cursor: pointer;
+}
+
+.mainCont {
+  display: flex;
+  justify-content: center;
+}
+
+.main {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.75rem;
+  margin-bottom: 3.25rem;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin: 1rem 0 3rem 0;
+}
+
+.pageBtn {
+  background-color: #e0e0e0;
+  border: none;
+  border-radius: 0.3125rem;
+  color: #333;
+  cursor: pointer;
+  font-size: 1rem;
+  margin: 0 0.25rem;
+  padding: 0.5rem 0.75rem;
+  transition: background-color 0.3s;
+}
+
+.pageBtn:hover {
+  background-color: #ccc;
+}
+
+.pageBtn.active {
+  background-color: #8ea05d;
+  color: #fff;
+}

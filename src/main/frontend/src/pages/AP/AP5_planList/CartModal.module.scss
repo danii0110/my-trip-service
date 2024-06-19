@@ -1,0 +1,44 @@
+.modal {
+  background-color: #8ea05d;
+  width: 168px;
+  height: 168px;
+  margin: 10px;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  flex: 0 0 auto;
+}
+.topCont {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin: 10px 0 auto 0;
+  width: 100%;
+  padding: 0 15px;
+}
+.editDate {
+  font-size: 13px;
+}
+.whiteXIcon {
+  width: 13px;
+  height: 13px;
+}
+.mainCont {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 0 0 10px 15px;
+}
+.duration {
+  font-size: 13px;
+}
+.contentPlace {
+  font-size: 18px;
+}
+.placeNum {
+  font-size: 13px;
+}

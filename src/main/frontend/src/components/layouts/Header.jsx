@@ -16,10 +16,10 @@ const Header = () => {
     window.location.href = KAKAO_AUTH_URL;
   };
 
-  const handleLogout = () => {
-    dispatch(logout());
-    localStorage.removeItem('user'); // 로그아웃 시 로컬 스토리지에서도 삭제
-  };
+  // const handleLogout = () => {
+  //   dispatch(logout());
+  //   localStorage.removeItem('user'); // 로그아웃 시 로컬 스토리지에서도 삭제
+  // };
 
   return (
     <header className={styles.header}>

@@ -37,5 +37,7 @@ out/
 .vscode/
 
 ###개인정보###
-application.yml
+application.yaml
 application.properties
+application-test.yaml
+src/main/java/com/mytrip/service/controller/ServiceKeyController.java

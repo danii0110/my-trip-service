@@ -23,16 +23,10 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.disable())
+                .csrf(csrf -> csrf.disable()) // CSRF 보호를 비활성화 (개발 환경에서는 비활성화할 수 있음)
                 .authorizeHttpRequests(auth -> auth.anyRequest().permitAll())
-
-//                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-//                .authorizeHttpRequests(auth -> auth
-//                        .requestMatchers("/", "/home", "/login", "/login/**", "/callback/**", "/webjars/**", "/api/**").permitAll()
-//                        .anyRequest().authenticated()
-//                )
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .oauth2Login(oauth2 -> oauth2
-                        .loginPage("/login")
                         .defaultSuccessUrl("/", true)
                         .failureUrl("/loginFailure")
                         .userInfoEndpoint(userInfo -> userInfo
@@ -46,7 +40,6 @@ public class SecurityConfig {
 
         return http.build();
     }
-
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {

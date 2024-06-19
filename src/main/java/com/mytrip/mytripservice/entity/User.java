@@ -1,6 +1,9 @@
+// User.java
 package com.mytrip.mytripservice.entity;
 
+// seoyeon
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
@@ -66,6 +69,12 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private List<Scrap> scraps;
+
+    // Plan과의 일대다 관계 설정 추가
+//     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+//     @JsonIgnoreProperties("user")
+//     private List<Plan> plans;
+
 
     @PrePersist
     protected void onCreate() {

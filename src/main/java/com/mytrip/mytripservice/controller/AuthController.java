@@ -20,7 +20,7 @@ public class AuthController {
     public String loginSuccess(@AuthenticationPrincipal OAuth2User oauth2User) {
         Map<String, Object> attributes = oauth2User.getAttributes();
         logger.info("Login Success: {}", attributes);
-        return "redirect:/main"; // 로그인 성공 시 리디렉션할 페이지
+        return "redirect:/"; // 로그인 성공 시 리디렉션할 페이지
     }
 
     @GetMapping("/loginFailure")

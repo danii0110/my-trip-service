@@ -1,0 +1,18 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  //   padding: 136px 185px;
+}
+.explain {
+  font-family: 'Jua', serif;
+  font-size: 28px;
+  margin: 136px 0 20px 0;
+}
+.confirmBtn {
+  font-family: 'Jua', serif;
+  font-size: 28px;
+  background-color: transparent;
+  border: none;
+  margin: 0 0 100px 0;
+}

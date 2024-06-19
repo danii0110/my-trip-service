@@ -1,0 +1,40 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.content {
+  font-size: 1.875rem;
+  font-family: 'Jua', serif;
+  margin: 4.625rem 0 3.125rem 0;
+}
+
+.btnCont {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 4.625rem;
+}
+
+.cancelBtn {
+  font-family: 'Jua', serif;
+  font-size: 1.25rem;
+  background-color: #d9d9d9;
+  color: #000;
+  width: 6.25rem;
+  height: 3.1875rem;
+  border-radius: 0.625rem;
+  border: none;
+}
+
+.deleteBtn {
+  font-family: 'Jua', serif;
+  font-size: 1.25rem;
+  background-color: #8ea05d;
+  color: #fff;
+  width: 6.25rem;
+  height: 3.1875rem;
+  border-radius: 0.625rem;
+  border: none;
+  margin: 0 3.125rem;
+}
