@@ -6,7 +6,6 @@ import CategoryBtn from './CategoryBtn';
 import SearchBar from './SearchBar/SearchBar';
 import PlaceBox from './PlaceBox';
 import Pagination from '../../../components/Element/Pagination';
-import { Button } from 'react-bootstrap';
 import regionMap from '../../../modules/utils/regionMap';
 
 const categoryMap = {
@@ -26,11 +25,9 @@ const AP3Left = ({
   onPlaceSelect,
   selectedPlaces,
   currentSelectedDate,
-  onNextButtonClick,
 }) => {
   const [selectedCategory, setSelectedCategory] = useState('전체');
   const [searchTerm, setSearchTerm] = useState('');
-  const [isNextButtonEnabled, setIsNextButtonEnabled] = useState(false);
   const [placesData, setPlacesData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
@@ -117,20 +114,16 @@ const AP3Left = ({
   });
 
   const isPlaceChecked = (placeId) => {
-    return Array.isArray(selectedPlaces) && selectedPlaces.some((place) => place.id === placeId);
+    return (
+      Array.isArray(selectedPlaces[currentSelectedDate]) &&
+      selectedPlaces[currentSelectedDate].some((place) => place.id === placeId)
+    );
   };
 
   const handlePlaceSelect = (id, place) => {
     const isSelected = isPlaceChecked(id);
     onPlaceSelect(id, place, !isSelected);
   };
-
-  useEffect(() => {
-    const hasSelectedPlacesForAllDates = Object.keys(selectedTimes).every(
-      (date) => Array.isArray(selectedPlaces) && selectedPlaces.some((place) => place.date === date)
-    );
-    setIsNextButtonEnabled(hasSelectedPlacesForAllDates);
-  }, [selectedPlaces, selectedTimes]);
 
   return (
     <div className={styles.container}>
@@ -192,9 +185,6 @@ const AP3Left = ({
           </p>
           <p>Table Data: {JSON.stringify(tableData)}</p>
         </div>
-        {/* <Button onClick={onNextButtonClick} disabled={!isNextButtonEnabled}>
-          다음
-        </Button> */}
       </div>
     </div>
   );
