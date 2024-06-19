@@ -2,11 +2,13 @@
   display: flex;
   flex-direction: column;
   width: 90%;
-  min-height: 80%;
+  // height: auto; /* 수정된 부분 */
+  min-height: calc(100vh - 8rem); //버튼 밀리면 이 코드 수정하기
   background-color: #f4f6f7;
   border-radius: 0.625rem;
   padding-left: 7%;
   position: relative;
+  overflow-y: auto;
 }
 .tripNameCont {
   display: flex;
@@ -44,16 +46,11 @@
 .pickedPlace {
   font-size: 1.125rem;
 }
-.placeImgCont {
-  display: flex;
-  flex-direction: row;
-  margin-top: 0.3125rem;
-}
 
 .pickedHotelCont {
   display: flex;
   flex-direction: column;
-  margin-top: 0.625rem;
+  margin-top: 0.825rem;
 }
 .pickedHotelTextCont {
   display: flex;
@@ -66,7 +63,26 @@
 .HotelImgCont {
   display: flex;
   flex-direction: row;
-  margin-top: 0.3125rem;
+  margin: 0.3125rem 0 5rem 0;
+}
+.btnsCont {
+  display: flex;
+  flex-direction: row;
+}
+.addCartBtn {
+  background-color: #8ea05d;
+  color: #ffffff;
+  border: none;
+  border-radius: 0.625rem;
+  font-size: 1.125rem;
+  width: 8.75rem;
+  height: 2.1875rem;
+  position: absolute;
+  // bottom: 1.25rem;
+  left: 2.25rem;
+  // margin-top: auto;
+  position: absolute;
+  bottom: 1rem;
 }
 .makePlanBtn {
   background-color: #8ea05d;
@@ -77,6 +93,9 @@
   width: 8.75rem;
   height: 2.1875rem;
   position: absolute;
-  bottom: 1.25rem;
+  // bottom: 1.25rem;
   right: 1.25rem;
+  // margin-top: auto;
+  position: absolute;
+  bottom: 1rem;
 }

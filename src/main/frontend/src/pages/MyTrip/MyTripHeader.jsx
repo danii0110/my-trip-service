@@ -12,6 +12,11 @@ const MyTripHeader = () => {
       navigate('/my-trip/profile');
     }
   };
+  const navigateToScrap = () => {
+    if (location.pathname !== '/my-trip/scrap') {
+      navigate('/my-trip/scrap');
+    }
+  };
 
   return (
     <div className={styles.container}>
@@ -22,7 +27,7 @@ const MyTripHeader = () => {
           <img src={ConfigurationIcon} alt='configuration-icon' />
         </button>
       </div>
-      <div className={styles.scrapCont}>
+      <div className={styles.scrapCont} onClick={navigateToScrap}>
         <div className={styles.subTitle}>스크랩</div>
         <button className={styles.btn}>
           <img src={BookmarkIcon} alt='bookmark-icon' />

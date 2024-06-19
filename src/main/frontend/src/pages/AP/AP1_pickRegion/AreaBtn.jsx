@@ -1,20 +1,9 @@
-import { useState } from 'react';
 import styles from './AreaBtn.module.scss';
 
-const AreaBtn = () => {
-  const [selected, setSelected] = useState(false);
-
-  const handleRegionClick = () => {
-    setSelected(!selected);
-  };
-
+const AreaBtn = ({ name, selected, onClick }) => {
   return (
-    <button
-      className={`${styles.container} ${selected ? styles.selected : ''}`}
-      onClick={handleRegionClick}
-      type='button'
-    >
-      동대문구
+    <button className={`${styles.container} ${selected ? styles.selected : ''}`} onClick={onClick} type='button'>
+      {name}
     </button>
   );
 };

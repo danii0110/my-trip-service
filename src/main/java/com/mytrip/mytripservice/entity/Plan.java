@@ -16,7 +16,7 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @Table(name = "plans")
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "communities", "scraps"})
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "communities", "scraps"}) //추가
 public class Plan {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,7 +25,7 @@ public class Plan {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
-    @JsonIgnore
+    @JsonIgnore //추가
     private User user;
 
     @Column(name = "title", nullable = false)

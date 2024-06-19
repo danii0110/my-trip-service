@@ -1,0 +1,34 @@
+.container {
+  width: 16.5rem;
+  height: 15.8125rem;
+  background-color: #fff;
+  border: 0.0625rem solid #d5d7db;
+  border-radius: 0.625rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.selected {
+  border: 0.125rem solid #8ea05d;
+}
+
+.areaName {
+  font-size: 1.4375rem;
+  margin: 0 auto 0 1.25rem;
+}
+
+.duration {
+  font-size: 1.125rem;
+  color: #aab1b8;
+  margin: 0 auto 0 1.25rem;
+}
+
+.tempImg {
+  width: 13.75rem;
+  height: 9.375rem;
+  background-color: #d9d9d9;
+  border-radius: 0.125rem;
+}

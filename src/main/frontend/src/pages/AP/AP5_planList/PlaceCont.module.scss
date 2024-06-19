@@ -9,4 +9,13 @@
   height: 3.75rem;
   background-color: #ffffff;
   border-radius: 0.625rem;
+  margin-bottom: 0.3125rem;
+}
+.placeName {
+  width: 3.75rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: center;
+  font-size: 0.7325rem;
 }

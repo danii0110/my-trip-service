@@ -7,17 +7,19 @@ export const LOGOUT = 'LOGOUT';
 export const kakaoLogin = (userInfo) => {
   return {
     type: LOGIN_SUCCESS,
-    payload: userInfo, //카카오 로그인에 성공한 사용자 정보가 전달
+    payload: userInfo, //카카오 로그인에 성공한 사용자 정보가 전달 //payload: HTTP 요청을 보낼 때 전달되는 데이터
   };
 };
 
 export const logout = () => {
+  //TODO: 수정 예정
   return {
     type: LOGOUT,
   };
 };
 
 export const loadUser = () => {
+  //TODO: 수정 예정
   const user = JSON.parse(localStorage.getItem('user'));
   if (user) {
     return kakaoLogin(user);

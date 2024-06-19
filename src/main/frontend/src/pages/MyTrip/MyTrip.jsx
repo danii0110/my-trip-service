@@ -1,12 +1,25 @@
 import styles from './MyTrip.module.scss';
 import QuestionIcon from '../../assets/questionIcon.svg';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Schedule from './Schedule';
 import schedulesData from '../../data/schedules';
 
 const MyTrip = () => {
   const [selected, setSelected] = useState('total');
-  const [schedules, setSchedules] = useState(schedulesData);
+  const [schedules, setSchedules] = useState([]);
+
+  useEffect(() => {
+    const parseStartDate = (duration) => {
+      const [startDateStr] = duration.split('~');
+      return new Date(`20${startDateStr.split('.').join('-')}`);
+    };
+
+    const sortedSchedules = [...schedulesData].sort((a, b) => {
+      return parseStartDate(b.duration) - parseStartDate(a.duration);
+    });
+
+    setSchedules(sortedSchedules);
+  }, []);
 
   const handleDelete = (index) => {
     const newSchedules = schedules.filter((_, i) => i !== index);
@@ -19,6 +32,7 @@ const MyTrip = () => {
         ? schedules.filter((schedule) => schedule.isShared)
         : []
       : schedules;
+
   return (
     <div className={styles.container}>
       <div className={styles.main}>

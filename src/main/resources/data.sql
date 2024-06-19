@@ -37,5 +37,3 @@ WHERE name = '전라남도' AND (sigungucode IS NULL OR sigungucode = '');
 UPDATE area_code
 SET name = '제주'
 WHERE name = '제주도' AND (sigungucode IS NULL OR sigungucode = '');
-
-
