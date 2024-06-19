@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import CheckHeader from '../AP2_timePicker/CheckHeader/CheckHeader';
 import styles from './AP4Left.module.scss';
 import SearchBar from '../AP3_placePicker/SearchBar/SearchBar';
@@ -40,6 +40,7 @@ const AP4Left = ({
   selectedPlaces,
   currentSelectedDate,
   regionMap,
+  openHotelModal,
 }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [showHotelDatePickModal, setShowHotelDatePickModal] = useState(false);
@@ -71,7 +72,7 @@ const AP4Left = ({
           <CheckHeader progress={100} firstColor='#aab1b8' secondColor='#aab1b8' thirdColor='#000000' />
           <div className={styles.leftHeader}>
             <div className={styles.titleArea}>{`${regionMap[selectedRegion]} ${selectedArea}`}</div>
-            <Button id={styles.btnCommon} className={styles.reserveBtn}>
+            <Button id={styles.btnCommon} className={styles.reserveBtn} onClick={openHotelModal}>
               숙소 예매
             </Button>
           </div>

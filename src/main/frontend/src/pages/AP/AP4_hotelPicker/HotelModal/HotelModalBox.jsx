@@ -1,10 +1,11 @@
-import styles from './HotelModalBox.module.scss';
+import React from 'react';
 import HotelModal from './HotelModal';
+import styles from './HotelModalBox.module.scss';
 
-const HotelModalBox = () => {
+const HotelModalBox = ({ selectedDates }) => {
   return (
     <div className={styles.container}>
-      <HotelModal />
+      <HotelModal selectedDates={selectedDates} />
     </div>
   );
 };
