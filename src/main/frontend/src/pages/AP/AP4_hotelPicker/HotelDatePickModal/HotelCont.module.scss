@@ -19,6 +19,7 @@
 }
 .btn {
   border: none;
+  border-radius: 10px;
   padding: none;
   margin: 0 0 10px 0;
   background-color: transparent;
@@ -27,11 +28,8 @@
 .addBtnIcon {
   width: 80px;
   height: 80px;
+  border-radius: 10px;
 }
 .hotelName {
   font-size: 18px;
-}
-.selected {
-  background-color: #8ea05d;
-  border-radius: 50%;
 }

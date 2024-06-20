@@ -5,7 +5,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import XIcon from '../../../../assets/xIcon.svg';
 import HotelCont from './HotelCont';
 
-const HotelDatePickModal = ({ show, onHide, onConfirm, selectedDates, hotelName }) => {
+const HotelDatePickModal = ({ show, onHide, onConfirm, selectedDates, hotelName, selectedHotel }) => {
   const [hotelData, setHotelData] = useState([]);
   const [selectedHotels, setSelectedHotels] = useState([]);
 
@@ -19,6 +19,7 @@ const HotelDatePickModal = ({ show, onHide, onConfirm, selectedDates, hotelName 
         dataList.push({
           date: `${d.getMonth() + 1}.${d.getDate()}`,
           name: '호텔 선택',
+          image: null,
         });
       }
 
@@ -26,18 +27,38 @@ const HotelDatePickModal = ({ show, onHide, onConfirm, selectedDates, hotelName 
     }
   }, [selectedDates]);
 
-  const handleHotelSelect = (index) => {
-    const updatedHotels = [...selectedHotels];
-    if (updatedHotels.includes(index)) {
-      updatedHotels.splice(updatedHotels.indexOf(index), 1);
-    } else {
-      updatedHotels.push(index);
-    }
-    setSelectedHotels(updatedHotels);
+  const handleHotelSelect = (index, hotel) => {
+    const updatedHotels = [...hotelData];
+    updatedHotels[index] = {
+      ...updatedHotels[index],
+      name: hotel.title,
+      image: hotel.firstimage,
+      date: hotelData[index].date, // date 값을 유지
+    };
+
+    const updatedSelectedHotels = [...selectedHotels];
+    updatedSelectedHotels[index] = {
+      ...updatedSelectedHotels[index],
+      name: hotel.title,
+      image: hotel.firstimage,
+      date: hotelData[index].date, // date 값을 유지
+    };
+
+    console.log('Hotel selected in HotelDatePickModal:', updatedHotels);
+    console.log('Selected Hotels in HotelDatePickModal:', updatedSelectedHotels);
+
+    setHotelData(updatedHotels);
+    setSelectedHotels(updatedSelectedHotels);
   };
 
   const handleConfirm = () => {
-    onConfirm(selectedHotels);
+    console.log('Confirming selected hotels:', selectedHotels); // Confirm 버튼이 눌렸을 때의 로그
+    if (onConfirm) {
+      console.log('onConfirm 수행된다~~');
+      onConfirm(selectedHotels); // selectedHotels를 부모 컴포넌트로 전달
+    } else {
+      console.error('onConfirm is not defined');
+    }
     onHide();
   };
 
@@ -54,8 +75,9 @@ const HotelDatePickModal = ({ show, onHide, onConfirm, selectedDates, hotelName 
                 key={index}
                 date={hotel.date}
                 hotelName={hotel.name}
-                isSelected={selectedHotels.includes(index)}
-                onSelect={() => handleHotelSelect(index)}
+                image={hotel.image}
+                isSelected={selectedHotels.includes(hotel)}
+                onSelect={() => handleHotelSelect(index, selectedHotel)}
               />
             ))}
           </div>
