@@ -7,8 +7,8 @@ const PlaceKakaoMap = ({ selectedPlaces, selectedHotels }) => {
   const [center, setCenter] = useState({ lat: 37.5665, lng: 126.978 });
 
   useEffect(() => {
-    console.log('Selected Places updated:', selectedPlaces); // 추가된 로그
-    console.log('Selected Hotels updated:', selectedHotels); // 추가된 로그
+    // console.log('Selected Places updated:', selectedPlaces); // 추가된 로그
+    // console.log('Selected Hotels updated:', selectedHotels); // 추가된 로그
     const placesCoords = selectedPlaces.map((place) => ({
       lat: parseFloat(place.mapy),
       lng: parseFloat(place.mapx),

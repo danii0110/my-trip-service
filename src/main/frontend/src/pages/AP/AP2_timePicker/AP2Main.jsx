@@ -25,6 +25,7 @@ const AP2Main = () => {
   const [isHotelDatePickModalVisible, setIsHotelDatePickModalVisible] = useState(false);
   const [isLeftArrow, setIsLeftArrow] = useState(true);
   const [hotelName, setHotelName] = useState('');
+  const [selectedHotel, setSelectedHotel] = useState(null); // selectedHotel 상태 추가
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -79,6 +80,7 @@ const AP2Main = () => {
             setHotelName={setHotelName}
             openHotelDatePickModal={() => setIsHotelDatePickModalVisible(true)}
             onHotelSelect={handleHotelSelect} // 호텔 선택 함수 전달
+            handleSelectHotels={handleSelectHotels} // 추가된 부분
           />
         );
         break;
@@ -192,7 +194,7 @@ const AP2Main = () => {
           />
         )}
         {isHotelModalVisible && currentLeftComponent.type === AP4Left && (
-          <HotelModalBox selectedDates={selectedDates} />
+          <HotelModalBox selectedDates={selectedDates} selectedHotels={selectedHotels} />
         )}
         <div className={styles.buttonContainer}>
           {currentLeftComponent.type === AP3Left && (
@@ -246,7 +248,10 @@ const AP2Main = () => {
   };
 
   const handleSelectHotels = (selectedHotels) => {
-    console.log('Selected Hotels:', selectedHotels);
+    console.log('handleSelectHotels - Called');
+    console.log('handleSelectHotels - Selected Hotels:', selectedHotels);
+    setSelectedHotels(selectedHotels);
+    console.log('State after setSelectedHotels:', selectedHotels); // 상태 업데이트 확인
     setIsHotelDatePickModalVisible(false);
   };
 
@@ -265,6 +270,7 @@ const AP2Main = () => {
           selectedPlaces,
           currentSelectedDate,
           onHotelSelect: handleHotelSelect, // 호텔 선택 함수 전달
+          setSelectedHotel: setSelectedHotel, // selectedHotel 상태 설정 함수 전달
         })}
         {renderNextButton()}
       </div>
@@ -274,10 +280,12 @@ const AP2Main = () => {
       <HotelDatePickModal
         show={isHotelDatePickModalVisible}
         onHide={() => setIsHotelDatePickModalVisible(false)}
-        onConfirm={handleSelectHotels}
+        onConfirm={handleSelectHotels} // onConfirm prop으로 handleSelectHotels 함수 전달
         selectedDates={selectedDates}
         hotelName={hotelName}
+        selectedHotel={selectedHotel} // 누락된 prop 추가
       />
+      s
     </div>
   );
 };

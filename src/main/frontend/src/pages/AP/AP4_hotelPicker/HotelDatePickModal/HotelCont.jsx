@@ -5,7 +5,6 @@ const HotelCont = ({ date, hotelName, isSelected, onSelect, image }) => {
   return (
     <div className={styles.container} onClick={onSelect}>
       <div className={styles.date}>{date}</div>
-      {/* <button className={`${styles.btn} ${isSelected ? styles.selected : ''}`}> */}
       <button className={styles.btn}>
         {image ? (
           <img className={styles.addBtnIcon} src={image} alt='hotel-img' />

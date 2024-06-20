@@ -5,9 +5,9 @@ import styles from './AP4Left.module.scss';
 import SearchBar from '../AP3_placePicker/SearchBar/SearchBar';
 import { Button } from 'react-bootstrap';
 import HotelBox from './HotelBox';
-import HotelDatePickModal from './HotelDatePickModal/HotelDatePickModal';
 import Pagination from '../../../components/Element/Pagination';
 import regionMap from '../../../modules/utils/regionMap';
+import HotelDatePickModal from './HotelDatePickModal/HotelDatePickModal';
 
 const categoryMap = {
   32: '숙박',
@@ -23,7 +23,10 @@ const AP4Left = ({
   currentSelectedDate,
   regionMap,
   openHotelModal,
-  onHotelSelect, // 호텔 선택 함수
+  onHotelSelect,
+  setHotelName,
+  openHotelDatePickModal,
+  handleSelectHotels, // AP2Main에서 전달된 handleSelectHotels 함수 prop으로 추가
 }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [placesData, setPlacesData] = useState([]);
@@ -84,7 +87,7 @@ const AP4Left = ({
             MobileApp: 'AppTest',
             _type: 'json',
             serviceKey: serviceKey,
-            contentTypeId: 32, // 숙박 정보만 가져오기 위해 contentTypeId 추가
+            contentTypeId: 32,
           },
         });
 
@@ -107,8 +110,9 @@ const AP4Left = ({
 
   const handleHotelBoxClick = (hotel) => {
     setSelectedHotel(hotel);
+    setHotelName(hotel.title);
     setShowHotelDatePickModal(true);
-    console.log('Hotel selected:', hotel); // 추가된 로그
+    console.log('Hotel selected:', hotel);
     onHotelSelect(hotel);
   };
 
@@ -157,7 +161,7 @@ const AP4Left = ({
                   address={place.addr1}
                   image={place.firstimage}
                   onAddClick={() => handleHotelBoxClick(place)}
-                  selectedHotel={selectedHotel} // 선택된 호텔 정보 전달
+                  selectedHotel={selectedHotel}
                 />
               ))
             ) : (
@@ -170,10 +174,10 @@ const AP4Left = ({
       <HotelDatePickModal
         show={showHotelDatePickModal}
         onHide={handleModalClose}
-        onConfirm={handleModalClose}
+        onConfirm={handleSelectHotels} // AP2Main에서 전달된 handleSelectHotels 함수로 변경
         selectedDates={selectedDates}
         hotelName={selectedHotel?.title}
-        selectedHotel={selectedHotel} // 선택된 호텔 정보 전달
+        selectedHotel={selectedHotel}
       />
       <div>
         <h3>전달된 데이터 확인:</h3>

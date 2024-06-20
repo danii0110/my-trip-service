@@ -33,13 +33,32 @@ const HotelDatePickModal = ({ show, onHide, onConfirm, selectedDates, hotelName,
       ...updatedHotels[index],
       name: hotel.title,
       image: hotel.firstimage,
+      date: hotelData[index].date, // date 값을 유지
     };
+
+    const updatedSelectedHotels = [...selectedHotels];
+    updatedSelectedHotels[index] = {
+      ...updatedSelectedHotels[index],
+      name: hotel.title,
+      image: hotel.firstimage,
+      date: hotelData[index].date, // date 값을 유지
+    };
+
+    console.log('Hotel selected in HotelDatePickModal:', updatedHotels);
+    console.log('Selected Hotels in HotelDatePickModal:', updatedSelectedHotels);
+
     setHotelData(updatedHotels);
-    setSelectedHotels(updatedHotels);
+    setSelectedHotels(updatedSelectedHotels);
   };
 
   const handleConfirm = () => {
-    onConfirm(selectedHotels);
+    console.log('Confirming selected hotels:', selectedHotels); // Confirm 버튼이 눌렸을 때의 로그
+    if (onConfirm) {
+      console.log('onConfirm 수행된다~~');
+      onConfirm(selectedHotels); // selectedHotels를 부모 컴포넌트로 전달
+    } else {
+      console.error('onConfirm is not defined');
+    }
     onHide();
   };
 
