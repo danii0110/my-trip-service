@@ -24,6 +24,7 @@ const HotelDatePickModal = ({ show, onHide, onConfirm, selectedDates, hotelName,
       }
 
       setHotelData(dataList);
+      setSelectedHotels(dataList); // 초기 selectedHotels 설정
     }
   }, [selectedDates]);
 

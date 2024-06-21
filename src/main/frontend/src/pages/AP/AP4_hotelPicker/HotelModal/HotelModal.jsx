@@ -5,6 +5,7 @@ import { convertDateToDurationFormat } from '../../../../modules/utils/dateUtils
 
 const HotelModal = ({ selectedDates = { start: null, end: null }, selectedHotels = [] }) => {
   const [places, setPlaces] = useState([]);
+  const [totalDays, setTotalDays] = useState(0);
 
   useEffect(() => {
     if (selectedDates.start && selectedDates.end) {
@@ -37,14 +38,18 @@ const HotelModal = ({ selectedDates = { start: null, end: null }, selectedHotels
       }
 
       setPlaces(durationList);
+
+      // totalDays를 유효한 호텔 정보의 개수로 계산
+      const validHotelsCount = selectedHotels.filter((hotel) => hotel.name !== '호텔 선택').length;
+      setTotalDays(validHotelsCount);
     }
   }, [selectedDates, selectedHotels]);
 
-  const totalDays = places.length;
-
   return (
     <div className={styles.container}>
-      <div className={styles.total}>x일/{totalDays}일</div>
+      <div className={styles.total}>
+        {totalDays}일/{places.length}일
+      </div>
       <div className={styles.main}>
         {places.map((place) => (
           <AddHotelBox
