@@ -4,7 +4,7 @@ import { useState } from 'react';
 import TransportModal from './TransportModal';
 import PickedPlaceCont from './PickedPlaceCont';
 
-const PlanCont = () => {
+const PlanCont = ({ selectedDates }) => {
   const [showModal, setShowModal] = useState(false);
   const [isEditingTripName, setIsEditingTripName] = useState(false);
   const [tripName, setTripName] = useState('여행 이름');
@@ -18,6 +18,11 @@ const PlanCont = () => {
     { day: 'Day2', hotelName: '그랜드 조선 제주' },
     { day: 'Day3', hotelName: '제주 신라호텔' },
     { day: 'Day4', hotelName: '해비치 호텔 & 리조트 제주' },
+    { day: 'Day5', hotelName: '메종 글래드 제주' },
+    { day: 'Day6', hotelName: '라마다 프라자 제주' },
+    { day: 'Day7', hotelName: '해안로 호텔' },
+    { day: 'Day8', hotelName: '호텔 난타 제주' },
+    { day: 'Day9', hotelName: '더 쇼어 호텔 제주' },
   ];
 
   const pickedPlaces = [
@@ -58,6 +63,8 @@ const PlanCont = () => {
     },
   ];
 
+  const formattedDuration = `${selectedDates.start.toLocaleDateString()} - ${selectedDates.end.toLocaleDateString()}`;
+
   return (
     <>
       <div className={styles.container}>
@@ -73,18 +80,18 @@ const PlanCont = () => {
           ) : (
             <div className={styles.tripName}>{tripName}</div>
           )}
-          {/* <div className={styles.editText} onClick={() => setIsEditingTripName(true)}>
+          <div className={styles.editText} onClick={() => setIsEditingTripName(true)}>
             편집
-          </div> */}
+          </div>
         </div>
         <div className={styles.durationCont}>
-          <div className={styles.duration}>24.04.25-24.04.29</div>
-          {/* <div className={styles.editText}>편집</div> */}
+          <div className={styles.duration}>{formattedDuration}</div>
+          <div className={styles.editText}>편집</div>
         </div>
         <div className={styles.pickedPlaceCont}>
           <div className={styles.pickedPlaceTextCont}>
             <div className={styles.pickedPlace}>선택한 장소</div>
-            {/* <div className={styles.editText}>편집</div> */}
+            <div className={styles.editText}>편집</div>
           </div>
           {pickedPlaces.map((pickedPlace, index) => (
             <PickedPlaceCont key={index} pickedDay={pickedPlace.day} places={pickedPlace.places} />
@@ -93,7 +100,7 @@ const PlanCont = () => {
         <div className={styles.pickedHotelCont}>
           <div className={styles.pickedHotelTextCont}>
             <div className={styles.pickedHotel}>선택한 숙소</div>
-            {/* <div className={styles.editText}>편집</div> */}
+            <div className={styles.editText}>편집</div>
           </div>
           <div className={styles.HotelImgCont}>
             {hotels.map((hotel, index) => (

@@ -81,7 +81,7 @@ const AP5Main = () => {
             </div>
           )}
           <div className={styles.planCont}>
-            <PlanCont />
+            <PlanCont selectedDates={selectedDates} />
           </div>
           <div>
             <h3>전달된 데이터 확인:</h3>
