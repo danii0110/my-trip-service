@@ -7,11 +7,13 @@ import KakakoMap from '../../../modules/api/KakaoMap/KakaoMap';
 import { useState } from 'react';
 import PlanCont from './PlanCont';
 import CartModal from './CartModal';
+import regionMap from '../../../modules/utils/regionMap';
 import { useLocation } from 'react-router-dom';
 
 const AP5Main = () => {
   const location = useLocation();
-  const { selectedDates, selectedRegion, selectedArea, tableData } = location.state || {};
+  const { selectedDates, selectedRegion, selectedArea, tableData, selectedPlaces, selectedHotels } =
+    location.state || {};
 
   const [isUpArrow, setIsUpArrow] = useState(true);
   const [showModal, setShowModal] = useState(false);
@@ -80,6 +82,18 @@ const AP5Main = () => {
           )}
           <div className={styles.planCont}>
             <PlanCont />
+          </div>
+          <div>
+            <h3>전달된 데이터 확인:</h3>
+            <p>
+              Region: {selectedRegion !== undefined && selectedRegion !== null ? regionMap[selectedRegion] : '없음'}
+            </p>
+            <p>Area: {selectedArea}</p>
+            <p>Start Date: {selectedDates.start ? selectedDates.start.toLocaleDateString() : '없음'}</p>
+            <p>End Date: {selectedDates.end ? selectedDates.end.toLocaleDateString() : '없음'}</p>
+            <p>Table Data: {JSON.stringify(tableData)}</p>
+            <p>Selected Places: {JSON.stringify(selectedPlaces)}</p>
+            <p>Selected Hotels: {JSON.stringify(selectedHotels)}</p>
           </div>
         </div>
         <div className={styles.rightCont}>

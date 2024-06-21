@@ -145,6 +145,8 @@ const AP2Main = () => {
         selectedRegion,
         selectedArea,
         tableData,
+        selectedPlaces,
+        selectedHotels, // 선택된 호텔 정보를 함께 전달
       },
     });
   };
@@ -285,7 +287,6 @@ const AP2Main = () => {
         hotelName={hotelName}
         selectedHotel={selectedHotel} // 누락된 prop 추가
       />
-      s
     </div>
   );
 };
