@@ -17,43 +17,11 @@ const AP5Main = () => {
 
   const [isUpArrow, setIsUpArrow] = useState(true);
   const [showModal, setShowModal] = useState(false);
-  const [modalContents, setModalContents] = useState([
-    {
-      editDate: '24.04.20',
-      duration: '24.04.25-24.04.29',
-      places: ['광주 동구 1'],
-      placeCount: 1,
-    },
-    {
-      editDate: '24.04.21',
-      duration: '24.04.26-24.04.30',
-      places: ['광주 동구 2'],
-      placeCount: 2,
-    },
-    {
-      editDate: '24.04.22',
-      duration: '24.04.27-24.05.01',
-      places: ['광주 동구 3'],
-      placeCount: 3,
-    },
-    {
-      editDate: '24.04.23수정',
-      duration: '24.04.28-24.05.02',
-      places: ['광주 동구 4'],
-      placeCount: 4,
-    },
-  ]);
 
   const handleClick = () => {
     setShowModal(!showModal);
     setIsUpArrow(!isUpArrow);
   };
-
-  const removeModal = (index) => {
-    setModalContents((prevContents) => prevContents.filter((_, i) => i !== index));
-  };
-
-  console.log('AP5Main - selectedPlaces:', selectedPlaces);
 
   return (
     <>
@@ -77,9 +45,7 @@ const AP5Main = () => {
           </div>
           {showModal && (
             <div className={styles.modalContainer}>
-              {modalContents.slice(0, 4).map((content, index) => (
-                <CartModal key={index} content={content} onRemove={() => removeModal(index)} />
-              ))}
+              {/* CartModal 컴포넌트는 현재 사용하지 않으므로 주석 처리 또는 제거 */}
             </div>
           )}
           <div className={styles.planCont}>
@@ -88,6 +54,7 @@ const AP5Main = () => {
               selectedRegion={selectedRegion}
               selectedArea={selectedArea}
               selectedPlaces={selectedPlaces}
+              selectedHotels={selectedHotels}
             />
           </div>
           <div className={styles.divToCheck}>

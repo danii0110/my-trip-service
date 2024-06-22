@@ -21,6 +21,13 @@
   background-color: #ffffff;
   border-radius: 0.625rem;
   margin-bottom: 0.3125rem;
+  overflow: hidden;
+}
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* 추가: 이미지가 컨테이너 크기에 맞게 조절되도록 */
+  border-radius: 0.625rem; /* 추가: 이미지에도 동일한 border-radius 적용 */
 }
 .hotelName {
   width: 3.75rem;
