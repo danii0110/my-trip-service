@@ -17,7 +17,9 @@
   flex: 1;
   overflow-y: auto;
 }
-
+.divToCheck {
+  width: 100%;
+}
 .cart {
   display: flex;
   flex-direction: row;
