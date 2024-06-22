@@ -1,11 +1,11 @@
 import HotelCont from './HotelCont';
 import styles from './PlanCont.module.scss';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import TransportModal from './TransportModal';
 import PickedPlaceCont from './PickedPlaceCont';
 import regionMap from '../../../modules/utils/regionMap'; // regionMap 추가
 
-const PlanCont = ({ selectedDates, selectedRegion, selectedArea }) => {
+const PlanCont = ({ selectedDates, selectedRegion, selectedArea, selectedPlaces = {} }) => {
   const [showModal, setShowModal] = useState(false);
 
   const hotels = [
@@ -20,47 +20,32 @@ const PlanCont = ({ selectedDates, selectedRegion, selectedArea }) => {
     { day: 'Day9', 호텔Name: '더 쇼어 호텔 제주' },
   ];
 
-  const pickedPlaces = [
-    {
-      day: '24.04.25',
-      places: [
-        '성산일출봉',
-        '한라산',
-        '우도',
-        '만장굴',
-        '섭지코지',
-        '비자림',
-        '제주 돌문화공원',
-        '제주 아쿠아플라넷',
-        '삼양검은모래해변',
-      ],
-    },
-    {
-      day: '24.04.26',
-      places: [
-        '협재해수욕장',
-        '비양도',
-        '오설록 티뮤지엄',
-        '한림공원',
-        '김녕미로공원',
-        '금능해수욕장',
-        '월정리해변',
-        '이호테우해변',
-      ],
-    },
-    {
-      day: '24.04.27',
-      places: ['천지연폭포', '정방폭포', '용두암', '한라수목원', '제주 목장', '사라봉', '도두봉'],
-    },
-    {
-      day: '24.04.28',
-      places: ['한림공원', '제주 민속촌', '새별오름', '용머리해안', '주상절리대', '송악산', '알뜨르비행장', '산방산'],
-    },
-  ];
-
   const formattedDuration = `${selectedDates.start.toLocaleDateString()} - ${selectedDates.end.toLocaleDateString()}`;
   const regionName = regionMap[selectedRegion] || '없음';
   const tripName = `${regionName} ${selectedArea} 여행`;
+
+  // 날짜 범위 생성
+  const generateDateRange = (start, end) => {
+    const dateArray = [];
+    let currentDate = new Date(start);
+
+    while (currentDate <= new Date(end)) {
+      dateArray.push(new Date(currentDate));
+      currentDate.setDate(currentDate.getDate() + 1);
+    }
+
+    return dateArray;
+  };
+
+  const dateRange = generateDateRange(selectedDates.start, selectedDates.end);
+
+  // 날짜 형식 변환 (yyyy. m. d.)
+  const formatDate = (date) => {
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1; // 공백 없이 변환
+    const day = date.getDate(); // 공백 없이 변환
+    return `${year}. ${month}. ${day}.`;
+  };
 
   return (
     <>
@@ -75,9 +60,13 @@ const PlanCont = ({ selectedDates, selectedRegion, selectedArea }) => {
           <div className={styles.pickedPlaceTextCont}>
             <div className={styles.pickedPlace}>선택한 장소</div>
           </div>
-          {pickedPlaces.map((pickedPlace, index) => (
-            <PickedPlaceCont key={index} pickedDay={pickedPlace.day} places={pickedPlace.places} />
-          ))}
+          {dateRange.map((date, index) => {
+            const formattedDate = formatDate(date);
+            const placesForDay = selectedPlaces[formattedDate] || []; // 기본값 빈 배열
+            console.log(`Formatted Date: ${formattedDate}`);
+            console.log(`Places for ${formattedDate}:`, placesForDay); // 콘솔 로그 추가
+            return <PickedPlaceCont key={index} pickedDay={formattedDate} places={placesForDay} />;
+          })}
         </div>
         <div className={styles.pickedHotelCont}>
           <div className={styles.pickedHotelTextCont}>

@@ -53,6 +53,8 @@ const AP5Main = () => {
     setModalContents((prevContents) => prevContents.filter((_, i) => i !== index));
   };
 
+  console.log('AP5Main - selectedPlaces:', selectedPlaces);
+
   return (
     <>
       <div className={styles.container}>
@@ -81,19 +83,24 @@ const AP5Main = () => {
             </div>
           )}
           <div className={styles.planCont}>
-            <PlanCont selectedDates={selectedDates} selectedRegion={selectedRegion} selectedArea={selectedArea} />
+            <PlanCont
+              selectedDates={selectedDates}
+              selectedRegion={selectedRegion}
+              selectedArea={selectedArea}
+              selectedPlaces={selectedPlaces}
+            />
           </div>
-          <div>
+          <div className={styles.divToCheck}>
             <h3>전달된 데이터 확인:</h3>
             <p>
               Region: {selectedRegion !== undefined && selectedRegion !== null ? regionMap[selectedRegion] : '없음'}
             </p>
             <p>Area: {selectedArea}</p>
-            {/* <p>Start Date: {selectedDates.start ? selectedDates.start.toLocaleDateString() : '없음'}</p>
+            <p>Start Date: {selectedDates.start ? selectedDates.start.toLocaleDateString() : '없음'}</p>
             <p>End Date: {selectedDates.end ? selectedDates.end.toLocaleDateString() : '없음'}</p>
             <p>Table Data: {JSON.stringify(tableData)}</p>
             <p>Selected Places: {JSON.stringify(selectedPlaces)}</p>
-            <p>Selected Hotels: {JSON.stringify(selectedHotels)}</p> */}
+            <p>Selected Hotels: {JSON.stringify(selectedHotels)}</p>
           </div>
         </div>
         <div className={styles.rightCont}>

@@ -7,7 +7,7 @@ const PickedPlaceCont = ({ pickedDay, places }) => {
       <div className={styles.pickedDay}>{pickedDay}</div>
       <div className={styles.placeImgCont}>
         {places.map((place, index) => (
-          <PlaceCont key={index} placeName={place} />
+          <PlaceCont key={index} placeName={place.title} placeImage={place.firstimage} />
         ))}
       </div>
     </div>
