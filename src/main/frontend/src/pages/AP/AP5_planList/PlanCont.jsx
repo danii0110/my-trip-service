@@ -1,6 +1,6 @@
 import HotelCont from './HotelCont';
 import styles from './PlanCont.module.scss';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import TransportModal from './TransportModal';
 import PickedPlaceCont from './PickedPlaceCont';
 import regionMap from '../../../modules/utils/regionMap';
@@ -28,8 +28,8 @@ const PlanCont = ({ selectedDates, selectedRegion, selectedArea, selectedPlaces 
 
   const formatDate = (date) => {
     const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
+    const month = date.getMonth() + 1; // 1월은 0부터 시작하므로 +1
+    const day = date.getDate();
     return `${year}. ${month}. ${day}.`;
   };
 
@@ -49,6 +49,7 @@ const PlanCont = ({ selectedDates, selectedRegion, selectedArea, selectedPlaces 
           {dateRange.map((date, index) => {
             const formattedDate = formatDate(date);
             const placesForDay = selectedPlaces[formattedDate] || []; // 기본값 빈 배열
+            console.log(`Formatted Date: ${formattedDate}`);
             console.log(`Places for ${formattedDate}:`, placesForDay);
             return <PickedPlaceCont key={index} pickedDay={formattedDate} places={placesForDay} />;
           })}
@@ -59,7 +60,12 @@ const PlanCont = ({ selectedDates, selectedRegion, selectedArea, selectedPlaces 
           </div>
           <div className={styles.HotelImgCont}>
             {selectedHotels.map((hotel, index) => (
-              <HotelCont key={index} day={`Day ${index + 1}`} hotelName={hotel.name} hotelImage={hotel.image} />
+              <HotelCont
+                key={index}
+                day={`Day ${index + 1}`} // Day1, Day2 등으로 표시
+                hotelName={hotel.name}
+                hotelImage={hotel.image}
+              />
             ))}
           </div>
         </div>

@@ -17,16 +17,10 @@ const AP5Main = () => {
 
   const [isUpArrow, setIsUpArrow] = useState(true);
   const [showModal, setShowModal] = useState(false);
-  const [modalContents, setModalContents] = useState([]); // Add this line
 
   const handleClick = () => {
     setShowModal(!showModal);
     setIsUpArrow(!isUpArrow);
-  };
-
-  const removeModal = (index) => {
-    // Add this function
-    setModalContents((prevContents) => prevContents.filter((_, i) => i !== index));
   };
 
   return (
@@ -51,9 +45,7 @@ const AP5Main = () => {
           </div>
           {showModal && (
             <div className={styles.modalContainer}>
-              {modalContents.slice(0, 4).map((content, index) => (
-                <CartModal key={index} content={content} onRemove={() => removeModal(index)} />
-              ))}
+              {/* CartModal 컴포넌트는 현재 사용하지 않으므로 주석 처리 또는 제거 */}
             </div>
           )}
           <div className={styles.planCont}>
