@@ -25,9 +25,9 @@ public class UserController {
         return ResponseEntity.ok(users);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<UserDTO> getUserById(@PathVariable Long id) {
-        Optional<UserDTO> user = userService.getUserById(id);
+    @GetMapping("/{kakaoId}")
+    public ResponseEntity<UserDTO> getUserByKakaoId(@PathVariable String kakaoId) {
+        Optional<UserDTO> user = userService.getUserByKakaoId(kakaoId);
         return user.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 

@@ -1,11 +1,11 @@
-import styles from './TransportModal.module.scss';
+import { useSelector } from 'react-redux';
+import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useEffect, useState } from 'react';
 import { Modal } from 'react-bootstrap';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import axios from 'axios';
 import regionMap from '../../../modules/utils/regionMap';
+import styles from './TransportModal.module.scss';
 
 const categoryMap = {
   12: 'TOURIST_SPOT',
@@ -17,7 +17,7 @@ const categoryMap = {
 };
 
 const TransportModal = ({ show, onHide }) => {
-  const user = useSelector((state) => state.user.user);
+  const user = useSelector((state) => state.user.user); // Redux에서 user 정보를 가져옴
   const navigate = useNavigate();
   const location = useLocation();
   const { selectedDates, selectedRegion, selectedArea, tableData, selectedPlaces, selectedHotels } =
@@ -30,11 +30,15 @@ const TransportModal = ({ show, onHide }) => {
   }, [user]);
 
   const goToAP6 = async () => {
-    const regionName = regionMap[selectedRegion] || '알 수 없음';
+    if (!user) {
+      console.error('User not logged in');
+      return;
+    }
+
     const planData = {
-      userId: user?.id,
-      title: `${regionName} ${selectedArea} 여행`,
-      region: `${regionName} ${selectedArea}`,
+      userId: user.id,
+      title: `${regionMap[selectedRegion] || 'unknown'} ${selectedArea || 'unknown'} 여행`,
+      region: `${regionMap[selectedRegion] || 'unknown'} ${selectedArea || 'unknown'}`,
       startDate: selectedDates.start.toISOString().split('T')[0],
       endDate: selectedDates.end.toISOString().split('T')[0],
       transportation: selectedTransport,

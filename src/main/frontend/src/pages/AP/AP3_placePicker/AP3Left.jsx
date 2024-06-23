@@ -122,7 +122,9 @@ const AP3Left = ({
 
   const handlePlaceSelect = (id, place) => {
     const isSelected = isPlaceChecked(id);
-    onPlaceSelect(id, place, !isSelected);
+    const placeWithDuration = { ...place, duration: place.duration || 120 }; // 기본 120분으로 설정
+
+    onPlaceSelect(id, placeWithDuration, !isSelected);
   };
 
   return (

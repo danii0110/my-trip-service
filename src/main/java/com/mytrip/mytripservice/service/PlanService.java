@@ -33,7 +33,7 @@ public class PlanService {
 
     @Transactional
     public void createCompletePlan(CompletePlanDTO completePlanDTO) {
-        User user = userRepository.findById(completePlanDTO.getUserId())
+        User user = userRepository.findByKakaoId(completePlanDTO.getUserId().toString())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         Plan plan = new Plan();
@@ -92,7 +92,7 @@ public class PlanService {
 
     @Transactional
     public PlanDTO createPlan(PlanDTO planDTO) {
-        User user = userRepository.findById(planDTO.getUserId())
+        User user = userRepository.findByKakaoId(planDTO.getUserId().toString())
                 .orElseThrow(() -> new RuntimeException("User not found"));
         Plan plan = toEntity(planDTO);
         plan.setUser(user);

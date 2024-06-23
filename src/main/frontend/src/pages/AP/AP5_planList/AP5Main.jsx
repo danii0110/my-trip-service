@@ -71,13 +71,25 @@ const AP5Main = () => {
             <p>Start Date: {selectedDates.start ? selectedDates.start.toLocaleDateString() : '없음'}</p>
             <p>End Date: {selectedDates.end ? selectedDates.end.toLocaleDateString() : '없음'}</p>
             <p>Table Data: {JSON.stringify(tableData)}</p>
-            <p>Selected Places: {JSON.stringify(selectedPlaces)}</p>
+            <p>
+              Selected Places:{' '}
+              {Object.keys(selectedPlaces).map((date) => (
+                <div key={date}>
+                  <strong>{date}:</strong>
+                  {selectedPlaces[date].map((place, index) => (
+                    <div key={index}>
+                      {place.title} - Duration: {place.duration}분
+                    </div>
+                  ))}
+                </div>
+              ))}
+            </p>
             <p>Selected Hotels: {JSON.stringify(selectedHotels)}</p>
             <p>User ID: {userId}</p> {/* 여기서 userId 확인 */}
           </div>
         </div>
         <div className={styles.rightCont}>
-          <KakakoMap selectedRegion={selectedRegion} selectedArea={selectedArea} regionMap={{}} />
+          <KakakoMap selectedRegion={selectedRegion} selectedArea={selectedArea} regionMap={regionMap} />
         </div>
       </div>
     </>

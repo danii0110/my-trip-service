@@ -31,8 +31,8 @@ public class UserService {
                 .collect(Collectors.toList());
     }
 
-    public Optional<UserDTO> getUserById(Long id) {
-        return userRepository.findById(id).map(this::toDTO);
+    public Optional<UserDTO> getUserByKakaoId(String kakaoId) {
+        return userRepository.findByKakaoId(kakaoId).map(this::toDTO);
     }
 
     @Transactional
@@ -54,8 +54,6 @@ public class UserService {
 
         return toDTO(userRepository.save(user));
     }
-
-
 
     @Transactional
     public UserDTO updateUser(Long id, UserDTO userDetails) {
@@ -110,4 +108,5 @@ public class UserService {
         return user;
     }
 }
+
 
