@@ -9,13 +9,19 @@ const initialState = {
 const userReducer = (state = initialState, action) => {
   switch (action.type) {
     case LOGIN_SUCCESS:
+      localStorage.setItem('user', JSON.stringify(action.payload));
       return {
-        ...state, // 현재 상태를 복사하여 새로운 객체 생성
-        user: action.payload, // 사용자 정보 업데이트
+        ...state,
+        user: action.payload,
         isLoggedIn: true,
       };
     case LOGOUT:
-      return { ...initialState }; // Returning a new object explicitly
+      localStorage.removeItem('user');
+      return {
+        ...state,
+        user: null,
+        isLoggedIn: false,
+      };
     default:
       return state;
   }

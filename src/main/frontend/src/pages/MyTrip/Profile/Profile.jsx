@@ -5,12 +5,16 @@ import ProfileIcon from '../../../assets/profileIcon.svg';
 import DeleteIdModal from './DeleteIdModal';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { logout } from '../../../modules/api/Login/userActions';
+import axios from 'axios';
 
 const Profile = () => {
   const [showModal, setShowModal] = useState(false);
   const [nickname, setNickname] = useState('user70887675');
   const [originalNickname] = useState('user70887675'); // 백엔드에서 가져온 초기 닉네임
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleButtonClick = () => {
     setShowModal(true);
@@ -46,9 +50,29 @@ const Profile = () => {
     }
   };
 
+  const handleLogout = async () => {
+    try {
+      const accessToken = JSON.parse(localStorage.getItem('user')).access_token;
+      await axios.post(
+        'http://localhost:8080/api/logout',
+        { access_token: accessToken },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+      dispatch(logout());
+      navigate('/');
+    } catch (error) {
+      console.error('Error during logout:', error);
+    }
+  };
+
   const handleNicknameChange = (e) => {
     setNickname(e.target.value);
   };
+
   return (
     <>
       <Layout>
@@ -84,8 +108,11 @@ const Profile = () => {
                 placeholder='user7088@naver.com'
               ></input>
             </div>
-            <button className={styles.deleteId} onClick={handleButtonClick}>
+            {/* <button className={styles.deleteId} onClick={handleButtonClick}>
               회원탈퇴
+            </button> */}
+            <button className={styles.logoutId} onClick={handleLogout}>
+              로그아웃
             </button>
           </div>
           <div className={styles.btnCont}>
@@ -105,4 +132,5 @@ const Profile = () => {
     </>
   );
 };
+
 export default Profile;

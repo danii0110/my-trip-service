@@ -16,15 +16,14 @@ import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import { loadUser } from './modules/api/Login/userActions';
 
-import CommunityMainPage from "./pages/Community/CommunityMainPage";
-import CommunityPost from "./pages/Community/CommunityPost";
-import CommunityDetail from "./pages/Community/CommunityDetail";
-import CommunityDetailPlan from "./pages/Community/CommunityDetailPlan";
+import CommunityMainPage from './pages/Community/CommunityMainPage';
+import CommunityPost from './pages/Community/CommunityPost';
+import CommunityDetail from './pages/Community/CommunityDetail';
+import CommunityDetailPlan from './pages/Community/CommunityDetailPlan';
 
-// import TripPlanPage from './pages/TripPlan/TripPlanPage';
 import Scrap from './pages/MyTrip/Scrap/Scrap';
 import axios from 'axios';
-import AIChatPage from "./pages/AIChat/AIChatPage";
+import AIChatPage from './pages/AIChat/AIChatPage';
 
 // Axios 인터셉터 설정
 const refreshToken = async () => {
@@ -37,7 +36,7 @@ const refreshToken = async () => {
   }
 };
 
-//토큰이 만료되었을 때 자동으로 갱신
+// 토큰이 만료되었을 때 자동으로 갱신
 axios.interceptors.response.use(
   (response) => response,
   async (error) => {
@@ -49,7 +48,6 @@ axios.interceptors.response.use(
     return Promise.reject(error);
   }
 );
-
 
 function App() {
   const dispatch = useDispatch();
@@ -69,13 +67,9 @@ function App() {
         <Route path='itinerary/areaName' element={<AP6Main />} />
         <Route path='my-trip' element={<MyTripMain />} />
         <Route path='my-trip/profile' element={<Profile />} />
-          
         <Route path='my-trip/scrap' element={<Scrap />} />
         <Route path='/trip-plan' element={<TripPlanPage />}></Route>
         <Route path='/search' element={<SearchPage />}></Route>
-
-        {/*<Route path='/trip-plan' element={<TripPlanPage />}></Route>*/}
-        {/*<Route path='/search' element={<SearchPage />}></Route>*/}
         <Route path='/ai-chat' element={<AIChatPage />}></Route>
         <Route path='/location' element={<LocationPage />}></Route>
         <Route path='/community' element={<CommunityMainPage />}></Route>

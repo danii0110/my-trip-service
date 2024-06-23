@@ -3,6 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { useState } from 'react';
 import { Modal } from 'react-bootstrap';
 import { useNavigate, useLocation } from 'react-router-dom';
+import regionMap from '../../../modules/utils/regionMap';
 import axios from 'axios';
 
 const TransportModal = ({ show, onHide }) => {

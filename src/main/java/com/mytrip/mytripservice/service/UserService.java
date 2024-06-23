@@ -37,21 +37,44 @@ public class UserService {
 
     @Transactional
     public UserDTO createOrUpdateUser(UserDTO userDTO) {
-        if (userDTO.getKakaoId() == null || userDTO.getNickname() == null) {
-            throw new IllegalArgumentException("Kakao ID and Nickname are required fields.");
+        Optional<User> optionalUser = userRepository.findByKakaoId(userDTO.getKakaoId());
+
+        User user;
+        if (optionalUser.isPresent()) {
+            user = optionalUser.get();
+            user.setAccessToken(userDTO.getAccessToken());
+            user.setRefreshToken(userDTO.getRefreshToken());
+            user.setTokenExpiryTime(userDTO.getTokenExpiryTime());
+            user.setUpdatedAt(LocalDateTime.now());
+        } else {
+            user = toEntity(userDTO);
+            user.setCreatedAt(LocalDateTime.now());
+            user.setUpdatedAt(LocalDateTime.now());
         }
-        User user = userRepository.findByKakaoId(userDTO.getKakaoId())
-                .orElseGet(User::new);
 
-        user.setKakaoId(userDTO.getKakaoId());
-        user.setNickname(userDTO.getNickname());
-        user.setAccessToken(userDTO.getAccessToken());
-        user.setRefreshToken(userDTO.getRefreshToken());
-        user.setTokenExpiryTime(userDTO.getTokenExpiryTime());
-        user.setRoleType(userDTO.getRoleType() != null ? userDTO.getRoleType() : RoleType.USER);
-
-        logger.info("Saving user: {}", user);
         return toDTO(userRepository.save(user));
+    }
+
+
+
+    @Transactional
+    public UserDTO updateUser(Long id, UserDTO userDetails) {
+        return userRepository.findById(id).map(user -> {
+            if (userDetails.getNickname() != null) {
+                user.setNickname(userDetails.getNickname());
+            }
+            if (userDetails.getAccessToken() != null) {
+                user.setAccessToken(userDetails.getAccessToken());
+            }
+            if (userDetails.getRefreshToken() != null) {
+                user.setRefreshToken(userDetails.getRefreshToken());
+            }
+            if (userDetails.getTokenExpiryTime() != null) {
+                user.setTokenExpiryTime(userDetails.getTokenExpiryTime());
+            }
+            user.setUpdatedAt(LocalDateTime.now());
+            return toDTO(userRepository.save(user));
+        }).orElseThrow(() -> new RuntimeException("User not found"));
     }
 
     @Transactional
@@ -87,3 +110,4 @@ public class UserService {
         return user;
     }
 }
+
