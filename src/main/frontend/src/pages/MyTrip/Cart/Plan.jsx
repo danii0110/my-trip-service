@@ -15,4 +15,5 @@ const Plan = ({ date, areaName, planNum, onDelete }) => {
     </div>
   );
 };
+
 export default Plan;
