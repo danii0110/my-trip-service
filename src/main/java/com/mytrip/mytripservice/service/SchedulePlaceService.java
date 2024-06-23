@@ -47,8 +47,10 @@ public class SchedulePlaceService {
     @Transactional
     public SchedulePlaceDTO updateSchedulePlace(Long id, SchedulePlaceDTO schedulePlaceDetails) {
         return schedulePlaceRepository.findById(id).map(schedulePlace -> {
-            schedulePlace.setDailySchedule(new DailySchedule(schedulePlaceDetails.getScheduleId()));
-            schedulePlace.setPlace(new Place(schedulePlaceDetails.getPlaceId()));
+            schedulePlace.setDailySchedule(dailyScheduleRepository.findById(schedulePlaceDetails.getScheduleId())
+                    .orElseThrow(() -> new RuntimeException("DailySchedule not found")));
+            schedulePlace.setPlace(placeRepository.findById(schedulePlaceDetails.getPlaceId())
+                    .orElseThrow(() -> new RuntimeException("Place not found")));
             schedulePlace.setDuration(schedulePlaceDetails.getDuration());
             schedulePlace.setStartTime(schedulePlaceDetails.getStartTime());
             schedulePlace.setEndTime(schedulePlaceDetails.getEndTime());

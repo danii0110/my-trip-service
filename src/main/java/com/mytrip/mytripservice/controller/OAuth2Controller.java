@@ -1,5 +1,8 @@
 package com.mytrip.mytripservice.controller;
 
+import com.mytrip.mytripservice.dto.UserDTO;
+import com.mytrip.mytripservice.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.util.LinkedMultiValueMap;
@@ -9,6 +12,7 @@ import org.springframework.web.client.RestTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.HashMap;
 
@@ -27,6 +31,9 @@ public class OAuth2Controller {
     @Value("${spring.security.oauth2.client.registration.kakao.redirect-uri}")
     private String redirectUri;
 
+    @Autowired
+    private UserService userService;
+
     @PostMapping("/login/oauth2/code/kakao")
     public ResponseEntity<?> loginWithKakao(@RequestBody Map<String, String> request) {
         String code = request.get("code");
@@ -34,7 +41,6 @@ public class OAuth2Controller {
         logger.info("Received authorization code: {}", code);
 
         try {
-            // 액세스 토큰 요청
             String tokenUrl = "https://kauth.kakao.com/oauth/token";
             RestTemplate restTemplate = new RestTemplate();
             HttpHeaders headers = new HttpHeaders();
@@ -57,9 +63,14 @@ public class OAuth2Controller {
 
             Map<String, Object> tokenResponse = responseEntity.getBody();
             String accessToken = (String) tokenResponse.get("access_token");
-            logger.info("Received access token: {}", accessToken);
+            String refreshToken = (String) tokenResponse.get("refresh_token");
+            Integer expiresIn = (Integer) tokenResponse.get("expires_in");
+            LocalDateTime tokenExpiryTime = LocalDateTime.now().plusSeconds(expiresIn);
 
-            // 사용자 정보 요청
+            logger.info("Received access token: {}", accessToken);
+            logger.info("Received refresh token: {}", refreshToken);
+            logger.info("Token expires in: {} seconds", expiresIn);
+
             String userInfoUrl = "https://kapi.kakao.com/v2/user/me";
             headers.set("Authorization", "Bearer " + accessToken);
             HttpEntity<String> entity = new HttpEntity<>(headers);
@@ -72,8 +83,20 @@ public class OAuth2Controller {
 
             logger.info("Received user info: {}", userInfoResponse.getBody());
 
-            // 응답에 access_token 포함하여 반환
-            Map<String, Object> result = new HashMap<>(userInfoResponse.getBody());
+            Map<String, Object> userInfo = userInfoResponse.getBody();
+            String kakaoId = userInfo.get("id").toString();
+            String nickname = ((Map<String, Object>) userInfo.get("properties")).get("nickname").toString();
+
+            UserDTO userDTO = new UserDTO();
+            userDTO.setKakaoId(kakaoId);
+            userDTO.setNickname(nickname);
+            userDTO.setAccessToken(accessToken);
+            userDTO.setRefreshToken(refreshToken);
+            userDTO.setTokenExpiryTime(tokenExpiryTime);
+
+            userService.createOrUpdateUser(userDTO);
+
+            Map<String, Object> result = new HashMap<>(userInfo);
             result.put("access_token", accessToken);
 
             return ResponseEntity.ok(result);
@@ -107,4 +130,13 @@ public class OAuth2Controller {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error getting user info");
         }
     }
+
+    @PostMapping("/logout")
+    public ResponseEntity<?> logout(@RequestBody Map<String, String> request) {
+        String accessToken = request.get("access_token");
+        // 로그아웃 관련 로직을 여기에 추가
+        // 필요시 세션 무효화 등 추가 작업 수행
+        return ResponseEntity.ok().build();
+    }
 }
+

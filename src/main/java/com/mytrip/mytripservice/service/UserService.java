@@ -1,7 +1,7 @@
-// UserService.java
 package com.mytrip.mytripservice.service;
 
 import com.mytrip.mytripservice.dto.UserDTO;
+import com.mytrip.mytripservice.entity.RoleType;
 import com.mytrip.mytripservice.entity.User;
 import com.mytrip.mytripservice.repository.UserRepository;
 import org.slf4j.Logger;
@@ -31,20 +31,27 @@ public class UserService {
                 .collect(Collectors.toList());
     }
 
-    public Optional<UserDTO> getUserById(Long id) {
-        return userRepository.findById(id).map(this::toDTO);
+    public Optional<UserDTO> getUserByKakaoId(String kakaoId) {
+        return userRepository.findByKakaoId(kakaoId).map(this::toDTO);
     }
 
     @Transactional
-    public UserDTO createUser(UserDTO userDTO) {
-        if (userDTO.getKakaoId() == null || userDTO.getNickname() == null) {
-            throw new IllegalArgumentException("Kakao ID and Nickname are required fields.");
-        }
-        User user = toEntity(userDTO);
-        user.setCreatedAt(LocalDateTime.now());
-        user.setUpdatedAt(LocalDateTime.now());
+    public UserDTO createOrUpdateUser(UserDTO userDTO) {
+        Optional<User> optionalUser = userRepository.findByKakaoId(userDTO.getKakaoId());
 
-        logger.info("Creating user: {}", user);
+        User user;
+        if (optionalUser.isPresent()) {
+            user = optionalUser.get();
+            user.setAccessToken(userDTO.getAccessToken());
+            user.setRefreshToken(userDTO.getRefreshToken());
+            user.setTokenExpiryTime(userDTO.getTokenExpiryTime());
+            user.setUpdatedAt(LocalDateTime.now());
+        } else {
+            user = toEntity(userDTO);
+            user.setCreatedAt(LocalDateTime.now());
+            user.setUpdatedAt(LocalDateTime.now());
+        }
+
         return toDTO(userRepository.save(user));
     }
 
@@ -62,9 +69,6 @@ public class UserService {
             }
             if (userDetails.getTokenExpiryTime() != null) {
                 user.setTokenExpiryTime(userDetails.getTokenExpiryTime());
-            }
-            if (userDetails.getRoleType() != null) {
-                user.setRoleType(userDetails.getRoleType());
             }
             user.setUpdatedAt(LocalDateTime.now());
             return toDTO(userRepository.save(user));
@@ -104,3 +108,5 @@ public class UserService {
         return user;
     }
 }
+
+

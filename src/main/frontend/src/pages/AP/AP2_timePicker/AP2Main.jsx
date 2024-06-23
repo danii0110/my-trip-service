@@ -75,12 +75,17 @@ const AP2Main = () => {
           <AP4Left
             regionMap={regionMap}
             selectedDates={selectedDates}
+            selectedTimes={selectedTimes}
             selectedRegion={selectedRegion}
             selectedArea={selectedArea}
+            tableData={tableData}
+            selectedPlaces={selectedPlaces}
+            currentSelectedDate={currentSelectedDate}
+            openHotelModal={() => setIsHotelModalVisible(true)}
+            onHotelSelect={handleHotelSelect}
             setHotelName={setHotelName}
             openHotelDatePickModal={() => setIsHotelDatePickModalVisible(true)}
-            onHotelSelect={handleHotelSelect} // 호텔 선택 함수 전달
-            handleSelectHotels={handleSelectHotels} // 추가된 부분
+            handleSelectHotels={handleSelectHotels}
           />
         );
         break;

@@ -1,4 +1,3 @@
-// PlaceModal.jsx
 import { useState, useEffect } from 'react';
 import styles from './PlaceModal.module.scss';
 import LeftArrowIcon from '../../../../assets/leftArrow.svg';
@@ -106,6 +105,12 @@ const PlaceModal = ({
       : 0;
   const totalTimeInMinutes = endTimeInMinutes - startTimeInMinutes;
 
+  const formatDuration = (minutes) => {
+    const hours = Math.floor(minutes / 60);
+    const remainingMinutes = minutes % 60;
+    return `${hours}시간 ${remainingMinutes}분`;
+  };
+
   return (
     <div className={styles.container}>
       <div className={styles.header}>
@@ -122,7 +127,7 @@ const PlaceModal = ({
             ? `${selectedTimes[currentSelectedDate].start} ~ ${selectedTimes[currentSelectedDate].end}`
             : ''}
         </div>
-        <div>{`${totalDuration}분 / ${
+        <div>{`${formatDuration(totalDuration)} / ${
           totalTimeInMinutes > 0
             ? `${Math.floor(totalTimeInMinutes / 60)}시간 ${totalTimeInMinutes % 60}분`
             : '시간 정보 없음'

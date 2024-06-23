@@ -1,4 +1,3 @@
-// UserController.java
 package com.mytrip.mytripservice.controller;
 
 import com.mytrip.mytripservice.dto.UserDTO;
@@ -26,21 +25,21 @@ public class UserController {
         return ResponseEntity.ok(users);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<UserDTO> getUserById(@PathVariable Long id) {
-        Optional<UserDTO> user = userService.getUserById(id);
+    @GetMapping("/{kakaoId}")
+    public ResponseEntity<UserDTO> getUserByKakaoId(@PathVariable String kakaoId) {
+        Optional<UserDTO> user = userService.getUserByKakaoId(kakaoId);
         return user.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping
     public ResponseEntity<UserDTO> createUser(@RequestBody UserDTO user) {
-        UserDTO createdUser = userService.createUser(user);
+        UserDTO createdUser = userService.createOrUpdateUser(user);
         return ResponseEntity.ok(createdUser);
     }
 
     @PatchMapping("/{id}")
     public ResponseEntity<UserDTO> updateUser(@PathVariable Long id, @RequestBody UserDTO userDetails) {
-        UserDTO updatedUser = userService.updateUser(id, userDetails);
+        UserDTO updatedUser = userService.createOrUpdateUser(userDetails);
         return ResponseEntity.ok(updatedUser);
     }
 

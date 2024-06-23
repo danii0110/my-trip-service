@@ -192,7 +192,17 @@ const AP4Left = ({
           }`}
         </p>
         <p>Table Data: {JSON.stringify(tableData)}</p>
-        <p>Selected Places: {JSON.stringify(selectedPlaces)}</p>
+        <p>Selected Places with Duration:</p>
+        {Object.keys(selectedPlaces).map((date) => (
+          <div key={date}>
+            <strong>{date}:</strong>
+            {selectedPlaces[date].map((place, index) => (
+              <div key={index}>
+                {place.title} - Duration: {place.duration}분
+              </div>
+            ))}
+          </div>
+        ))}
       </div>
     </>
   );

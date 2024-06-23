@@ -122,7 +122,9 @@ const AP3Left = ({
 
   const handlePlaceSelect = (id, place) => {
     const isSelected = isPlaceChecked(id);
-    onPlaceSelect(id, place, !isSelected);
+    const placeWithDuration = { ...place, duration: place.duration || 120 }; // 기본 120분으로 설정
+
+    onPlaceSelect(id, placeWithDuration, !isSelected);
   };
 
   return (
@@ -173,7 +175,7 @@ const AP3Left = ({
           )}
         </div>
         <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} />
-        <div>
+        <div className={styles.checkData}>
           <h3>전달된 데이터 확인:</h3>
           <p>Region: {selectedRegion !== undefined && selectedRegion !== null ? regionMap[selectedRegion] : '없음'}</p>
           <p>Area: {selectedArea}</p>
