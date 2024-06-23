@@ -1,9 +1,6 @@
 package com.mytrip.mytripservice.service;
 
-import com.mytrip.mytripservice.dto.CompletePlanDTO;
-import com.mytrip.mytripservice.dto.DailyScheduleDTO;
-import com.mytrip.mytripservice.dto.PlanDTO;
-import com.mytrip.mytripservice.dto.SchedulePlaceDTO;
+import com.mytrip.mytripservice.dto.*;
 import com.mytrip.mytripservice.entity.*;
 import com.mytrip.mytripservice.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -127,7 +124,45 @@ public class PlanService {
         planDTO.setEndDate(plan.getEndDate());
         planDTO.setTransportation(plan.getTransportation());
         planDTO.setPlanType(plan.getPlanType());
+        planDTO.setDailySchedules(plan.getDailySchedules().stream()
+                .map(this::toDailyScheduleDTO)
+                .collect(Collectors.toList()));
         return planDTO;
+    }
+
+    private DailyScheduleDTO toDailyScheduleDTO(DailySchedule dailySchedule) {
+        DailyScheduleDTO dailyScheduleDTO = new DailyScheduleDTO();
+        dailyScheduleDTO.setScheduleId(dailySchedule.getScheduleId());
+        dailyScheduleDTO.setPlanId(dailySchedule.getPlan().getPlanId());
+        dailyScheduleDTO.setDate(dailySchedule.getDate());
+        dailyScheduleDTO.setSchedulePlaces(dailySchedule.getSchedulePlaces().stream()
+                .map(this::toSchedulePlaceDTO)
+                .collect(Collectors.toList()));
+        return dailyScheduleDTO;
+    }
+
+    private SchedulePlaceDTO toSchedulePlaceDTO(SchedulePlace schedulePlace) {
+        SchedulePlaceDTO schedulePlaceDTO = new SchedulePlaceDTO();
+        schedulePlaceDTO.setPlaceId(schedulePlace.getPlace().getPlaceId());
+        schedulePlaceDTO.setSchedulePlaceId(schedulePlace.getSchedulePlaceId());
+        schedulePlaceDTO.setScheduleId(schedulePlace.getDailySchedule().getScheduleId());
+        schedulePlaceDTO.setPlace(toPlaceDTO(schedulePlace.getPlace()));
+        schedulePlaceDTO.setDuration(schedulePlace.getDuration());
+        schedulePlaceDTO.setStartTime(schedulePlace.getStartTime());
+        schedulePlaceDTO.setEndTime(schedulePlace.getEndTime());
+        return schedulePlaceDTO;
+    }
+
+    private PlaceDTO toPlaceDTO(Place place) {
+        PlaceDTO placeDTO = new PlaceDTO();
+        placeDTO.setPlaceId(place.getPlaceId());
+        placeDTO.setName(place.getName());
+        placeDTO.setAddress(place.getAddress());
+        placeDTO.setCategory(place.getCategory());
+        placeDTO.setImage(place.getImage());
+        placeDTO.setXCoordinate(place.getXCoordinate());
+        placeDTO.setYCoordinate(place.getYCoordinate());
+        return placeDTO;
     }
 
     private Plan toEntity(PlanDTO planDTO) {
@@ -139,7 +174,42 @@ public class PlanService {
         plan.setEndDate(planDTO.getEndDate());
         plan.setTransportation(planDTO.getTransportation());
         plan.setPlanType(planDTO.getPlanType());
+        plan.setDailySchedules(planDTO.getDailySchedules().stream()
+                .map(this::toDailyScheduleEntity)
+                .collect(Collectors.toList()));
         return plan;
+    }
+
+    private DailySchedule toDailyScheduleEntity(DailyScheduleDTO dailyScheduleDTO) {
+        DailySchedule dailySchedule = new DailySchedule();
+        dailySchedule.setScheduleId(dailyScheduleDTO.getScheduleId());
+        dailySchedule.setDate(dailyScheduleDTO.getDate());
+        dailySchedule.setSchedulePlaces(dailyScheduleDTO.getSchedulePlaces().stream()
+                .map(this::toSchedulePlaceEntity)
+                .collect(Collectors.toList()));
+        return dailySchedule;
+    }
+
+    private SchedulePlace toSchedulePlaceEntity(SchedulePlaceDTO schedulePlaceDTO) {
+        SchedulePlace schedulePlace = new SchedulePlace();
+        schedulePlace.setSchedulePlaceId(schedulePlaceDTO.getSchedulePlaceId());
+        schedulePlace.setPlace(toPlaceEntity(schedulePlaceDTO.getPlace()));
+        schedulePlace.setDuration(schedulePlaceDTO.getDuration());
+        schedulePlace.setStartTime(schedulePlaceDTO.getStartTime());
+        schedulePlace.setEndTime(schedulePlaceDTO.getEndTime());
+        return schedulePlace;
+    }
+
+    private Place toPlaceEntity(PlaceDTO placeDTO) {
+        Place place = new Place();
+        place.setPlaceId(placeDTO.getPlaceId());
+        place.setName(placeDTO.getName());
+        place.setAddress(placeDTO.getAddress());
+        place.setCategory(placeDTO.getCategory());
+        place.setImage(placeDTO.getImage());
+        place.setXCoordinate(placeDTO.getXCoordinate());
+        place.setYCoordinate(placeDTO.getYCoordinate());
+        return place;
     }
 
     //카트
