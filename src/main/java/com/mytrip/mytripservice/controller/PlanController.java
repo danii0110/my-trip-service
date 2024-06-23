@@ -62,10 +62,15 @@ public class PlanController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    //카트
     @PostMapping("/cart")
     public ResponseEntity<Void> createCartPlan(@RequestBody CompletePlanDTO completePlanDTO) {
         planService.createCartPlan(completePlanDTO);
         return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    @GetMapping("/cart/{userId}")
+    public ResponseEntity<List<PlanDTO>> getCartPlans(@PathVariable Long userId) {
+        List<PlanDTO> plans = planService.getCartPlans(userId);
+        return ResponseEntity.ok(plans);
     }
 }

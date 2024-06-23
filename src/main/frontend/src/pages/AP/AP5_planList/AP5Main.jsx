@@ -6,16 +6,50 @@ import DownArrowIcon from '../../../assets/downArrowIcon.svg';
 import KakakoMap from '../../../modules/api/KakaoMap/KakaoMap';
 import { useState, useEffect } from 'react';
 import PlanCont from './PlanCont';
+import CartModal from './CartModal';
 import regionMap from '../../../modules/utils/regionMap';
 import { useLocation } from 'react-router-dom';
+import axios from 'axios';
 
 const AP5Main = () => {
   const location = useLocation();
   const { selectedDates, selectedRegion, selectedArea, tableData, selectedPlaces, selectedHotels } =
     location.state || {};
-
+  const [userId, setUserId] = useState(null);
+  const [cartPlans, setCartPlans] = useState([]);
   const [isUpArrow, setIsUpArrow] = useState(true);
   const [showModal, setShowModal] = useState(false);
+
+  useEffect(() => {
+    const storedUserId = localStorage.getItem('userId');
+    if (storedUserId) {
+      setUserId(storedUserId);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (userId) {
+      fetchCartPlans();
+    }
+  }, [userId]);
+
+  const fetchCartPlans = async () => {
+    try {
+      const response = await axios.get(`http://localhost:8080/api/plans/cart/${userId}`);
+      const plans = response.data.map((plan, index) => ({
+        editDate: new Date(plan.updatedAt).toLocaleDateString(),
+        duration: `${plan.startDate} - ${plan.endDate}`,
+        places: [`${plan.region} ${plan.area}${index + 1}`],
+        placeCount: plan.dailySchedules.reduce(
+          (count, dailySchedule) => count + dailySchedule.schedulePlaces.length,
+          0
+        ),
+      }));
+      setCartPlans(plans);
+    } catch (error) {
+      console.error('Error fetching cart plans:', error);
+    }
+  };
 
   const handleClick = () => {
     setShowModal(!showModal);
@@ -42,7 +76,13 @@ const AP5Main = () => {
               />
             </button>
           </div>
-          {showModal && <div className={styles.modalContainer}>{/* Modal contents */}</div>}
+          {showModal && (
+            <div className={styles.modalContainer}>
+              {cartPlans.map((plan, index) => (
+                <CartModal key={index} content={plan} onRemove={() => {}} />
+              ))}
+            </div>
+          )}
           <div className={styles.planCont}>
             <PlanCont
               selectedDates={selectedDates}
@@ -50,6 +90,7 @@ const AP5Main = () => {
               selectedArea={selectedArea}
               selectedPlaces={selectedPlaces}
               selectedHotels={selectedHotels}
+              userId={userId}
             />
           </div>
           <div className={styles.divToCheck}>
@@ -75,6 +116,7 @@ const AP5Main = () => {
               ))}
             </p>
             <p>Selected Hotels: {JSON.stringify(selectedHotels)}</p>
+            <p>User ID: {userId}</p> {/* 여기서 userId 확인 */}
           </div>
         </div>
         <div className={styles.rightCont}>

@@ -10,7 +10,11 @@ const CartModal = ({ content, onRemove }) => {
       </div>
       <div className={styles.mainCont}>
         <div className={styles.duration}>{content.duration}</div>
-        <div className={styles.contentPlace}>{content.places[0]}</div>
+        {content.places.map((place, index) => (
+          <div key={index} className={styles.contentPlace}>
+            {place}
+          </div>
+        ))}
         <div className={styles.placeNum}>담은 장소: {content.placeCount}</div>
       </div>
     </div>

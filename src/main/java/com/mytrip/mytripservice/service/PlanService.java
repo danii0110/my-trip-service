@@ -191,4 +191,9 @@ public class PlanService {
             }
         }
     }
+
+    public List<PlanDTO> getCartPlans(Long userId) {
+        List<Plan> plans = planRepository.findByUser_UserIdAndPlanType(userId, PlanType.CART);
+        return plans.stream().map(this::toDTO).collect(Collectors.toList());
+    }
 }
