@@ -1,11 +1,38 @@
+import axios from 'axios';
+import { useSelector } from 'react-redux';
 import HotelCont from './HotelCont';
 import styles from './PlanCont.module.scss';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import TransportModal from './TransportModal';
 import PickedPlaceCont from './PickedPlaceCont';
 import regionMap from '../../../modules/utils/regionMap';
 
+const categoryMap = {
+  12: 'TOURIST_SPOT',
+  39: 'RESTAURANT',
+  14: 'CULTURAL_FACILITY',
+  28: 'LEISURE_SPORTS',
+  38: 'SHOPPING',
+  32: 'ACCOMMODATION',
+};
+
 const PlanCont = ({ selectedDates, selectedRegion, selectedArea, selectedPlaces = {}, selectedHotels = [] }) => {
+  const userFromRedux = useSelector((state) => state.user.user); // Redux 상태에서 user 정보를 가져옴
+  const [userId, setUserId] = useState(null);
+
+  useEffect(() => {
+    // Redux 상태에서 user 정보를 가져와 설정
+    if (userFromRedux && userFromRedux.id) {
+      setUserId(userFromRedux.id);
+    } else {
+      // Redux 상태에서 user 정보를 가져오지 못하는 경우 로컬 스토리지에서 가져옴
+      const storedUserId = localStorage.getItem('userId');
+      if (storedUserId) {
+        setUserId(storedUserId);
+      }
+    }
+  }, [userFromRedux]);
+
   const [showModal, setShowModal] = useState(false);
 
   const formattedDuration = `${selectedDates.start.toLocaleDateString()} - ${selectedDates.end.toLocaleDateString()}`;
@@ -26,11 +53,69 @@ const PlanCont = ({ selectedDates, selectedRegion, selectedArea, selectedPlaces 
 
   const dateRange = generateDateRange(selectedDates.start, selectedDates.end);
 
-  const formatDate = (date) => {
+  const formatDateForAPI = (date) => {
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0'); // 1월은 0부터 시작하므로 +1
+    const day = date.getDate().toString().padStart(2, '0');
+    return `${year}-${month}-${day}`; // 날짜 형식을 YYYY-MM-DD로 수정
+  };
+
+  const formatDateForDisplay = (date) => {
     const year = date.getFullYear();
     const month = date.getMonth() + 1; // 1월은 0부터 시작하므로 +1
     const day = date.getDate();
-    return `${year}. ${month}. ${day}.`;
+    return `${year}. ${month}. ${day}.`; // 날짜 형식을 YYYY. M. D.로 수정
+  };
+
+  const handleAddToCart = async () => {
+    if (!userId) {
+      console.error('User not logged in');
+      return;
+    }
+
+    const cartData = {
+      userId: userId,
+      title: tripName,
+      region: `${regionName} ${selectedArea}`,
+      startDate: selectedDates.start.toISOString().split('T')[0],
+      endDate: selectedDates.end.toISOString().split('T')[0],
+      transportation: null,
+      planType: 'CART',
+      dailySchedules: dateRange.map((date) => {
+        const formattedDate = formatDateForAPI(date);
+        const displayDate = formatDateForDisplay(date);
+        const placesForDay = selectedPlaces[displayDate] || [];
+        return {
+          date: formattedDate,
+          schedulePlaces: placesForDay.map((place) => {
+            const category = categoryMap[place.contenttypeid] || 'UNKNOWN';
+            return {
+              placeId: place.contentid,
+              place: {
+                name: place.title,
+                address: place.addr1,
+                category: category,
+                image: place.firstimage,
+                xCoordinate: place.mapx,
+                yCoordinate: place.mapy,
+              },
+              duration: place.duration,
+              startTime: place.startTime || null,
+              endTime: place.endTime || null,
+            };
+          }),
+        };
+      }),
+    };
+
+    console.log('Cart Data: ', cartData);
+
+    try {
+      const response = await axios.post('http://localhost:8080/api/plans/cart', cartData);
+      console.log('Plan added to cart:', response.data);
+    } catch (error) {
+      console.error('Error adding plan to cart:', error);
+    }
   };
 
   return (
@@ -47,11 +132,11 @@ const PlanCont = ({ selectedDates, selectedRegion, selectedArea, selectedPlaces 
             <div className={styles.pickedPlace}>선택한 장소</div>
           </div>
           {dateRange.map((date, index) => {
-            const formattedDate = formatDate(date);
-            const placesForDay = selectedPlaces[formattedDate] || []; // 기본값 빈 배열
-            console.log(`Formatted Date: ${formattedDate}`);
-            console.log(`Places for ${formattedDate}:`, placesForDay);
-            return <PickedPlaceCont key={index} pickedDay={formattedDate} places={placesForDay} />;
+            const formattedDateForDisplay = formatDateForDisplay(date);
+            const placesForDay = selectedPlaces[formattedDateForDisplay] || []; // 기본값 빈 배열
+            console.log(`Formatted Date: ${formattedDateForDisplay}`);
+            console.log(`Places for ${formattedDateForDisplay}:`, placesForDay);
+            return <PickedPlaceCont key={index} pickedDay={formattedDateForDisplay} places={placesForDay} />;
           })}
         </div>
         <div className={styles.pickedHotelCont}>
@@ -70,7 +155,7 @@ const PlanCont = ({ selectedDates, selectedRegion, selectedArea, selectedPlaces 
           </div>
         </div>
         <div className={styles.btnsCont}>
-          <button className={styles.addCartBtn} type='button'>
+          <button className={styles.addCartBtn} type='button' onClick={handleAddToCart}>
             장바구니에 추가
           </button>
           <button className={styles.makePlanBtn} type='button' onClick={() => setShowModal(true)}>
