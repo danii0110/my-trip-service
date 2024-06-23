@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -73,8 +72,8 @@ public class PlanService {
                 schedulePlace.setDailySchedule(savedDailySchedule);
                 schedulePlace.setPlace(place);
                 schedulePlace.setDuration(schedulePlaceDTO.getDuration());
-                schedulePlace.setStartTime(schedulePlaceDTO.getStartTime() != null ? LocalTime.parse(schedulePlaceDTO.getStartTime()) : null);
-                schedulePlace.setEndTime(schedulePlaceDTO.getEndTime() != null ? LocalTime.parse(schedulePlaceDTO.getEndTime()) : null);
+                schedulePlace.setStartTime(schedulePlaceDTO.getStartTime());
+                schedulePlace.setEndTime(schedulePlaceDTO.getEndTime());
 
                 schedulePlaceRepository.save(schedulePlace);
             }
@@ -107,8 +106,8 @@ public class PlanService {
             plan.setRegion(planDetails.getRegion());
             plan.setStartDate(planDetails.getStartDate());
             plan.setEndDate(planDetails.getEndDate());
-            plan.setTransportation(Transportation.valueOf(planDetails.getTransportation()));
-            plan.setPlanType(PlanType.valueOf(planDetails.getPlanType()));
+            plan.setTransportation(planDetails.getTransportation());
+            plan.setPlanType(planDetails.getPlanType());
             return toDTO(planRepository.save(plan));
         }).orElseThrow(() -> new RuntimeException("Plan not found"));
     }
@@ -126,8 +125,8 @@ public class PlanService {
         planDTO.setRegion(plan.getRegion());
         planDTO.setStartDate(plan.getStartDate());
         planDTO.setEndDate(plan.getEndDate());
-        planDTO.setTransportation(plan.getTransportation().name());
-        planDTO.setPlanType(plan.getPlanType().name());
+        planDTO.setTransportation(plan.getTransportation());
+        planDTO.setPlanType(plan.getPlanType());
         return planDTO;
     }
 
@@ -138,8 +137,8 @@ public class PlanService {
         plan.setRegion(planDTO.getRegion());
         plan.setStartDate(planDTO.getStartDate());
         plan.setEndDate(planDTO.getEndDate());
-        plan.setTransportation(Transportation.valueOf(planDTO.getTransportation()));
-        plan.setPlanType(PlanType.valueOf(planDTO.getPlanType()));
+        plan.setTransportation(planDTO.getTransportation());
+        plan.setPlanType(planDTO.getPlanType());
         return plan;
     }
 }

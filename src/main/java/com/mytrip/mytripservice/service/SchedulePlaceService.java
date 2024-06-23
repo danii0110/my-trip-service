@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -53,8 +52,8 @@ public class SchedulePlaceService {
             schedulePlace.setPlace(placeRepository.findById(schedulePlaceDetails.getPlaceId())
                     .orElseThrow(() -> new RuntimeException("Place not found")));
             schedulePlace.setDuration(schedulePlaceDetails.getDuration());
-            schedulePlace.setStartTime(schedulePlaceDetails.getStartTime() != null ? LocalTime.parse(schedulePlaceDetails.getStartTime()) : null);
-            schedulePlace.setEndTime(schedulePlaceDetails.getEndTime() != null ? LocalTime.parse(schedulePlaceDetails.getEndTime()) : null);
+            schedulePlace.setStartTime(schedulePlaceDetails.getStartTime());
+            schedulePlace.setEndTime(schedulePlaceDetails.getEndTime());
             return toDTO(schedulePlaceRepository.save(schedulePlace));
         }).orElseThrow(() -> new RuntimeException("SchedulePlace not found"));
     }
@@ -70,8 +69,8 @@ public class SchedulePlaceService {
         schedulePlaceDTO.setScheduleId(schedulePlace.getDailySchedule().getScheduleId());
         schedulePlaceDTO.setPlaceId(schedulePlace.getPlace().getPlaceId());
         schedulePlaceDTO.setDuration(schedulePlace.getDuration());
-        schedulePlaceDTO.setStartTime(schedulePlace.getStartTime() != null ? schedulePlace.getStartTime().toString() : null);
-        schedulePlaceDTO.setEndTime(schedulePlace.getEndTime() != null ? schedulePlace.getEndTime().toString() : null);
+        schedulePlaceDTO.setStartTime(schedulePlace.getStartTime());
+        schedulePlaceDTO.setEndTime(schedulePlace.getEndTime());
         return schedulePlaceDTO;
     }
 
@@ -82,8 +81,8 @@ public class SchedulePlaceService {
         schedulePlace.setPlace(placeRepository.findById(schedulePlaceDTO.getPlaceId())
                 .orElseThrow(() -> new RuntimeException("Place not found")));
         schedulePlace.setDuration(schedulePlaceDTO.getDuration());
-        schedulePlace.setStartTime(schedulePlaceDTO.getStartTime() != null ? LocalTime.parse(schedulePlaceDTO.getStartTime()) : null);
-        schedulePlace.setEndTime(schedulePlaceDTO.getEndTime() != null ? LocalTime.parse(schedulePlaceDTO.getEndTime()) : null);
+        schedulePlace.setStartTime(schedulePlaceDTO.getStartTime());
+        schedulePlace.setEndTime(schedulePlaceDTO.getEndTime());
         return schedulePlace;
     }
 }
