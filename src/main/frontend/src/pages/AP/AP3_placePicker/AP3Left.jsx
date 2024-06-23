@@ -173,7 +173,7 @@ const AP3Left = ({
           )}
         </div>
         <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} />
-        <div>
+        <div className={styles.checkData}>
           <h3>전달된 데이터 확인:</h3>
           <p>Region: {selectedRegion !== undefined && selectedRegion !== null ? regionMap[selectedRegion] : '없음'}</p>
           <p>Area: {selectedArea}</p>
