@@ -3,7 +3,7 @@ import MyTripHeader from '../MyTripHeader';
 import Layout from '../../../components/layouts/Layout';
 import ProfileIcon from '../../../assets/profileIcon.svg';
 import DeleteIdModal from './DeleteIdModal';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { logout } from '../../../modules/api/Login/userActions';
@@ -11,10 +11,29 @@ import axios from 'axios';
 
 const Profile = () => {
   const [showModal, setShowModal] = useState(false);
-  const [nickname, setNickname] = useState('user70887675');
-  const [originalNickname] = useState('user70887675'); // 백엔드에서 가져온 초기 닉네임
+  const [nickname, setNickname] = useState('');
+  const [originalNickname, setOriginalNickname] = useState('');
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      try {
+        const storedUser = JSON.parse(localStorage.getItem('user'));
+        console.log('User loaded from localStorage:', storedUser);
+        if (storedUser) {
+          const response = await axios.get(`http://localhost:8080/api/users/${storedUser.id}`);
+          const userData = response.data;
+          setNickname(userData.nickname);
+          setOriginalNickname(userData.nickname);
+        }
+      } catch (error) {
+        console.error('Error fetching user profile:', error);
+      }
+    };
+
+    fetchUserProfile();
+  }, []);
 
   const handleButtonClick = () => {
     setShowModal(true);
@@ -31,16 +50,12 @@ const Profile = () => {
     }
 
     try {
-      const response = await fetch('/api/updateNickname', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ nickname }),
-      });
+      const storedUser = JSON.parse(localStorage.getItem('user'));
+      const response = await axios.patch(`http://localhost:8080/api/users/${storedUser.id}`, { nickname });
 
-      if (response.ok) {
+      if (response.status === 200) {
         alert('닉네임이 저장되었습니다.');
+        setOriginalNickname(nickname);
       } else {
         alert('닉네임 저장에 실패했습니다.');
       }
@@ -80,7 +95,7 @@ const Profile = () => {
         <div className={styles.container}>
           <div className={styles.header}>
             <img className={styles.profileIcon} src={ProfileIcon} alt='profile-icon' />
-            <div className={styles.userId}>user70887675</div>
+            <div className={styles.userId}>{originalNickname}</div>
           </div>
           <div className={styles.main}>
             <div className={styles.profileExplan}>프로필 설정</div>
@@ -89,14 +104,15 @@ const Profile = () => {
                 닉네임
               </label>
               <input
+                disabled
                 type='text'
                 id='nickname'
                 className={styles.labelInput}
                 onChange={handleNicknameChange}
-                placeholder='user70887675'
+                value={nickname}
               ></input>
             </div>
-            <div className={styles.emailCont}>
+            {/* <div className={styles.emailCont}>
               <label htmlFor='email' className={styles.labelTag}>
                 이메일
               </label>
@@ -107,7 +123,7 @@ const Profile = () => {
                 className={styles.labelInput}
                 placeholder='user7088@naver.com'
               ></input>
-            </div>
+            </div> */}
             {/* <button className={styles.deleteId} onClick={handleButtonClick}>
               회원탈퇴
             </button> */}

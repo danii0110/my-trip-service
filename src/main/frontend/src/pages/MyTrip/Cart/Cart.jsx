@@ -1,29 +1,59 @@
 import styles from './Cart.module.scss';
 import QuestionIcon from '../../../assets/questionIcon.svg';
 import Plan from './Plan';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 
 const Cart = () => {
-  const plansData = [
-    { date: '24.04.25-24.04.28', areaName: '광주 동구', planNum: 1 },
-    { date: '24.05.10-24.05.15', areaName: '서울 강남구', planNum: 2 },
-    { date: '24.06.01-24.06.05', areaName: '부산 해운대구', planNum: 3 },
-    { date: '24.07.20-24.07.25', areaName: '대구 중구', planNum: 4 },
-    { date: '24.08.15-24.08.20', areaName: '인천 연수구', planNum: 5 },
-    { date: '24.09.05-24.09.10', areaName: '제주 제주시', planNum: 6 },
-    { date: '24.10.12-24.10.18', areaName: '광주 북구', planNum: 7 },
-    { date: '24.11.22-24.11.27', areaName: '대전 유성구', planNum: 8 },
-  ];
+  const [plans, setPlans] = useState([]);
 
-  const [plans, setPlans] = useState(plansData);
+  useEffect(() => {
+    const fetchPlans = async () => {
+      try {
+        const storedUserId = localStorage.getItem('userId');
+        if (storedUserId) {
+          const response = await axios.get(`/api/plans/cart/${storedUserId}`);
+          const userPlans = response.data;
+
+          // Group plans by region and area
+          const groupedPlans = userPlans.reduce((acc, plan) => {
+            const key = `${plan.region}`;
+            if (!acc[key]) {
+              acc[key] = [];
+            }
+            acc[key].push(plan);
+            return acc;
+          }, {});
+
+          // Transform grouped plans into the required format
+          const transformedPlans = Object.keys(groupedPlans).map((key) => {
+            const regionPlans = groupedPlans[key];
+            const areaName = regionPlans[0].region;
+            const startDate = new Date(Math.min(...regionPlans.map((plan) => new Date(plan.startDate))));
+            const endDate = new Date(Math.max(...regionPlans.map((plan) => new Date(plan.endDate))));
+            const formattedDate = `${startDate.toLocaleDateString()}-${endDate.toLocaleDateString()}`;
+            return {
+              date: formattedDate,
+              areaName,
+              planNum: regionPlans.length,
+            };
+          });
+
+          setPlans(transformedPlans);
+        } else {
+          console.log('No User ID found in localStorage');
+        }
+      } catch (error) {
+        console.error('Error fetching plans:', error);
+      }
+    };
+
+    fetchPlans();
+  }, []);
 
   const handleDelete = (index) => {
-    const newPlans = plans.filter((_, i) => i !== index);
-    setPlans(newPlans);
+    // Implement the delete functionality here if needed
   };
-  // const plans = plansData
-  //   .slice(0, 8)
-  //   .map((plan, index) => <Plan key={index} date={plan.date} areaName={plan.areaName} planNum={plan.planNum} />);
 
   return (
     <div className={styles.container}>
@@ -52,4 +82,5 @@ const Cart = () => {
     </div>
   );
 };
+
 export default Cart;
