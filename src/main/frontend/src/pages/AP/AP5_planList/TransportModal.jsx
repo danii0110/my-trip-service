@@ -1,44 +1,63 @@
 import styles from './TransportModal.module.scss';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Modal } from 'react-bootstrap';
 import { useNavigate, useLocation } from 'react-router-dom';
-import regionMap from '../../../modules/utils/regionMap';
+import { useSelector } from 'react-redux';
 import axios from 'axios';
+import regionMap from '../../../modules/utils/regionMap';
+
+const categoryMap = {
+  12: 'TOURIST_SPOT',
+  39: 'RESTAURANT',
+  14: 'CULTURAL_FACILITY',
+  28: 'LEISURE_SPORTS',
+  38: 'SHOPPING',
+  32: 'ACCOMMODATION',
+};
 
 const TransportModal = ({ show, onHide }) => {
+  const user = useSelector((state) => state.user.user);
   const navigate = useNavigate();
   const location = useLocation();
-  const { selectedDates, selectedRegion, selectedArea, tableData, selectedPlaces, selectedHotels, userId } =
+  const { selectedDates, selectedRegion, selectedArea, tableData, selectedPlaces, selectedHotels } =
     location.state || {};
 
   const [selectedTransport, setSelectedTransport] = useState('PUBLIC_TRANSPORT');
 
+  useEffect(() => {
+    console.log('User in TransportModal:', user);
+  }, [user]);
+
   const goToAP6 = async () => {
+    const regionName = regionMap[selectedRegion] || '알 수 없음';
     const planData = {
-      userId: userId, // Ensure userId is set correctly
-      title: `${regionMap[selectedRegion]} ${selectedArea} 여행`,
-      region: `${regionMap[selectedRegion]} ${selectedArea}`,
+      userId: user?.id,
+      title: `${regionName} ${selectedArea} 여행`,
+      region: `${regionName} ${selectedArea}`,
       startDate: selectedDates.start.toISOString().split('T')[0],
       endDate: selectedDates.end.toISOString().split('T')[0],
       transportation: selectedTransport,
       planType: 'TRAVEL_PLAN',
       dailySchedules: Object.keys(selectedPlaces).map((date) => ({
         date: new Date(date).toISOString().split('T')[0],
-        schedulePlaces: selectedPlaces[date].map((place) => ({
-          placeId: place.contentid,
-          place: {
-            name: place.title,
-            address: place.addr1,
-            category: place.cat1,
-            image: place.firstimage,
-            xCoordinate: place.mapx,
-            yCoordinate: place.mapy,
-          },
-          duration: 60, // Default duration
-          startTime: null,
-          endTime: null,
-        })),
+        schedulePlaces: selectedPlaces[date].map((place) => {
+          const category = categoryMap[place.contenttypeid] || 'UNKNOWN';
+          return {
+            placeId: place.contentid,
+            place: {
+              name: place.title,
+              address: place.addr1,
+              category: category,
+              image: place.firstimage,
+              xCoordinate: place.mapx,
+              yCoordinate: place.mapy,
+            },
+            duration: place.duration || 60,
+            startTime: place.startTime || null,
+            endTime: place.endTime || null,
+          };
+        }),
       })),
     };
 
