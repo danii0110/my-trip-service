@@ -6,20 +6,66 @@ import DownArrowIcon from '../../../assets/downArrowIcon.svg';
 import KakakoMap from '../../../modules/api/KakaoMap/KakaoMap';
 import { useState, useEffect } from 'react';
 import PlanCont from './PlanCont';
+import CartModal from './CartModal';
 import regionMap from '../../../modules/utils/regionMap';
+import axios from 'axios';
 import { useLocation } from 'react-router-dom';
 
 const AP5Main = () => {
   const location = useLocation();
   const { selectedDates, selectedRegion, selectedArea, tableData, selectedPlaces, selectedHotels } =
     location.state || {};
-
+  const [userId, setUserId] = useState(null);
+  const [cartPlans, setCartPlans] = useState([]);
   const [isUpArrow, setIsUpArrow] = useState(true);
   const [showModal, setShowModal] = useState(false);
+
+  useEffect(() => {
+    const storedUserId = localStorage.getItem('userId');
+    if (storedUserId) {
+      setUserId(storedUserId);
+    } else {
+      console.log('No User ID found in localStorage');
+    }
+  }, []);
+
+  useEffect(() => {
+    const fetchCartPlans = async () => {
+      if (userId) {
+        console.log(`Fetching cart plans for user ID: ${userId}, region: ${selectedRegion}, area: ${selectedArea}`);
+        try {
+          const response = await axios.get(`/api/plans/cart/${userId}`);
+          const filteredPlans = response.data.filter(
+            (plan) => plan.region === `인천 미추홀구` && plan.planType === 'CART'
+          );
+          setCartPlans(filteredPlans);
+          console.log('API Response:', response.data);
+          console.log('Filtered Plans:', filteredPlans);
+        } catch (error) {
+          console.error('Error fetching cart plans:', error);
+        }
+      }
+    };
+
+    fetchCartPlans();
+  }, [userId, selectedRegion, selectedArea]);
+
+  const handleRemove = async (planId) => {
+    try {
+      await axios.delete(`/api/plans/${planId}`);
+      setCartPlans(cartPlans.filter((plan) => plan.planId !== planId));
+    } catch (error) {
+      console.error('Error removing plan:', error);
+    }
+  };
 
   const handleClick = () => {
     setShowModal(!showModal);
     setIsUpArrow(!isUpArrow);
+  };
+
+  const calculatePlaceCount = (dailySchedules = []) => {
+    return dailySchedules.reduce((count, schedule) => count + schedule.schedulePlaces.length, 0);
   };
 
   return (
@@ -42,7 +88,27 @@ const AP5Main = () => {
               />
             </button>
           </div>
-          {showModal && <div className={styles.modalContainer}>{/* Modal contents */}</div>}
+          {showModal && (
+            <div className={styles.modalContainer}>
+              {cartPlans.map((plan, index) => {
+                const placeCount = calculatePlaceCount(plan.dailySchedules);
+                console.log('Plan:', plan);
+                console.log('Place Count:', placeCount);
+                return (
+                  <CartModal
+                    key={plan.planId}
+                    content={{
+                      editDate: plan.endDate.join('. '),
+                      duration: `${plan.startDate.join('. ')} - ${plan.endDate.join('. ')}`,
+                      places: [`${plan.region}${index + 1}`],
+                      placeCount: placeCount,
+                    }}
+                    onRemove={() => handleRemove(plan.planId)}
+                  />
+                );
+              })}
+            </div>
+          )}
           <div className={styles.planCont}>
             <PlanCont
               selectedDates={selectedDates}
@@ -50,6 +116,7 @@ const AP5Main = () => {
               selectedArea={selectedArea}
               selectedPlaces={selectedPlaces}
               selectedHotels={selectedHotels}
+              userId={userId}
             />
           </div>
           <div className={styles.divToCheck}>
@@ -75,6 +142,7 @@ const AP5Main = () => {
               ))}
             </p>
             <p>Selected Hotels: {JSON.stringify(selectedHotels)}</p>
+            <p>User ID: {userId}</p>
           </div>
         </div>
         <div className={styles.rightCont}>
