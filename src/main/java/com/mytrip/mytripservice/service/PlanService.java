@@ -141,4 +141,54 @@ public class PlanService {
         plan.setPlanType(planDTO.getPlanType());
         return plan;
     }
+
+    //카트
+    @Transactional
+    public void createCartPlan(CompletePlanDTO completePlanDTO) {
+        User user = userRepository.findByKakaoId(completePlanDTO.getUserId().toString())
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        Plan plan = new Plan();
+        plan.setUser(user);
+        plan.setTitle(completePlanDTO.getTitle());
+        plan.setRegion(completePlanDTO.getRegion());
+        plan.setStartDate(completePlanDTO.getStartDate());
+        plan.setEndDate(completePlanDTO.getEndDate());
+        plan.setTransportation(null); // 교통수단은 null로 설정
+        plan.setPlanType(completePlanDTO.getPlanType());
+
+        Plan savedPlan = planRepository.save(plan);
+
+        for (DailyScheduleDTO dailyScheduleDTO : completePlanDTO.getDailySchedules()) {
+            DailySchedule dailySchedule = new DailySchedule();
+            dailySchedule.setPlan(savedPlan);
+            dailySchedule.setDate(dailyScheduleDTO.getDate());
+
+            DailySchedule savedDailySchedule = dailyScheduleRepository.save(dailySchedule);
+
+            for (SchedulePlaceDTO schedulePlaceDTO : dailyScheduleDTO.getSchedulePlaces()) {
+                Place place = placeRepository.findById(schedulePlaceDTO.getPlaceId())
+                        .orElseGet(() -> {
+                            Place newPlace = new Place();
+                            newPlace.setPlaceId(schedulePlaceDTO.getPlaceId());
+                            newPlace.setName(schedulePlaceDTO.getPlace().getName());
+                            newPlace.setAddress(schedulePlaceDTO.getPlace().getAddress());
+                            newPlace.setCategory(schedulePlaceDTO.getPlace().getCategory());
+                            newPlace.setImage(schedulePlaceDTO.getPlace().getImage());
+                            newPlace.setXCoordinate(schedulePlaceDTO.getPlace().getXCoordinate());
+                            newPlace.setYCoordinate(schedulePlaceDTO.getPlace().getYCoordinate());
+                            return placeRepository.save(newPlace);
+                        });
+
+                SchedulePlace schedulePlace = new SchedulePlace();
+                schedulePlace.setDailySchedule(savedDailySchedule);
+                schedulePlace.setPlace(place);
+                schedulePlace.setDuration(schedulePlaceDTO.getDuration());
+                schedulePlace.setStartTime(schedulePlaceDTO.getStartTime());
+                schedulePlace.setEndTime(schedulePlaceDTO.getEndTime());
+
+                schedulePlaceRepository.save(schedulePlace);
+            }
+        }
+    }
 }
