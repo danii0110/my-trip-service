@@ -1,7 +1,7 @@
-// UserService.java
 package com.mytrip.mytripservice.service;
 
 import com.mytrip.mytripservice.dto.UserDTO;
+import com.mytrip.mytripservice.entity.RoleType;
 import com.mytrip.mytripservice.entity.User;
 import com.mytrip.mytripservice.repository.UserRepository;
 import org.slf4j.Logger;
@@ -36,39 +36,22 @@ public class UserService {
     }
 
     @Transactional
-    public UserDTO createUser(UserDTO userDTO) {
+    public UserDTO createOrUpdateUser(UserDTO userDTO) {
         if (userDTO.getKakaoId() == null || userDTO.getNickname() == null) {
             throw new IllegalArgumentException("Kakao ID and Nickname are required fields.");
         }
-        User user = toEntity(userDTO);
-        user.setCreatedAt(LocalDateTime.now());
-        user.setUpdatedAt(LocalDateTime.now());
+        User user = userRepository.findByKakaoId(userDTO.getKakaoId())
+                .orElseGet(User::new);
 
-        logger.info("Creating user: {}", user);
+        user.setKakaoId(userDTO.getKakaoId());
+        user.setNickname(userDTO.getNickname());
+        user.setAccessToken(userDTO.getAccessToken());
+        user.setRefreshToken(userDTO.getRefreshToken());
+        user.setTokenExpiryTime(userDTO.getTokenExpiryTime());
+        user.setRoleType(userDTO.getRoleType() != null ? userDTO.getRoleType() : RoleType.USER);
+
+        logger.info("Saving user: {}", user);
         return toDTO(userRepository.save(user));
-    }
-
-    @Transactional
-    public UserDTO updateUser(Long id, UserDTO userDetails) {
-        return userRepository.findById(id).map(user -> {
-            if (userDetails.getNickname() != null) {
-                user.setNickname(userDetails.getNickname());
-            }
-            if (userDetails.getAccessToken() != null) {
-                user.setAccessToken(userDetails.getAccessToken());
-            }
-            if (userDetails.getRefreshToken() != null) {
-                user.setRefreshToken(userDetails.getRefreshToken());
-            }
-            if (userDetails.getTokenExpiryTime() != null) {
-                user.setTokenExpiryTime(userDetails.getTokenExpiryTime());
-            }
-            if (userDetails.getRoleType() != null) {
-                user.setRoleType(userDetails.getRoleType());
-            }
-            user.setUpdatedAt(LocalDateTime.now());
-            return toDTO(userRepository.save(user));
-        }).orElseThrow(() -> new RuntimeException("User not found"));
     }
 
     @Transactional

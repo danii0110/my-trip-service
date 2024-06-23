@@ -1,4 +1,3 @@
-// UserController.java
 package com.mytrip.mytripservice.controller;
 
 import com.mytrip.mytripservice.dto.UserDTO;
@@ -34,13 +33,13 @@ public class UserController {
 
     @PostMapping
     public ResponseEntity<UserDTO> createUser(@RequestBody UserDTO user) {
-        UserDTO createdUser = userService.createUser(user);
+        UserDTO createdUser = userService.createOrUpdateUser(user);
         return ResponseEntity.ok(createdUser);
     }
 
     @PatchMapping("/{id}")
     public ResponseEntity<UserDTO> updateUser(@PathVariable Long id, @RequestBody UserDTO userDetails) {
-        UserDTO updatedUser = userService.updateUser(id, userDetails);
+        UserDTO updatedUser = userService.createOrUpdateUser(userDetails);
         return ResponseEntity.ok(updatedUser);
     }
 

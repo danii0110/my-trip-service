@@ -88,7 +88,7 @@ public class OAuth2Controller {
             userDTO.setNickname(nickname);
             userDTO.setAccessToken(accessToken);
 
-            userService.createUser(userDTO);  // 사용자 정보 저장
+            userService.createOrUpdateUser(userDTO);  // 사용자 정보 저장
 
             // 응답에 access_token 포함하여 반환
             Map<String, Object> result = new HashMap<>(userInfo);
