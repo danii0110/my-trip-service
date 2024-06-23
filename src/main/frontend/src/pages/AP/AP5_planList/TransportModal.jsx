@@ -43,26 +43,54 @@ const TransportModal = ({ show, onHide }) => {
       endDate: selectedDates.end.toISOString().split('T')[0],
       transportation: selectedTransport,
       planType: 'TRAVEL_PLAN',
-      dailySchedules: Object.keys(selectedPlaces).map((date) => ({
-        date: new Date(date).toISOString().split('T')[0],
-        schedulePlaces: selectedPlaces[date].map((place) => {
-          const category = categoryMap[place.contenttypeid] || 'UNKNOWN';
-          return {
-            placeId: place.contentid,
-            place: {
-              name: place.title,
-              address: place.addr1,
-              category: category,
-              image: place.firstimage,
-              xCoordinate: place.mapx,
-              yCoordinate: place.mapy,
-            },
-            duration: place.duration || 60,
-            startTime: place.startTime || null,
-            endTime: place.endTime || null,
-          };
-        }),
-      })),
+      dailySchedules: Object.keys(selectedPlaces)
+        .map((date) => ({
+          date: new Date(date).toISOString().split('T')[0],
+          schedulePlaces: selectedPlaces[date].map((place) => {
+            const category = categoryMap[place.contenttypeid] || 'UNKNOWN';
+            return {
+              placeId: parseInt(place.contentid, 10), // placeId를 숫자로 변환
+              place: {
+                name: place.title,
+                address: place.addr1,
+                category: category,
+                image: place.firstimage,
+                xCoordinate: place.mapx,
+                yCoordinate: place.mapy,
+              },
+              duration: place.duration || 60,
+              startTime: place.startTime || null,
+              endTime: place.endTime || null,
+            };
+          }),
+        }))
+        .concat(
+          selectedHotels.map((hotel, index) => ({
+            date: new Date(
+              selectedDates.start.getFullYear(),
+              selectedDates.start.getMonth(),
+              selectedDates.start.getDate() + index
+            )
+              .toISOString()
+              .split('T')[0],
+            schedulePlaces: [
+              {
+                placeId: user.id + index, // placeId를 고유한 숫자 값으로 설정
+                place: {
+                  name: hotel.name,
+                  address: hotel.address || '',
+                  category: 'ACCOMMODATION',
+                  image: hotel.image,
+                  xCoordinate: hotel.xCoordinate || '',
+                  yCoordinate: hotel.yCoordinate || '',
+                },
+                duration: 0,
+                startTime: null,
+                endTime: null,
+              },
+            ],
+          }))
+        ),
     };
 
     console.log('Request Data: ', planData);
