@@ -1,5 +1,8 @@
 package com.mytrip.mytripservice.controller;
 
+import com.mytrip.mytripservice.dto.UserDTO;
+import com.mytrip.mytripservice.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.util.LinkedMultiValueMap;
@@ -26,6 +29,9 @@ public class OAuth2Controller {
 
     @Value("${spring.security.oauth2.client.registration.kakao.redirect-uri}")
     private String redirectUri;
+
+    @Autowired
+    private UserService userService;  // UserService 추가
 
     @PostMapping("/login/oauth2/code/kakao")
     public ResponseEntity<?> loginWithKakao(@RequestBody Map<String, String> request) {
@@ -72,8 +78,20 @@ public class OAuth2Controller {
 
             logger.info("Received user info: {}", userInfoResponse.getBody());
 
+            // 사용자 정보 저장
+            Map<String, Object> userInfo = userInfoResponse.getBody();
+            String kakaoId = userInfo.get("id").toString();
+            String nickname = ((Map<String, Object>) userInfo.get("properties")).get("nickname").toString();
+
+            UserDTO userDTO = new UserDTO();
+            userDTO.setKakaoId(kakaoId);
+            userDTO.setNickname(nickname);
+            userDTO.setAccessToken(accessToken);
+
+            userService.createUser(userDTO);  // 사용자 정보 저장
+
             // 응답에 access_token 포함하여 반환
-            Map<String, Object> result = new HashMap<>(userInfoResponse.getBody());
+            Map<String, Object> result = new HashMap<>(userInfo);
             result.put("access_token", accessToken);
 
             return ResponseEntity.ok(result);

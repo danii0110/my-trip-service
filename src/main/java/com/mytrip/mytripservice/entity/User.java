@@ -70,16 +70,13 @@ public class User {
     @JsonIgnore
     private List<Scrap> scraps;
 
-    // Plan과의 일대다 관계 설정 추가
-//     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-//     @JsonIgnoreProperties("user")
-//     private List<Plan> plans;
-
-
     @PrePersist
     protected void onCreate() {
         createdAt = LocalDateTime.now();
         updatedAt = LocalDateTime.now();
+        if (roleType == null) {
+            roleType = RoleType.USER;
+        }
     }
 
     @PreUpdate

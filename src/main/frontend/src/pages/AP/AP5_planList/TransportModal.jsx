@@ -1,27 +1,63 @@
 import styles from './TransportModal.module.scss';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useState } from 'react';
-import { Button, Modal } from 'react-bootstrap';
+import { Modal } from 'react-bootstrap';
 import { useNavigate, useLocation } from 'react-router-dom';
+import axios from 'axios';
 
 const TransportModal = ({ show, onHide }) => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { selectedDates, selectedRegion, selectedArea, tableData } = location.state || {};
+  const { selectedDates, selectedRegion, selectedArea, tableData, selectedPlaces, selectedHotels, userId } =
+    location.state || {};
 
-  const [selectedTransport, setSelectedTransport] = useState('public');
+  const [selectedTransport, setSelectedTransport] = useState('PUBLIC_TRANSPORT');
 
-  const goToAP6 = () => {
-    onHide();
-    navigate('/itinerary/areaName', {
-      state: {
-        selectedDates,
-        selectedRegion,
-        selectedArea,
-        tableData,
-        selectedTransport,
-      },
-    });
+  const goToAP6 = async () => {
+    const planData = {
+      userId: userId, // Ensure userId is set correctly
+      title: `${regionMap[selectedRegion]} ${selectedArea} 여행`,
+      region: `${regionMap[selectedRegion]} ${selectedArea}`,
+      startDate: selectedDates.start.toISOString().split('T')[0],
+      endDate: selectedDates.end.toISOString().split('T')[0],
+      transportation: selectedTransport,
+      planType: 'TRAVEL_PLAN',
+      dailySchedules: Object.keys(selectedPlaces).map((date) => ({
+        date: new Date(date).toISOString().split('T')[0],
+        schedulePlaces: selectedPlaces[date].map((place) => ({
+          placeId: place.contentid,
+          place: {
+            name: place.title,
+            address: place.addr1,
+            category: place.cat1,
+            image: place.firstimage,
+            xCoordinate: place.mapx,
+            yCoordinate: place.mapy,
+          },
+          duration: 60, // Default duration
+          startTime: null,
+          endTime: null,
+        })),
+      })),
+    };
+
+    console.log('Request Data: ', planData);
+
+    try {
+      await axios.post('http://localhost:8080/api/plans/complete', planData);
+      onHide();
+      navigate('/itinerary/areaName', {
+        state: {
+          selectedDates,
+          selectedRegion,
+          selectedArea,
+          tableData,
+          selectedTransport,
+        },
+      });
+    } catch (error) {
+      console.error('Error creating plan', error);
+    }
   };
 
   const handleTransportClick = (transport) => {
@@ -36,16 +72,16 @@ const TransportModal = ({ show, onHide }) => {
           <div className={styles.subTitle}>여행 시 이동하실 교통수단을 선택해주세요.</div>
           <div className={styles.transportCont}>
             <button
-              className={`${styles.transportBtn} ${selectedTransport === 'public' ? styles.selected : ''}`}
+              className={`${styles.transportBtn} ${selectedTransport === 'PUBLIC_TRANSPORT' ? styles.selected : ''}`}
               type='button'
-              onClick={() => handleTransportClick('public')}
+              onClick={() => handleTransportClick('PUBLIC_TRANSPORT')}
             >
               대중교통
             </button>
             <button
-              className={`${styles.transportBtn} ${selectedTransport === 'car' ? styles.selected : ''}`}
+              className={`${styles.transportBtn} ${selectedTransport === 'CAR' ? styles.selected : ''}`}
               type='button'
-              onClick={() => handleTransportClick('car')}
+              onClick={() => handleTransportClick('CAR')}
             >
               승용차
             </button>

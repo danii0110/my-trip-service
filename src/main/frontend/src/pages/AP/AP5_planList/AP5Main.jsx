@@ -4,7 +4,7 @@ import QuestionIcon from '../../../assets/questionIcon.svg';
 import UpArrowIcon from '../../../assets/upArrowIcon.svg';
 import DownArrowIcon from '../../../assets/downArrowIcon.svg';
 import KakakoMap from '../../../modules/api/KakaoMap/KakaoMap';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import PlanCont from './PlanCont';
 import CartModal from './CartModal';
 import regionMap from '../../../modules/utils/regionMap';
@@ -14,6 +14,14 @@ const AP5Main = () => {
   const location = useLocation();
   const { selectedDates, selectedRegion, selectedArea, tableData, selectedPlaces, selectedHotels } =
     location.state || {};
+  const [userId, setUserId] = useState(null);
+
+  useEffect(() => {
+    const storedUserId = localStorage.getItem('userId');
+    if (storedUserId) {
+      setUserId(storedUserId);
+    }
+  }, []);
 
   const [isUpArrow, setIsUpArrow] = useState(true);
   const [showModal, setShowModal] = useState(false);
@@ -28,7 +36,7 @@ const AP5Main = () => {
       <div className={styles.container}>
         <div className={styles.leftCont}>
           <div className={styles.cart}>
-            <div className={styles.title}>나의 광주 동구 여행 장바구니</div>
+            <div className={styles.title}>나의 여행 장바구니</div>
             <button className={styles.questionIcon}>
               <img src={QuestionIcon} alt='question-icon' />
               <div className={styles.tooltip}>
@@ -43,11 +51,7 @@ const AP5Main = () => {
               />
             </button>
           </div>
-          {showModal && (
-            <div className={styles.modalContainer}>
-              {/* CartModal 컴포넌트는 현재 사용하지 않으므로 주석 처리 또는 제거 */}
-            </div>
-          )}
+          {showModal && <div className={styles.modalContainer}>{/* Modal contents */}</div>}
           <div className={styles.planCont}>
             <PlanCont
               selectedDates={selectedDates}
@@ -55,6 +59,7 @@ const AP5Main = () => {
               selectedArea={selectedArea}
               selectedPlaces={selectedPlaces}
               selectedHotels={selectedHotels}
+              userId={userId}
             />
           </div>
           <div className={styles.divToCheck}>
@@ -68,6 +73,7 @@ const AP5Main = () => {
             <p>Table Data: {JSON.stringify(tableData)}</p>
             <p>Selected Places: {JSON.stringify(selectedPlaces)}</p>
             <p>Selected Hotels: {JSON.stringify(selectedHotels)}</p>
+            <p>User ID: {userId}</p> {/* 여기서 userId 확인 */}
           </div>
         </div>
         <div className={styles.rightCont}>

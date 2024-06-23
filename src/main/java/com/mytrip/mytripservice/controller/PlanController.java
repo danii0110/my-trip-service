@@ -1,10 +1,11 @@
-// PlanController.java
 package com.mytrip.mytripservice.controller;
 
+import com.mytrip.mytripservice.dto.CompletePlanDTO;
 import com.mytrip.mytripservice.dto.PlanDTO;
 import com.mytrip.mytripservice.service.PlanService;
 import com.mytrip.mytripservice.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -53,5 +54,11 @@ public class PlanController {
     public ResponseEntity<Void> deletePlan(@PathVariable Long id) {
         planService.deletePlan(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/complete")
+    public ResponseEntity<Void> createCompletePlan(@RequestBody CompletePlanDTO completePlanDTO) {
+        planService.createCompletePlan(completePlanDTO);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 }

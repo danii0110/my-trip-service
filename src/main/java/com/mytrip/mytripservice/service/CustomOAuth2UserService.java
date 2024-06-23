@@ -3,6 +3,8 @@ package com.mytrip.mytripservice.service;
 import com.mytrip.mytripservice.entity.RoleType;
 import com.mytrip.mytripservice.entity.User;
 import com.mytrip.mytripservice.repository.UserRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
@@ -51,3 +53,5 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         );
     }
 }
+
+
