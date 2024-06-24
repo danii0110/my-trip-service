@@ -57,7 +57,8 @@ public class ChatController {
 
     @PostMapping(value = "/chatgpt")
     public Mono<String> getChatResponse(@RequestBody Map<String, String> request) {
+        long roomId = Long.parseLong(request.get("roomId"));
         String message = request.get("message");
-        return chatService.getChatResponse(message);
+        return chatService.getChatResponse(roomId, message);
     }
 }

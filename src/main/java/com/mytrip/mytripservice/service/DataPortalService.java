@@ -125,6 +125,9 @@ public class DataPortalService {
         if (request.getSubImageYN() != null) {
             builder.queryParam("subImageYN", request.getSubImageYN());
         }
+        if (request.getEventStartDate() != null) {
+            builder.queryParam("eventStartDate", request.getEventStartDate());
+        }
 
         String uriString = builder.toUriString();
         uriString = URLDecoder.decode(uriString, "UTF-8");

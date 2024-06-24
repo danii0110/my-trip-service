@@ -14,7 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @Table(name = "daily_schedules")
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "plan", "schedulePlaces"})
 public class DailySchedule {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

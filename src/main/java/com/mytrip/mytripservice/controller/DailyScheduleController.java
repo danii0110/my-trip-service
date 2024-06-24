@@ -1,6 +1,7 @@
 package com.mytrip.mytripservice.controller;
 
 import com.mytrip.mytripservice.dto.DailyScheduleDTO;
+import com.mytrip.mytripservice.dto.DailyScheduleOtherDTO;
 import com.mytrip.mytripservice.service.DailyScheduleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -31,6 +32,13 @@ public class DailyScheduleController {
     public ResponseEntity<DailyScheduleDTO> getDailyScheduleById(@PathVariable Long id) {
         Optional<DailyScheduleDTO> dailySchedule = dailyScheduleService.getDailyScheduleById(id);
         return dailySchedule.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    //추가했어요
+    @GetMapping("/plan/{planId}")
+    public ResponseEntity<List<DailyScheduleOtherDTO>> getDailyScheduleByPlanId(@PathVariable Long planId) {
+        List<DailyScheduleOtherDTO> dailySchedules = dailyScheduleService.getDailyScheduleByPlanId(planId);
+        return ResponseEntity.ok(dailySchedules);
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)

@@ -5,6 +5,7 @@ import com.mytrip.mytripservice.model.CommunityModel;
 import com.mytrip.mytripservice.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -41,8 +42,8 @@ public class CommunityService {
     }
 
     // Community methods
-    public List<CommunityModel> getAllCommunityData() {
-        List<Community> communities = communityRepository.findAll();
+    public List<CommunityModel> getAllCommunityDataSorted(String sortBy) {
+        List<Community> communities = communityRepository.findAll(Sort.by(Sort.Direction.DESC, sortBy));
 
         return communities.stream().map(community -> {
             String[] regionParts = community.getPlan().getRegion().split(" ");

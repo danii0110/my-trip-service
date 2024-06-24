@@ -83,8 +83,22 @@ public class PlanService {
                 .collect(Collectors.toList());
     }
 
+    public Optional<Plan> getPlanByPlanId(Long id) {
+        return planRepository.findById(id);
+    }
+
     public Optional<PlanDTO> getPlanById(Long id) {
         return planRepository.findById(id).map(this::toDTO);
+    }
+
+    public Optional<PlanDTO> getOnePlanById(Long id) {
+        return planRepository.findFirstByUser_UserIdOrderByStartDateDesc(id).map(this::toDTO);
+    }
+
+    public List<PlanDTO> getUnusedPlansByUserId(Long userId) {
+        return planRepository.findUnusedPlansByUserId(userId).stream()
+                .map(this::toDTO)
+                .collect(Collectors.toList());
     }
 
     @Transactional
