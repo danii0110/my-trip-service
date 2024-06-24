@@ -5,6 +5,7 @@ import RightArrowIcon from '../../../../assets/rightArrow.svg';
 import CalendarIcon from '../../../../assets/calendarIcon.svg';
 import AddPlaceBox from './AddPlaceBox';
 import DailyDatePickerModal from '../DailyDatePicker/DailyDatePickerModal';
+import TimeOverModal from '../TimeOverModal/TimeOverModal';
 
 const PlaceModal = ({
   selectedDates = { start: null, end: null },
@@ -19,6 +20,7 @@ const PlaceModal = ({
   const [selectedDate, setSelectedDate] = useState(currentSelectedDate);
   const [placeDurations, setPlaceDurations] = useState({});
   const [totalDuration, setTotalDuration] = useState(0);
+  const [showTimeOverModal, setShowTimeOverModal] = useState(false); // TimeOverModal 상태 추가
 
   useEffect(() => {
     setPlaces(selectedPlaces);
@@ -81,10 +83,21 @@ const PlaceModal = ({
   };
 
   const handleDurationChange = (id, newDuration) => {
-    setPlaceDurations((prevDurations) => ({
-      ...prevDurations,
-      [id]: parseInt(newDuration, 10),
-    }));
+    const newPlaceDurations = { ...placeDurations, [id]: parseInt(newDuration, 10) };
+
+    const totalDurationForDate = places.reduce((total, place) => {
+      return total + (newPlaceDurations[place.id] || 120);
+    }, 0);
+
+    const startTimeInMinutes = parseTimeToMinutes(selectedTimes[currentSelectedDate].start);
+    const endTimeInMinutes = parseTimeToMinutes(selectedTimes[currentSelectedDate].end);
+    const totalTimeInMinutes = endTimeInMinutes - startTimeInMinutes;
+
+    if (totalDurationForDate > totalTimeInMinutes) {
+      setShowTimeOverModal(true); // 시간 초과 시 모달 표시
+    } else {
+      setPlaceDurations(newPlaceDurations);
+    }
   };
 
   const parseTimeToMinutes = (time) => {
@@ -95,21 +108,15 @@ const PlaceModal = ({
     return hours * 60 + minutes;
   };
 
-  const startTimeInMinutes =
-    selectedTimes && selectedTimes[currentSelectedDate]
-      ? parseTimeToMinutes(selectedTimes[currentSelectedDate].start)
-      : 0;
-  const endTimeInMinutes =
-    selectedTimes && selectedTimes[currentSelectedDate]
-      ? parseTimeToMinutes(selectedTimes[currentSelectedDate].end)
-      : 0;
-  const totalTimeInMinutes = endTimeInMinutes - startTimeInMinutes;
-
   const formatDuration = (minutes) => {
     const hours = Math.floor(minutes / 60);
     const remainingMinutes = minutes % 60;
     return `${hours}시간 ${remainingMinutes}분`;
   };
+
+  const startTimeInMinutes = parseTimeToMinutes(selectedTimes[currentSelectedDate].start);
+  const endTimeInMinutes = parseTimeToMinutes(selectedTimes[currentSelectedDate].end);
+  const totalTimeInMinutes = endTimeInMinutes - startTimeInMinutes;
 
   return (
     <div className={styles.container}>
@@ -161,6 +168,11 @@ const PlaceModal = ({
           endDate={selectedDates.end ? new Date(selectedDates.end) : new Date()}
         />
       )}
+      <TimeOverModal
+        show={showTimeOverModal}
+        onHide={() => setShowTimeOverModal(false)}
+        onConfirm={() => setShowTimeOverModal(false)}
+      />
     </div>
   );
 };
