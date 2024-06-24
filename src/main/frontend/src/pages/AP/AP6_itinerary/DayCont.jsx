@@ -16,6 +16,7 @@ const DayCont = ({ day, date, plans }) => {
           place={plan.place}
           moveTime={plan.moveTime}
           showMoveTime={index !== plans.length - 1}
+          image={plan.image} // 이미지 추가
         />
       ))}
     </div>
