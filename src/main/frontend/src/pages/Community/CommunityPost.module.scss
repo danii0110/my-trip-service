@@ -231,13 +231,12 @@
   margin-bottom: 10px;
 }
 
-.goPlan {
-  position: absolute;
-  right: 10px;
-  bottom: 10px;
+.planMap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 120px;
 }
 
-.goPlan p {
-  font-size: 13px;
-  color: black;
-}
+

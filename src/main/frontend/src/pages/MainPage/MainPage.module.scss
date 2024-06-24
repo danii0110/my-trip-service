@@ -1,0 +1,271 @@
+.mainContainer {
+  padding: 20px 40px;
+  display: flex;
+  flex-direction: column;
+}
+
+.adSection {
+  width: 100%;
+  height: 200px;
+  margin-bottom: 10px;
+}
+
+.adSection img {
+  width: 100%;
+  height: 100%;
+}
+
+.adSection .dots {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  top: 280px;
+  gap: 5px;
+}
+
+.dots .dot {
+  width: 10px;
+  height: 10px;
+  background-color: #ccc;
+  border-radius: 50%;
+  cursor: pointer;
+
+  &.active {
+    background-color: #333;
+  }
+}
+
+.searchSection {
+  position: relative;
+  height: 55px;
+  margin-bottom: 20px;
+}
+
+.mediumSection {
+  display: flex;
+  margin-bottom: 20px;
+}
+
+.communityPostList {
+  display: grid;
+  width: 50%;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 30px;
+  justify-content: space-between;
+  padding-right: 15px;
+}
+
+.mediumRightSection {
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+  padding-left: 15px;
+}
+
+.userSection {
+  display: flex;
+  height: 55%;
+  padding-bottom: 20px;
+}
+
+.loginSection {
+  padding: 10px;
+  width: 50%;
+  border: #8ea05d 1px solid;
+  border-radius: 5px;
+  margin-right: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.sectionButton {
+  background-color: #8ea05d;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  width: 70%;
+  padding: 5px;
+}
+
+.user {
+  display: flex;
+  width: 70%;
+  margin-top: 5px;
+  margin-bottom: 10px;
+}
+
+.welcome {
+  display: flex;
+  flex-direction: column;
+}
+
+.plan {
+  width: 50%;
+  height: 100%;
+}
+
+.planContainer {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  padding: 10px;
+  flex-direction: column;
+  border: #8ea05d 1px dotted;
+  border-radius: 5px;
+  justify-content: center;
+  align-items: center;
+}
+
+.planDetail {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+.planImage img{
+  width: 55px;
+  height: 55px;
+  border-radius: 5px;
+  margin-right: 10px;
+}
+
+.noPlan {
+  height: 100%;
+  width: 100%;
+  border: #8ea05d 1px dotted;
+  border-radius: 5px;
+  padding: 10px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.noPlan button {
+  display: flex;
+  width: 30px;
+  height: 30px;
+  background-color: transparent;
+  border: #8ea05d 1px solid;
+  border-radius: 50%;
+  color: #8ea05d;
+  font-size: 25px;
+  padding: 4px;
+  align-items: center;
+  justify-content: center;
+}
+
+.noPlan button:hover {
+  background-color: #8ea05d;
+  color: white;
+}
+
+.weeklyTopPlace {
+  border: #8ea05d 1px solid;
+  border-radius: 5px;
+  padding: 10px;
+}
+
+.weeklyTopHeader {
+  display: flex;
+  justify-content: space-between;
+}
+
+.weeklyButtons button{
+  background-color: transparent;
+  border: none;
+}
+
+.weeklyButtons button img {
+  width: 30px;
+  height: 30px;
+}
+
+.circleButton {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 10px 5px;
+  z-index: 999;
+}
+
+.circleButton p {
+  text-align: center;
+  font-size: 15px;
+  margin-top: 3px;
+  margin-bottom: 0;
+}
+
+.circleButton button {
+  width: 45px;
+  height: 45px;
+  border: 1px #bbbbbb solid;
+  border-radius: 50%;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.circleButton button.selected {
+  border: #8ea05d 2px solid; /* 원하는 색상으로 변경 */
+}
+
+.circleButton img {
+  width: 120%;
+  height: 120%;
+  object-fit: cover;
+  display: block;
+}
+
+.carousel {
+  position: relative;
+  z-index: 990;
+  display: flex;
+  margin: 0 auto;
+}
+
+.carousel .regionButtons {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  width: 100%;
+  margin: 0;
+}
+
+.carousel > button {
+  z-index: 999;
+  height: 50px;
+  width: 50px;
+  background-color: transparent;
+  border: transparent;
+  margin: 45px 0;
+  padding: 0;
+
+}
+
+.carousel > button > img {
+  height: 100%;
+  width: 100%;
+}
+
+.location {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+
+.locationHeader {
+  margin-bottom: 10px;
+}
+
+.locationList {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 30px;
+}

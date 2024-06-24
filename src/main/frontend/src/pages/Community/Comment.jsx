@@ -1,19 +1,12 @@
 import styles from "./Comment.module.scss";
 import React, {useEffect, useRef, useState} from "react";
+import {formatDateTime} from "../../modules/utils/util";
 
 const Comment = ({id, comment, nickname, date, activeDropdown, handleDropdown, onUpdate, onDelete}) => {
     const dropdownRef = useRef(null);
     const buttonRef = useRef(null);
     const [isEditing, setIsEditing] = useState(false);
     const [editedComment, setEditedComment] = useState(comment);
-
-    const newDate = new Date(date);
-    const formattednewDate = newDate.toLocaleDateString('ko-KR', {
-        year: 'numeric',
-        month: '2-digit',
-        day: '2-digit'
-    }).replace(/\.$/, '');
-
 
     const handleButtonClick = (e) => {
         e.stopPropagation();
@@ -69,7 +62,7 @@ const Comment = ({id, comment, nickname, date, activeDropdown, handleDropdown, o
                 ) : (
                     <>
                         <h3>{comment}</h3>
-                        <p>{nickname} | {formattednewDate}</p>
+                        <p>{nickname} | {formatDateTime(date)}</p>
                     </>
                 )}
             </div>

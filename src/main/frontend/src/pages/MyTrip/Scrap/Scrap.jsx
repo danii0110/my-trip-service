@@ -1,37 +1,30 @@
-import { useState } from 'react';
+import {useEffect, useState} from 'react';
 import Layout from '../../../components/layouts/Layout';
 import MyTripHeader from '../MyTripHeader';
 import styles from './Scrap.module.scss';
 import ScrapBox from './ScrapBox';
 import DeleteScrapModal from './DeleteScrapModal';
+import { getScrapsByUserId, deleteScrap } from '../../Community/communityApi';
 
 const Scrap = () => {
-  const plansData = [
-    { date: '24.04.25-24.04.28', areaName: '광주 동구' },
-    { date: '24.05.10-24.05.15', areaName: '서울 강남구' },
-    { date: '24.06.01-24.06.05', areaName: '부산 해운대구' },
-    { date: '24.07.20-24.07.25', areaName: '대구 중구' },
-    { date: '24.08.15-24.08.20', areaName: '인천 연수구' },
-    { date: '24.09.05-24.09.10', areaName: '제주 제주시' },
-    { date: '24.10.12-24.10.18', areaName: '광주 북구' },
-    { date: '24.11.22-24.11.27', areaName: '대전 유성구' },
-    { date: '24.12.01-24.12.05', areaName: '서울 종로구' },
-    { date: '25.01.15-25.01.20', areaName: '경기 수원시' },
-    { date: '25.02.10-25.02.15', areaName: '울산 남구' },
-    { date: '25.03.05-25.03.10', areaName: '세종' },
-    { date: '25.04.20-25.04.25', areaName: '충남 천안시' },
-    { date: '25.05.15-25.05.20', areaName: '전북 전주시' },
-    { date: '25.06.10-25.06.15', areaName: '강원 춘천시' },
-    { date: '25.07.05-25.07.10', areaName: '경북 포항시' },
-  ];
 
-  const [plans, setPlans] = useState(plansData);
+  const [plans, setPlans] = useState([]);
   const [editMode, setEditMode] = useState(false);
   const [selectedPlans, setSelectedPlans] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const dummyUserId = 1;
 
   const plansPerPage = 8;
+
+  useEffect(() => {
+    const fetchScraps = async () => {
+      const data = await getScrapsByUserId(dummyUserId);
+      setPlans(data);
+      console.log(data);
+    };
+    fetchScraps();
+  }, []);
 
   const toggleEditMode = () => {
     setEditMode(!editMode);
@@ -46,7 +39,8 @@ const Scrap = () => {
     }
   };
 
-  const handleDelete = () => {
+  const handleDelete = async () => {
+    await Promise.all(selectedPlans.map((planIndex) => deleteScrap(plans[planIndex].scrapId)));
     setPlans(plans.filter((_, i) => !selectedPlans.includes(i)));
     setSelectedPlans([]);
     setEditMode(false);
@@ -85,11 +79,14 @@ const Scrap = () => {
               {currentPlans.map((plan, index) => (
                 <ScrapBox
                   key={index}
-                  date={plan.date}
-                  areaName={plan.areaName}
+                  communityId={plan.community.communityId}
+                  startDate={plan.plan.startDate}
+                  endDate={plan.plan.endDate}
+                  areaName={plan.plan.region}
                   selected={selectedPlans.includes(index)}
                   onSelect={() => handleSelect(index)}
                   editMode={editMode}
+                  imageSrc={plan.community.image? plan.community.image.imagePath : null}
                 />
               ))}
             </div>

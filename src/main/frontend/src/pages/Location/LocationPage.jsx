@@ -7,6 +7,7 @@ import DetailInfo from "./LocationDetailInfo";
 import LocationDetailImage from "./LocationDetailImage";
 import Box from "../../components/Element/Box";
 import boxStyle from "./LocationBox.module.scss"
+import {Map, MapMarker} from "react-kakao-maps-sdk";
 
 const LocationPage = () => {
     const navigate = useNavigate();
@@ -133,8 +134,17 @@ const LocationPage = () => {
        })
     }, [contentId]);
 
+    if (!common || !intro || !image || !location) {
+        return (
+            <div>
+                Loading...
+            </div>
+        )
+    }
+
     const item = common?.response?.body?.items?.item[0];
     const detail = intro?.response?.body?.items?.item[0];
+
 
     return (
         <Layout>
@@ -159,8 +169,10 @@ const LocationPage = () => {
                 )}
                 <div className={styles.description}>
                     <h2>상세 설명</h2>
-                    <div className={styles.map}>
-
+                    <div className={styles.mapContainer}>
+                        <Map className={styles.map} center={{ lat: Number(mapY), lng: Number(mapX)}} level={6}>
+                            <MapMarker position={{lat: Number(mapY), lng: Number(mapX)}}></MapMarker>
+                        </Map>
                     </div>
                     {detail && item && <DetailInfo detail={detail} item={item} />}
                     <div className={styles.tag}></div>

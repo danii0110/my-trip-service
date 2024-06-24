@@ -38,6 +38,6 @@ export const getMessages = (roomId) => {
     return chatApi.get(`/messages/${roomId}`);
 };
 
-export const getChatResponse = (message) => {
-    return chatApi.post('/chatgpt', { message });
+export const getChatResponse = (roomId, message) => {
+    return chatApi.post('/chatgpt', { roomId, message });
 };

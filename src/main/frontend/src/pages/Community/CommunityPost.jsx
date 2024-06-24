@@ -5,29 +5,36 @@ import defaultImage from "../../assets/imageComponent.svg"
 import calendar from "../../assets/calendarIcon.svg";
 import marker from "../../assets/markerIcon.png";
 import {createCommunityPost, fetchCommunityDetail, uploadImage, updateCommunityPost} from "./communityApi"
+import {formatDate, calculateDuration} from "../../modules/utils/util";
+import {getPlanById} from "./communityPlanApi"
 import {useNavigate, useSearchParams} from "react-router-dom";
+import KakakoMap from "../../modules/api/KakaoMap/KakaoMap";
+import CommunitySmallModal from "./CommunitySmallModal";
 
 const CommunityPost = () => {
     const [searchParams] = useSearchParams();
     const communityId = searchParams.get("communityId");
+    const plan = searchParams.get("planId");
+
     const navigate = useNavigate();
     const [isEditing, setIsEditing] = useState(!!communityId);
     const [selectedGender, setSelectedGender] = useState(null);
     const [selectedAge, setSelectedAge] = useState(null);
     const [selectedCompanion, setSelectedCompanion] = useState(null);
+    const [planId, setPlanId] = useState(plan || null);
+    const [planData, setPlanData] = useState(null);
     const [title, setTitle] = useState('');
     const [text, setText] = useState('');
     const [image, setImage] = useState(defaultImage);
     const [imageId, setImageId] = useState(null);
     const [imageFile, setImageFile] = useState(null);
     const [oldData, setOldData] = useState(null);
-    const [showModal, setShowModal] = useState(false); // 모달 상태 관리
-    const [showAlert, setShowAlert] = useState(false);
+    const [showConfirmModal, setShowConfirmModal] = useState(false);
+    const [isSave, setIsSave] = useState(false);
     const textAreaRef = useRef(null);
     const fileInputRef = useRef(null);
 
     const dummyUserId = 1; // Dummy userId
-    const dummyPlanId = 25; // Dummy planId
 
     const genderMap = {
         '남': 'MALE',
@@ -54,10 +61,13 @@ const CommunityPost = () => {
     };
 
     useEffect(() => {
-        if (isEditing) {
-            fetchPostDetail();
-        }
-    }, [])
+        const fetchDetails = async () => {
+            if (isEditing) {await fetchPostDetail();}
+            if (planId) {await fetchPlanDetail();}
+        };
+        fetchDetails();
+        window.scrollTo({ top: 0, behavior: 'auto' });
+    }, [isEditing, planId]);
 
     useEffect(() => {
         adjustHeight();
@@ -68,6 +78,7 @@ const CommunityPost = () => {
             const data = await fetchCommunityDetail(communityId);
             setTitle(data.title);
             setText(data.content);
+            setPlanId(data.plan.planId);
             setSelectedGender(Object.keys(genderMap).find(key => genderMap[key] === data.gender));
             setSelectedAge(Object.keys(ageMap).find(key => ageMap[key] === data.ageGroup));
             setSelectedCompanion(Object.keys(companionMap).find(key => companionMap[key] === data.mates));
@@ -79,6 +90,11 @@ const CommunityPost = () => {
         } catch (error) {
             console.error('Failed to fetch post detail', error);
         }
+    };
+
+    const fetchPlanDetail = async() => {
+        const data = await getPlanById(planId);
+        setPlanData(data);
     };
 
     const handleGenderClick = (gender) => {
@@ -147,7 +163,6 @@ const CommunityPost = () => {
     const handleSubmit = async () => {
         if (title.trim() === '' || text.trim() === '' ||
             !selectedGender || !selectedAge || !selectedCompanion) {
-            setShowAlert(true);
             return;
         }
 
@@ -164,14 +179,12 @@ const CommunityPost = () => {
             }
         }
 
-        console.log(imageId);
-
         const newPost = {
             user: {
                 userId: dummyUserId
             },
             plan: {
-                planId: dummyPlanId
+                planId: planId
             },
             gender: genderMap[selectedGender], // Gender 매핑
             ageGroup: ageMap[selectedAge], // AgeGroup 매핑
@@ -198,7 +211,15 @@ const CommunityPost = () => {
     };
 
     const handleCancel = () => {
-        navigate(`/community/detail?communityId=${communityId}`);
+        if (isEditing) {
+            navigate(`/community/detail?communityId=${communityId}`);
+        } else {
+            navigate("/community");
+        }
+    }
+
+    if (!planData || (isEditing && !oldData)) {
+        return <div>Loading...</div>;
     }
 
     return (
@@ -285,8 +306,8 @@ const CommunityPost = () => {
                         ></textarea>
                     </div>
                     <div className={styles.buttons}>
-                        <button onClick={handleCancel}>취소</button>
-                        <button onClick={handleSubmit}>저장</button>
+                        <button onClick={()=> {setShowConfirmModal(true)}}>취소</button>
+                        <button onClick={() => {setShowConfirmModal(true); setIsSave(true)}}>저장</button>
                     </div>
                 </div>
                 <div className={styles.rightSection}>
@@ -295,11 +316,11 @@ const CommunityPost = () => {
                         <div className={styles.dateLocation}>
                             <div className={styles.date}>
                                 <img src={calendar} alt="date" />
-                                <p>기간</p>
+                                <p>{formatDate(planData.startDate)} - {formatDate(planData.endDate)}</p>
                             </div>
                             <div className={styles.location}>
                                 <img src={marker} alt="marker" />
-                                <p>장소</p>
+                                <p>{planData.region}</p>
                             </div>
                         </div>
                     </div>
@@ -307,21 +328,26 @@ const CommunityPost = () => {
                         <h3>여행 계획</h3>
                         <div className={styles.planDetail}>
                             <div className={styles.planInfo}>
-                                <h3>도시명</h3>
-                                <p>기간</p>
+                                <h3>{planData.region}</h3>
+                                <p>{calculateDuration(planData.startDate, planData.endDate)} / {planData.transportation === "CAR" ? "자동차" : "대중교통"} 이용</p>
                             </div>
-                            <div style={styles.planMap}>
-                                <img src={defaultImage} alt="map"/>
-                            </div>
-                            <div className={styles.goPlan}>
-                                <p>상세보기 ></p>
+                            <div className={styles.planMap}>
+                                <KakakoMap level="12" selectedRegion={planData.region.split(' ')[0]}/>
                             </div>
                         </div>
                     </div>
                 </div>
+                {showConfirmModal &&
+                    <CommunitySmallModal
+                        header="게시글 작성"
+                        content={<div>{isSave ? "게시글을 저장하시겠습니까?" : "게시글 작성을 취소하시겠습니까?"}</div>}
+                        onConfirm={isSave ? handleSubmit : handleCancel}
+                        onCancel={() => {setShowConfirmModal(false); setIsSave(false);}}
+                    />
+                }
             </div>
         </div>
-    )
+    );
 };
 
 export default CommunityPost;

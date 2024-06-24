@@ -223,7 +223,7 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  height: 200px;
+  height: 250px;
   background-color: #F4F6F7;
   color: black;
   border: 2px solid black;
@@ -249,6 +249,14 @@
   margin-bottom: 10px;
 }
 
+.planMap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 120px;
+}
+
 .goPlan {
   position: absolute;
   right: 10px;
@@ -259,4 +267,3 @@
   font-size: 13px;
   color: black;
 }
-

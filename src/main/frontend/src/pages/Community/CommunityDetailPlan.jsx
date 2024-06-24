@@ -4,45 +4,62 @@ import Calendar from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import {LuCalendar, LuMapPin} from 'react-icons/lu';
 import {TiChevronLeft, TiChevronRight} from "react-icons/ti";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import ScheduleItem from "./ScheduleItem";
 import StepModal from "./StepModal";
-
-const availableDates = [
-    new Date(2024, 3, 21),
-    new Date(2024, 3, 22),
-    new Date(2024, 3, 23)
-];
-
-const schedules = {
-    "2024-04-21": {
-        time: "9:00 ~ 22:00",
-        items: [
-            { id: 1, title: '장소명1', tag: '태그', address: '주소', time: '출발시간 ~ 도착시간', travelTime: '이동수단: 이동시간' },
-            { id: 2, title: '장소명2', tag: '태그', address: '주소', time: '출발시간 ~ 도착시간', travelTime: '이동수단: 이동시간' }
-        ]
-    },
-    "2024-04-22": {
-        time: "10:00 ~ 21:00",
-        items: [
-            { id: 3, title: '인천대공원 반려견놀이터', tag: '태그', address: '인천 남동구', time: '출발시간 ~ 도착시간', travelTime: '이동수단: 이동시간' },
-            { id: 4, title: '장소명4', tag: '관광지', address: '서울 용산구', time: '출발시간 ~ 도착시간', travelTime: '이동수단: 이동시간' }
-        ]
-    },
-    "2024-04-23": {
-        time: "8:00 ~ 22:00",
-        items: [
-            { id: 5, title: '장소명5', tag: '태그', address: '주소', time: '출발시간 ~ 도착시간', travelTime: '이동수단: 이동시간' },
-            { id: 6, title: '장소명6', tag: '태그', address: '주소', time: '출발시간 ~ 도착시간', travelTime: '이동수단: 이동시간' }
-        ]
-    },
-};
+import {useNavigate, useSearchParams, useLocation} from "react-router-dom";
+import {getDailyScheduleByPlanId, getPlanById} from "./communityPlanApi";
+import MapComponent from "./MapComponent";
 
 const CommunityDetailPlan = () => {
-    const [selectedDate, setSelectedDate] = useState(availableDates[0]);
-    const [modalStep, setModalStep] = useState(0);
-    const currentIndex = availableDates.findIndex(date => date.getTime() === selectedDate.getTime());
+    const [searchParams] = useSearchParams();
+    const planId = searchParams.get("planId");
 
+    const [planData, setPlanData] = useState(null);
+    const [dailySchedules, setDailySchedules] = useState([]);
+    const [selectedDate, setSelectedDate] = useState(null);
+    const [modalStep, setModalStep] = useState(0);
+    const [availableDates, setAvailableDates] = useState([]);
+    const [schedules, setSchedules] = useState({});
+    const [moveTimes, setMoveTimes] = useState([]);
+
+    useEffect(() => {
+        const fetchDetails = async () => {
+            const planData = await getPlanById(planId);
+            setPlanData(planData);
+            setMoveTimes(planData.moveTimes);
+            console.log(planData);
+
+            const dailySchedulesData = await getDailyScheduleByPlanId(planId);
+            setDailySchedules(dailySchedulesData);
+
+            const startDate = new Date(planData.startDate[0], planData.startDate[1] -1, planData.startDate[2]);
+            const endDate = new Date(planData.endDate[0], planData.endDate[1] -1, planData.endDate[2]);
+            const dates = [];
+            const currentSchedules = {};
+
+            for (let d = new Date(startDate); d <= endDate; d.setDate(d.getDate() + 1)) {
+                const dateKey = formatDateKey(d);
+                dates.push(new Date(d));
+                currentSchedules[dateKey] = { time: "", items: [] };
+            }
+
+            dailySchedulesData.forEach(schedule => {
+                const dateKey = formatDateKey(new Date(schedule.date[0], schedule.date[1] - 1, schedule.date[2]));
+                if (!currentSchedules[dateKey]) {
+                    currentSchedules[dateKey] = { time: "", items: [] };
+                }
+                currentSchedules[dateKey].items.push(...schedule.schedulePlaces);
+            });
+
+            setAvailableDates(dates);
+            setSchedules(currentSchedules);
+            setSelectedDate(dates[0]);
+        };
+
+        fetchDetails();
+        window.scrollTo({ top: 0, behavior: 'auto' });
+    }, [planId]);
 
     const handleDateChange = (date) => {
         setSelectedDate(date);
@@ -69,18 +86,17 @@ const CommunityDetailPlan = () => {
         return `${year}-${month}-${day}`;
     };
 
-    const formattedDate = formatDateKey(selectedDate);
+    const formattedDate = selectedDate ? formatDateKey(selectedDate) : "";
     const scheduleForSelectedDate = schedules[formattedDate]?.items || [];
     const scheduleTimeForSelectedDate = schedules[formattedDate]?.time || "";
 
-    const CustomInput = ({ value, onClick }) => (
+    const CustomInput = React.forwardRef(({ value, onClick }, ref) => (
         <div>
-            <button className={styles.calendarButton} onClick={onClick}>
+            <button className={styles.calendarButton} onClick={onClick} ref={ref}>
                 <LuCalendar size="30px"/> {value}
             </button>
         </div>
-
-    );
+    ));
 
     const handleNextModal = () => {
         setModalStep(modalStep + 1);
@@ -97,28 +113,34 @@ const CommunityDetailPlan = () => {
         setModalStep(0);
     };
 
+    if (!planData) {
+        return <div>Loading...</div>; // 로딩 중일 때 표시할 내용
+    }
+
     return (
         <div>
             <Header />
             <div className={styles.container}>
-                <div className={styles.map}>
-                    <p>50%, flex, kakao</p>
+                <div className={styles.mapContainer}>
+                    <MapComponent scheduleForSelectedDate={scheduleForSelectedDate} />
                 </div>
                 <div className={styles.info}>
                     <div className={styles.header}>
                         <div className={styles.title}>
-                            <h3>제목</h3>
+                            <h3>{planData?.title}</h3>
                         </div>
                         <div className={styles.dateLocation}>
                             <div className={styles.date}>
                                 <LuCalendar size="25px"/>
                                 <h3>기간</h3>
-                                <p>기간(몇박 몇일 인지)</p>
+                                <p>{formatDateKey(new Date(planData.startDate[0], planData.startDate[1] - 1,
+                                    planData.startDate[2]))} ~ {formatDateKey(new Date(planData.endDate[0], planData.endDate[1] - 1,
+                                    planData.endDate[2]))}</p>
                             </div>
                             <div className={styles.location}>
                                 <LuMapPin size="25px" />
                                 <h3>장소</h3>
-                                <p> 지역명 + 시, 도명</p>
+                                <p>{planData?.region}</p>
                             </div>
                         </div>
                     </div>
@@ -131,7 +153,8 @@ const CommunityDetailPlan = () => {
                             <div className={styles.datePicker}>
                                 <button
                                     onClick={handlePrevDate}
-                                    style={{visibility: currentIndex === 0 ? 'hidden' : 'visible'}}
+                                    style={{visibility: availableDates.findIndex(date => date.getTime()
+                                            === selectedDate?.getTime()) === 0 ? 'hidden' : 'visible'}}
                                 >
                                     <TiChevronLeft size="30px" color="gray"/>
                                 </button>
@@ -144,7 +167,8 @@ const CommunityDetailPlan = () => {
                                 />
                                 <button
                                     onClick={handleNextDate}
-                                    style={{visibility: currentIndex === availableDates.length - 1 ? 'hidden' : 'visible'}}
+                                    style={{visibility: availableDates.findIndex(date => date.getTime()
+                                            === selectedDate?.getTime()) === availableDates.length - 1 ? 'hidden' : 'visible'}}
                                 >
                                     <TiChevronRight size="30px" color="gray"/>
                                 </button>
@@ -152,7 +176,9 @@ const CommunityDetailPlan = () => {
                             <div className={styles.schedule}>
                                 <h3>{scheduleTimeForSelectedDate}</h3>
                                 {scheduleForSelectedDate.map((item, index) => (
-                                    <ScheduleItem key={item.id} index={index + 1} item={item} />
+                                    <ScheduleItem key={item.schedulePlaceId} index={index + 1} item={item}
+                                                  transportation={planData.transportation} moveTimes={moveTimes || []}
+                                    />
                                 ))}
                             </div>
                         </div>
@@ -165,6 +191,8 @@ const CommunityDetailPlan = () => {
                     onNext={handleNextModal}
                     onPrev={handlePrevModal}
                     onClose={handleCloseModal}
+                    planData={planData}
+                    dailySchedules={dailySchedules}
                 />
             )}
         </div>

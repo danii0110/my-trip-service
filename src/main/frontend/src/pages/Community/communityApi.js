@@ -19,13 +19,13 @@ export const uploadImage = (file) => {
     });
 };
 
-export const fetchCommunityPosts = async (page, order, filter) => {
+export const fetchCommunityPosts = async (page, size, order, filter) => {
     const monthNumber = filter.month === '전체' ? null : parseInt(filter.month.replace('월', ''), 10);
 
     const response = await communityApi.get('/communities', {
         params: {
             page: page - 1,
-            size: 12,
+            size: size,
             order: order,
             month: monthNumber,
             region: filter.region,
@@ -53,7 +53,7 @@ export const fetchCommunityPosts = async (page, order, filter) => {
 };
 
 export const fetchCommunityDetail = async (id) => {
-    const response = await communityApi.get(`/community/${id}`);
+    const response = await communityApi.get(`/${id}`);
     return response.data;
 }
 
@@ -128,6 +128,11 @@ export const addScrap = async (communityId, userId) => {
 
 export const deleteScrap = async (scrapId) => {
     await communityApi.delete(`/scrap/${scrapId}`, { params: { scrapId } });
+};
+
+export const getScrapsByUserId = async (userId) => {
+    const response = await communityApi.get(`/scraps/${userId}`);
+    return response.data;
 };
 
 export const getScrapByCommunityIdAndUserId = async (communityId, userId) => {
