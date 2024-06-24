@@ -37,10 +37,10 @@ const DailyDatePickerModal = ({ show, onHide, startDate, endDate }) => {
         centered
       >
         <Modal.Body className={styles.customModalBody}>
-          <div className={styles.title}>여행할 날짜를 설정하세요.</div>
+          <div className={styles.title}>날짜를 설정하세요.</div>
           <div className={styles.subCont}>
-            <p>여행 일자는 '최대 5일'까지 설정 가능합니다.</p>
-            <p>여행 기간(여행지 도착 날짜, 여행지 출발 날짜)으로 입력해 주세요.</p>
+            <p>장소를 추가할 날짜를 설정하세요.</p>
+            <p>여행 기간(여행지 도착 날짜, 여행지 출발 날짜)만 선택이 가능합니다.</p>
           </div>
           <div className={styles.mainCont}>
             <DailyCalendar startDate={startDate} endDate={endDate} onSelect={handleDateSelect} />
