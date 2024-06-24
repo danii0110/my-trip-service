@@ -131,6 +131,10 @@ const AP4Left = ({
   const safeCurrentSelectedDate = currentSelectedDate || '';
   const safeSelectedTimes = selectedTimes || {};
 
+  const handleReserveButtonClick = () => {
+    window.location.href = 'https://www.goodchoice.kr/'; // 여기어때 홈페이지 URL로 이동
+  };
+
   return (
     <>
       <div className={styles.container}>
@@ -138,7 +142,7 @@ const AP4Left = ({
           <CheckHeader progress={100} firstColor='#aab1b8' secondColor='#aab1b8' thirdColor='#000000' />
           <div className={styles.leftHeader}>
             <div className={styles.titleArea}>{`${regionMap[selectedRegion]} ${selectedArea}`}</div>
-            <Button id={styles.btnCommon} className={styles.reserveBtn} onClick={openHotelModal}>
+            <Button id={styles.btnCommon} className={styles.reserveBtn} onClick={handleReserveButtonClick}>
               숙소 예매
             </Button>
           </div>

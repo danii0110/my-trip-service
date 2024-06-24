@@ -7,6 +7,7 @@ import SearchBar from './SearchBar/SearchBar';
 import PlaceBox from './PlaceBox';
 import Pagination from '../../../components/Element/Pagination';
 import regionMap from '../../../modules/utils/regionMap';
+import TimeOverModal from './TimeOverModal/TimeOverModal';
 
 const categoryMap = {
   12: '여행지',
@@ -32,6 +33,7 @@ const AP3Left = ({
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const [serviceKey, setServiceKey] = useState('');
+  const [showTimeOverModal, setShowTimeOverModal] = useState(false); // TimeOverModal 상태 추가
 
   const categories = ['전체', '여행지', '음식점', '문화시설', '레포츠', '쇼핑'];
 
@@ -120,11 +122,37 @@ const AP3Left = ({
     );
   };
 
+  const calculateTotalDuration = (places) => {
+    return places.reduce((total, place) => total + (place.duration || 120), 0);
+  };
+
   const handlePlaceSelect = (id, place) => {
     const isSelected = isPlaceChecked(id);
-    const placeWithDuration = { ...place, duration: place.duration || 120 }; // 기본 120분으로 설정
+    const placeWithDuration = { ...place, duration: place.duration || 120 };
 
-    onPlaceSelect(id, placeWithDuration, !isSelected);
+    const updatedPlaces = isSelected
+      ? selectedPlaces[currentSelectedDate].filter((p) => p.id !== id)
+      : [...(selectedPlaces[currentSelectedDate] || []), placeWithDuration];
+
+    const totalDuration = calculateTotalDuration(updatedPlaces);
+
+    const startTimeInMinutes = parseTimeToMinutes(selectedTimes[currentSelectedDate].start);
+    const endTimeInMinutes = parseTimeToMinutes(selectedTimes[currentSelectedDate].end);
+    const totalTimeInMinutes = endTimeInMinutes - startTimeInMinutes;
+
+    if (totalDuration > totalTimeInMinutes) {
+      setShowTimeOverModal(true); // 시간 초과 시 모달 표시
+    } else {
+      onPlaceSelect(id, placeWithDuration, !isSelected);
+    }
+  };
+
+  const parseTimeToMinutes = (time) => {
+    const [period, timeStr] = time.split(' ');
+    let [hours, minutes] = timeStr.split(':').map(Number);
+    if (period === '오후' && hours !== 12) hours += 12;
+    if (period === '오전' && hours === 12) hours = 0;
+    return hours * 60 + minutes;
   };
 
   return (
@@ -188,6 +216,11 @@ const AP3Left = ({
           <p>Table Data: {JSON.stringify(tableData)}</p>
         </div>
       </div>
+      <TimeOverModal
+        show={showTimeOverModal}
+        onHide={() => setShowTimeOverModal(false)}
+        onConfirm={() => setShowTimeOverModal(false)}
+      />
     </div>
   );
 };
