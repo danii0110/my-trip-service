@@ -1,5 +1,6 @@
 package com.mytrip.mytripservice.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -10,6 +11,7 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 @Table(name = "move_times")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "plan"})
 public class MoveTime {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

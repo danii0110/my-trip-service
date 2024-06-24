@@ -2,6 +2,7 @@ package com.mytrip.mytripservice.controller;
 
 import com.mytrip.mytripservice.dto.CompletePlanDTO;
 import com.mytrip.mytripservice.dto.PlanDTO;
+import com.mytrip.mytripservice.entity.Plan;
 import com.mytrip.mytripservice.service.PlanService;
 import com.mytrip.mytripservice.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,10 +33,28 @@ public class PlanController {
         return ResponseEntity.ok(plans);
     }
 
+    //추가했어요
+    @GetMapping("/plan/{id}")
+    public Optional<Plan> getPlanByPlanId(@PathVariable Long id) {
+        return planService.getPlanByPlanId(id);
+    }
+
+    //추가했어요
+    @GetMapping("/user/{id}")
+    public Optional<PlanDTO> getOnePlanById(@PathVariable Long id) {
+        return planService.getOnePlanById(id);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<PlanDTO> getPlanById(@PathVariable Long id) {
         Optional<PlanDTO> plan = planService.getPlanById(id);
         return plan.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/unused/{userId}")
+    public ResponseEntity<List<PlanDTO>> getUnusedPlansByUserId(@PathVariable Long userId) {
+        List<PlanDTO> plans = planService.getUnusedPlansByUserId(userId);
+        return ResponseEntity.ok(plans);
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)

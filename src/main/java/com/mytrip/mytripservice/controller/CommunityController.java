@@ -6,8 +6,6 @@ import com.mytrip.mytripservice.entity.CommunityImage;
 import com.mytrip.mytripservice.entity.Scrap;
 import com.mytrip.mytripservice.model.CommunityModel;
 import com.mytrip.mytripservice.service.CommunityService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.http.ResponseEntity;
@@ -45,17 +43,16 @@ public class CommunityController {
 
         System.out.println("o/m/r/s: " + order + " " + month + " " + region + " " + subRegion);
 
-
-        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
-        List<CommunityModel> data = communityService.getAllCommunityData();
+        List<CommunityModel> data = communityService.getAllCommunityDataSorted(sortBy);
 
         // 필터링 로직 (Optional)
         List<CommunityModel> filteredData = data.stream()
                 .filter(cm -> (month == null || cm.getMonth() == month) &&
                         (region == null || "모든 지역".equals(region) || cm.getAreaCode().equals(region)) &&
-                        (subRegion == null || cm.getSigunguCode().equals(subRegion)))
+                        (subRegion == null || subRegion.isEmpty() || cm.getSigunguCode().equals(subRegion)))
                 .collect(Collectors.toList());
 
+        Pageable pageable = PageRequest.of(page, size);
         int start = Math.min((int)pageable.getOffset(), filteredData.size());
         int end = Math.min((start + pageable.getPageSize()), filteredData.size());
         PageImpl<CommunityModel> pageData = new PageImpl<>(filteredData.subList(start, end), pageable, filteredData.size());
@@ -65,10 +62,9 @@ public class CommunityController {
 
 
     //커뮤니티 게시글 조회
-    @GetMapping("/community/{id}")
+    @GetMapping("/{id}")
     public Optional<Community> getCommunityById(@PathVariable Long id) {
-        Optional<Community> community = communityService.getCommunityById(id);
-        return community;
+        return communityService.getCommunityById(id);
     }
 
     //작성자 조회

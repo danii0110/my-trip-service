@@ -1,5 +1,6 @@
 package com.mytrip.mytripservice.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.*;
@@ -11,6 +12,7 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 @Table(name = "places")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Place {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

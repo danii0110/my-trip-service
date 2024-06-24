@@ -24,4 +24,5 @@ public class DataRequest {
     private String overviewYN;
     private String imageYN;
     private String subImageYN;
+    private String eventStartDate;
 }

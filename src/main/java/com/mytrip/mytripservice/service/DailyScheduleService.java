@@ -1,6 +1,7 @@
 package com.mytrip.mytripservice.service;
 
 import com.mytrip.mytripservice.dto.DailyScheduleDTO;
+import com.mytrip.mytripservice.dto.DailyScheduleOtherDTO;
 import com.mytrip.mytripservice.dto.SchedulePlaceDTO;
 import com.mytrip.mytripservice.entity.DailySchedule;
 import com.mytrip.mytripservice.entity.Plan;
@@ -41,6 +42,11 @@ public class DailyScheduleService {
 
     public Optional<DailyScheduleDTO> getDailyScheduleById(Long id) {
         return dailyScheduleRepository.findById(id).map(this::toDTO);
+    }
+
+    public List<DailyScheduleOtherDTO> getDailyScheduleByPlanId(Long id) {
+        return dailyScheduleRepository.findByPlan_PlanId(id).stream()
+                .map(this::toOtherDTO).collect(Collectors.toList());
     }
 
     @Transactional
@@ -106,6 +112,15 @@ public class DailyScheduleService {
                     return schedulePlaceDTO;
                 }).collect(Collectors.toList()));
         return dailyScheduleDTO;
+    }
+
+    private DailyScheduleOtherDTO toOtherDTO(DailySchedule dailySchedule) {
+        DailyScheduleOtherDTO dailyScheduleOtherDTO = new DailyScheduleOtherDTO();
+        dailyScheduleOtherDTO.setScheduleId(dailySchedule.getScheduleId());
+        dailyScheduleOtherDTO.setPlanId(dailySchedule.getPlan().getPlanId());
+        dailyScheduleOtherDTO.setDate(dailySchedule.getDate());
+        dailyScheduleOtherDTO.setSchedulePlaces(dailySchedule.getSchedulePlaces()); // 엔티티 직접 설정
+        return dailyScheduleOtherDTO;
     }
 
     private DailySchedule toEntity(DailyScheduleDTO dailyScheduleDTO) {
