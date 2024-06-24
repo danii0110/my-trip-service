@@ -65,3 +65,15 @@
   width: 4.375rem;
   align-self: flex-end;
 }
+
+.timePickerPopup {
+  position: absolute;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 0.5rem;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  // Adjust these values to fine-tune the positioning
+  transform: translateY(-100%); /* Move the popup above the icon */
+}
