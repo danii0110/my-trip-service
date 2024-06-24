@@ -22,8 +22,8 @@ const AP2Left = ({
   const [popupPosition, setPopupPosition] = useState({ top: 0, left: 0 });
   const timeTableRef = useRef(null);
   const [tableData, setTableData] = useState([]);
-  const [alertMessage, setAlertMessage] = useState(''); // alert message 상태 추가
-  const [showAlertModal, setShowAlertModal] = useState(false); // 모달 표시 상태 추가
+  const [alertMessage, setAlertMessage] = useState('');
+  const [showAlertModal, setShowAlertModal] = useState(false);
 
   useEffect(() => {
     console.log('AP2Left loaded with:', {
@@ -44,7 +44,7 @@ const AP2Left = ({
         daysArray.push([day.toLocaleDateString(), dayString, '오전 10:00', '오후 10:00']);
       }
       setTableData(daysArray);
-      onTableDataChange(daysArray); // 변경된 데이터 전달
+      onTableDataChange(daysArray);
     }
   }, [selectedDates]);
 
@@ -98,7 +98,7 @@ const AP2Left = ({
   const handleTimeIconClick = (event, rowIndex, cellIndex) => {
     const iconRect = event.target.getBoundingClientRect();
     setPopupPosition({
-      top: iconRect.top + window.scrollY + iconRect.height,
+      top: iconRect.top + window.scrollY, // 수정된 부분
       left: iconRect.left + window.scrollX,
     });
     setCurrentCell({ rowIndex, cellIndex });
@@ -126,29 +126,28 @@ const AP2Left = ({
     const time = e.target.value;
     if (time && currentCell) {
       setTimeout(() => {
-        // setTimeout을 사용하여 상태 업데이트를 비동기적으로 수행
         setTableData((prevData) => {
           const newData = [...prevData];
           const formattedTime = parseTimeToAmPm(time);
           if (currentCell.cellIndex === 2) {
             const endTime = newData[currentCell.rowIndex][3];
             if (parseTime(formattedTime) >= parseTime(endTime)) {
-              setAlertMessage('시작시간은 종료시간보다 늦을 수 없습니다.'); // alert 메시지 설정
-              setShowAlertModal(true); // 모달 표시
+              setAlertMessage('시작시간은 종료시간보다 늦을 수 없습니다.');
+              setShowAlertModal(true);
               setShowTimePicker(false);
               return prevData;
             }
           } else if (currentCell.cellIndex === 3) {
             const startTime = newData[currentCell.rowIndex][2];
             if (parseTime(formattedTime) <= parseTime(startTime)) {
-              setAlertMessage('종료시간은 시작시간보다 이를 수 없습니다.'); // alert 메시지 설정
-              setShowAlertModal(true); // 모달 표시
+              setAlertMessage('종료시간은 시작시간보다 이를 수 없습니다.');
+              setShowAlertModal(true);
               setShowTimePicker(false);
               return prevData;
             }
           }
           newData[currentCell.rowIndex][currentCell.cellIndex] = formattedTime;
-          handleTableDataChange(newData); // 변경된 데이터 전달
+          handleTableDataChange(newData);
           return newData;
         });
         setShowTimePicker(false);
@@ -218,7 +217,7 @@ const AP2Left = ({
         show={showAlertModal}
         onHide={() => setShowAlertModal(false)}
         onConfirm={() => setShowAlertModal(false)}
-        alertMessage={alertMessage} // alert 메시지 전달
+        alertMessage={alertMessage}
       />
     </>
   );
