@@ -1,7 +1,7 @@
 import styles from './MainCont.module.scss';
 import MoveTime from './MoveTime';
 
-const MainCont = ({ time, tag, place, moveTime, showMoveTime = true }) => {
+const MainCont = ({ time, tag, place, moveTime, showMoveTime = true, image }) => {
   return (
     <>
       <div className={styles.container}>
@@ -10,7 +10,7 @@ const MainCont = ({ time, tag, place, moveTime, showMoveTime = true }) => {
           <div className={styles.tag}>{tag}</div>
           <div className={styles.place}>{place}</div>
         </div>
-        <div className={styles.placeImg}></div>
+        <div className={styles.placeImg} style={{ backgroundImage: `url(${image})` }}></div>
       </div>
       {showMoveTime && <MoveTime moveTime={moveTime} />}
     </>
