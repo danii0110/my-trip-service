@@ -128,6 +128,14 @@ const AP2Main = () => {
     });
   };
 
+  const handleSelectHotels = (selectedHotels) => {
+    console.log('handleSelectHotels - Called');
+    console.log('handleSelectHotels - Selected Hotels:', selectedHotels);
+    setSelectedHotels(selectedHotels);
+    console.log('State after setSelectedHotels:', selectedHotels); // 상태 업데이트 확인
+    setIsHotelDatePickModalVisible(false);
+  };
+
   const handleTableDataChange = (newTableData) => {
     setTableData(newTableData);
     const times = {};
@@ -252,14 +260,6 @@ const AP2Main = () => {
     } else {
       setShowDatePickerModal(false);
     }
-  };
-
-  const handleSelectHotels = (selectedHotels) => {
-    console.log('handleSelectHotels - Called');
-    console.log('handleSelectHotels - Selected Hotels:', selectedHotels);
-    setSelectedHotels(selectedHotels);
-    console.log('State after setSelectedHotels:', selectedHotels); // 상태 업데이트 확인
-    setIsHotelDatePickModalVisible(false);
   };
 
   return (
