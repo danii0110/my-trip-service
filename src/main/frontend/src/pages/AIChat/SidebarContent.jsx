@@ -2,7 +2,7 @@ import styles from "./SidebarContent.module.scss"
 import React, {useEffect, useRef, useState} from "react";
 import {useLocation, useNavigate} from "react-router-dom";
 
-const SidebarContent = ({ chatRooms, activeRoom, setActiveRoom, handleDeleteChatRoom, handleRenameChatRoom }) => {
+const SidebarContent = ({ chatRooms, setActiveRoom, handleDeleteChatRoom, handleRenameChatRoom }) => {
     const [dropdownVisible, setDropDownVisible] = useState(null);
     const [editRoomId, setEditRoomId] = useState(null);
     const [newTitle, setNewTitle] = useState('');
@@ -14,7 +14,7 @@ const SidebarContent = ({ chatRooms, activeRoom, setActiveRoom, handleDeleteChat
 
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
-    const roomId = queryParams.get("room-id");
+    const roomId = Number(queryParams.get("room-id"));
 
     useEffect(() => {
         const handleClickOutside = (e) => {
@@ -38,7 +38,6 @@ const SidebarContent = ({ chatRooms, activeRoom, setActiveRoom, handleDeleteChat
         setActiveRoom(activeRoomDetails);
         setDropDownVisible(null);
         navigate(`/ai-chat?room-id=${room.chattingRoomId}`);
-        // console.log("active" + activeRoom);
     };
 
     const handleOptionsClick = (room) => {
@@ -93,7 +92,7 @@ const SidebarContent = ({ chatRooms, activeRoom, setActiveRoom, handleDeleteChat
 
         return rooms.map((room, index) => (
             <div key={index}
-                 className={`${styles.chatRoomButtonContainer} ${(activeRoom && activeRoom.chattingRoomId) === room.chattingRoomId ? styles.active : ''}`}>
+                 className={`${styles.chatRoomButtonContainer} ${roomId === room.chattingRoomId ? styles.active : ''}`}>
                 <button
                     className={styles.chatRoomButton}
                     onClick={() => handleRoomClick(room)}

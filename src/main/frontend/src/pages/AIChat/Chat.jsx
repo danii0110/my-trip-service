@@ -1,14 +1,16 @@
-import React, { useState, useEffect, useRef} from 'react';
+import React, { useEffect, useRef} from 'react';
 import ChatInput from './ChatInput';
 import Message from './Message';
 import styles from './Chat.module.scss';
 import sidebar from "../../assets/sidebar.svg";
 import newChat from "../../assets/newChat.svg";
 import {useNavigate} from "react-router-dom";
+import {createChatRoom} from "./chatApi";
 
-const Chat = ({messages, onSendMessage, activeRoom, setActiveRoom, toggleSidebar, isSidebarOpen}) => {
+const Chat = ({roomId, messages, onSendMessage, activeRoom, setActiveRoom, toggleSidebar, isSidebarOpen}) => {
     const messagesEndRef = useRef(null);
     const navigate = useNavigate();
+    const userId = 1;
 
     const handleNewChatButton = () => {
         setActiveRoom(null);
@@ -21,12 +23,12 @@ const Chat = ({messages, onSendMessage, activeRoom, setActiveRoom, toggleSidebar
 
     useEffect(() => {
         scrollToBottom();
-    }, [messages, activeRoom]);
+        console.log("chat useEffect");
+        console.log(messages);
+    }, [messages]);
 
-
-    const handleSendMessage = (text) => {
-        // onSendMessage(activeRoom, text);
-        onSendMessage(activeRoom.chattingRoomId, text);
+    const handleSendMessage = async (text) => {
+        onSendMessage(roomId, text);
     };
 
     const Welcome = () => {
@@ -61,19 +63,18 @@ const Chat = ({messages, onSendMessage, activeRoom, setActiveRoom, toggleSidebar
                         </div>
                     }
                     <span>{activeRoom ? activeRoom.chattingTitle : 'Welcome'}</span>
-                    {/*<span>{activeRoom ? `Chat Room ${activeRoom}` : 'Welcome'}</span>*/}
                 </div>
             </div>
             <div className={styles.messageContainer}>
-                {activeRoom ? (
+                { !roomId ? (
+                    <Welcome />
+                ) : (
                     <div>
                         {messages.map((message, index) => (
-                            <Message key={index} message={message} />
+                            <Message key={index} message={message}/>
                         ))}
-                        <div ref={messagesEndRef} />
+                        <div ref={messagesEndRef}/>
                     </div>
-                ) : (
-                    <Welcome />
                 )}
             </div>
             <div className={styles.inputContainer}>

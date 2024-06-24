@@ -1,7 +1,7 @@
 import styles from './KakaoMap.module.scss';
 import { Map, MapMarker } from 'react-kakao-maps-sdk';
 
-const KakakoMap = ({ selectedRegion, selectedArea, regionMap }) => {
+const KakakoMap = ({ selectedRegion, selectedArea, regionMap, level}) => {
   const coordinates = {
     서울: { lat: 37.5665, lng: 126.978 },
     부산: { lat: 35.1796, lng: 129.0756 },
@@ -22,10 +22,10 @@ const KakakoMap = ({ selectedRegion, selectedArea, regionMap }) => {
     제주: { lat: 33.4996, lng: 126.5312 },
   };
 
-  const center = coordinates[regionMap[selectedRegion]] || { lat: 33.5563, lng: 126.79581 };
+  const center = coordinates[regionMap?.[selectedRegion] ?? selectedRegion] || { lat: 33.5563, lng: 126.79581 };
 
   return (
-    <Map center={center} className={styles.container}>
+    <Map center={center} className={styles.container} level={level}>
       <MapMarker position={center}></MapMarker>
     </Map>
   );

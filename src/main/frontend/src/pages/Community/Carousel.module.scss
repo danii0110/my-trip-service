@@ -1,0 +1,42 @@
+.carousel {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+.carouselInner {
+  display: flex;
+
+}
+
+.slide {
+  min-width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.5s ease-in-out;
+}
+
+.navigationButtons {
+  position: absolute;
+  top: 40%;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  transform: translateY(-50%);
+}
+
+.button {
+  background-color: transparent;
+  border: none;
+  color: black;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.indicator {
+  text-align: center;
+  margin-top: 10px;
+  font-size: 1.2em;
+}

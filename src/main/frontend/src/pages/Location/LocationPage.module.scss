@@ -50,6 +50,30 @@ h3 {
   font-size: 20px;
 }
 
+.description {
+  display: flex;
+  flex-direction: column;
+}
+
+.mapContainer {
+  position: relative;
+  display: flex;
+  align-self: center;
+  justify-self: center;
+  margin: 10px 0;
+  width: 500px;
+  height: 300px
+}
+
+.map {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  min-width: 100%;
+  min-height: 100%;
+}
+
 .recommendContainer {
   display: flex;
   flex-direction: row;

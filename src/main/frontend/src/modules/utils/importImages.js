@@ -1,4 +1,4 @@
-// src/modules/utils/importImages.jsx
+// src/modules/utils/importImages.js
 import Busan from '../../localImage/Busan.webp';
 import Chungbuk from '../../localImage/Chungbuk.webp';
 import Chungnam from '../../localImage/Chungnam.webp';

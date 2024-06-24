@@ -1,6 +1,6 @@
 import { Routes, Route } from 'react-router-dom';
 import './App.css';
-import MainPage from './pages/MainPage';
+import MainPage from './pages/MainPage/MainPage';
 import APMain from './pages/AP/APMain/APMain';
 import AP2Main from './pages/AP/AP2_timePicker/AP2Main';
 import AP5Main from './pages/AP/AP5_planList/AP5Main';
@@ -36,7 +36,7 @@ const refreshToken = async () => {
   }
 };
 
-// 토큰이 만료되었을 때 자동으로 갱신
+//토큰이 만료되었을 때 자동으로 갱신
 axios.interceptors.response.use(
   (response) => response,
   async (error) => {

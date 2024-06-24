@@ -1,11 +1,11 @@
-import React, {useState} from 'react';
+import React from 'react';
 import styles from './Sidebar.module.scss';
 import newChat from "../../assets/newChat.svg"
 import sidebar from "../../assets/sidebar.svg"
 import SidebarContent from "./SidebarContent";
 import {useNavigate} from "react-router-dom";
 
-const Sidebar = ({ toggleSidebar, handleDeleteChatRoom, handleRenameChatRoom, chatRooms, activeRoom, setActiveRoom }) => {
+const Sidebar = ({ toggleSidebar, handleDeleteChatRoom, handleRenameChatRoom, chatRooms, setActiveRoom }) => {
     const navigate = useNavigate();
 
     const handleNewChatButton = () => {
@@ -23,7 +23,6 @@ const Sidebar = ({ toggleSidebar, handleDeleteChatRoom, handleRenameChatRoom, ch
             <div className={styles.sidebarContent}>
                 <SidebarContent
                     chatRooms={chatRooms}
-                    activeRoom={activeRoom}
                     setActiveRoom={setActiveRoom}
                     handleDeleteChatRoom={handleDeleteChatRoom}
                     handleRenameChatRoom={handleRenameChatRoom}

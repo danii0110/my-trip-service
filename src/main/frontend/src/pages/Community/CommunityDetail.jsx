@@ -8,11 +8,13 @@ import marker from "../../assets/markerIcon.png";
 import Comment from "./Comment";
 import { fetchCommunityDetail, addComment, fetchCommentsByCommunityId, updateComment, deleteComment, deleteCommunityPost } from "./communityApi";
 import { incrementViewCount, incrementCommentCount, decrementCommentCount, incrementScrapCount, decrementScrapCount } from "./communityApi"
+import {formatDateTime, formatDate, calculateDuration} from "../../modules/utils/util";
 import { addScrap, deleteScrap, getScrapByCommunityIdAndUserId } from "./communityApi";
 import {useNavigate, useSearchParams} from "react-router-dom";
 import {IoBookmark, IoBookmarkOutline, IoPencilSharp, IoShareSocial, IoTrashOutline} from "react-icons/io5";
 import CommunitySmallModal from "./CommunitySmallModal";
 import copy from 'copy-to-clipboard';
+import KakakoMap from "../../modules/api/KakaoMap/KakaoMap";
 
 const CommunityDetail = () => {
     const [searchParams] = useSearchParams();
@@ -32,6 +34,10 @@ const CommunityDetail = () => {
     const [showEditModal, setShowEditModal] = useState(false);
     const [showShareModal, setShowShareModal] = useState(false);
     const userId = 1;
+
+    useEffect(() => {
+        window.scrollTo({ top: 0, behavior: 'instant' });
+    }, []);
 
     useEffect(() => {
         fetchDetail();
@@ -167,8 +173,8 @@ const CommunityDetail = () => {
         }
     };
 
-    const handlePlanClick = () => {
-        navigate(`/community/detail/plan?communityId=${communityId}`);
+    const handlePlanClick = (planId) => {
+        navigate(`/community/detail/plan?planId=${planId}`);
     };
 
     const handleShareClick = () => {
@@ -206,19 +212,11 @@ const CommunityDetail = () => {
     }
 
     const { plan = {}, user: communityUser = {}, title, content, viewCount, commentCount, createdAt, image = {}, gender, mates, ageGroup } = community;
-    const { region, startDate, endDate } = plan;
-
-    const createdAtDate = new Date(createdAt);
-    const formattedCreatedAt = createdAtDate.toLocaleDateString('ko-KR', {
-        year: 'numeric',
-        month: '2-digit',
-        day: '2-digit'
-    }).replace(/\.$/, '');
+    const { region, startDate, endDate, transportation, planId } = plan;
 
     const ageGroupKorean = ageGroupMapping[ageGroup] || '비공개';
     const genderKorean = genderMapping[gender] || '비공개';
     const matesKorean = matesMapping[mates] || '비공개';
-
 
     return (
         <Layout>
@@ -231,7 +229,7 @@ const CommunityDetail = () => {
                     <div className={styles.titleContainer}>
                         <div className={styles.title}>
                             <h3>{title}</h3>
-                            <p>게시일 {formattedCreatedAt} | 조회수 {viewCount} | 댓글수 {commentCount}</p>
+                            <p>게시일 {formatDateTime(createdAt)} | 조회수 {viewCount} | 댓글수 {commentCount}</p>
                         </div>
                         <div className={styles.titleButton}>
                             {user === "viewer" && (
@@ -256,7 +254,7 @@ const CommunityDetail = () => {
                         <div className={styles.dateLocation}>
                             <div className={styles.date}>
                                 <img src={calendar} alt="date"/>
-                                <p>{startDate} - {endDate}</p>
+                                <p>{formatDate(startDate)} - {formatDate(endDate)}</p>
                             </div>
                             <div className={styles.location}>
                                 <img src={marker} alt="marker"/>
@@ -319,13 +317,14 @@ const CommunityDetail = () => {
                     </div>
                     <div className={styles.plan}>
                         <h3>여행 계획</h3>
-                        <div className={styles.planDetail} onClick={handlePlanClick}>
+                        <div className={styles.planDetail} onClick={() => handlePlanClick(planId)}>
                             <div className={styles.planInfo}>
                                 <h3>{region}</h3>
-                                <p>{startDate} - {endDate}</p>
+                                <p>{formatDate(startDate)} - {formatDate(endDate)}</p>
+                                <p>{calculateDuration(startDate, endDate)} / {transportation === "CAR" ? "자동차" : "대중교통"} 이용</p>
                             </div>
-                            <div style={styles.planMap}>
-                            <img src={defaultImage} alt="map"/>
+                            <div className={styles.planMap}>
+                                <KakakoMap level="12" selectedRegion={region.split(' ')[0]}/>
                             </div>
                             <div className={styles.goPlan}>
                                 <p>상세보기 ></p>
