@@ -146,7 +146,7 @@ const PlaceModal = ({
         ) : (
           places.map((place, index) => (
             <AddPlaceBox
-              key={`${place.id}-${currentSelectedDate}`} // 고유한 key 추가
+              key={`${place.id}-${currentSelectedDate}-${index}`} // 고유한 key 추가
               id={place.id}
               number={index + 1}
               placeName={place.title}
