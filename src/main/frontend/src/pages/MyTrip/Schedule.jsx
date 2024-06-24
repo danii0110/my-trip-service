@@ -29,7 +29,8 @@ const Schedule = ({ data, onDelete }) => {
         dDayText = 'D-day';
       }
 
-      const items = diffDays > 0 ? ['일정보기', '공유하기', '삭제'] : ['일정보기', '글쓰기', '삭제'];
+      // const items = diffDays > 0 ? ['일정보기', '공유하기', '삭제'] : ['일정보기', '글쓰기', '삭제'];
+      const items = diffDays > 0 ? ['일정보기', '삭제'] : ['일정보기', '글쓰기', '삭제'];
 
       setDDay(dDayText);
       setMenuItems(items);
@@ -108,20 +109,20 @@ const Schedule = ({ data, onDelete }) => {
               {tripTitle}
             </div>
           )}
-          {!isEditingTitle && tripTitle !== '여행 이름 입력' && (
+          {/* {!isEditingTitle && tripTitle !== '여행 이름 입력' && (
             <div className={styles.edit} onClick={handleTitleClick}>
               수정
             </div>
-          )}
+          )} */}
         </div>
         <div className={styles.duration}>{data.duration}</div>
-        {data.isShared && (
+        {/* {data.isShared && (
           <div className={styles.shareCont}>
             {data.isHost && <div className={styles.hostCont}>호스트</div>}
             <div className={styles.checkCont}>공유일정</div>
             <div className={styles.partyCont}>일행+{data.partyCount}</div>
           </div>
-        )}
+        )} */}
       </div>
       <div className={styles.editDateCont}>최근수정일 {data.lastEdited}</div>
       <button className={styles.dotsIcon} onClick={handleDotsClick}>

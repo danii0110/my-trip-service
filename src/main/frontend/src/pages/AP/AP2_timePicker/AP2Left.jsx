@@ -6,6 +6,7 @@ import CalendarIcon from '../../../assets/calendarIcon.svg';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import CheckHeader from './CheckHeader/CheckHeader';
 import TimeTable from './TimeTable';
+import TimeAlertModal from './TimeAlertModal/TimeAlertModal';
 
 const AP2Left = ({
   regionMap,
@@ -21,6 +22,8 @@ const AP2Left = ({
   const [popupPosition, setPopupPosition] = useState({ top: 0, left: 0 });
   const timeTableRef = useRef(null);
   const [tableData, setTableData] = useState([]);
+  const [alertMessage, setAlertMessage] = useState(''); // alert message 상태 추가
+  const [showAlertModal, setShowAlertModal] = useState(false); // 모달 표시 상태 추가
 
   useEffect(() => {
     console.log('AP2Left loaded with:', {
@@ -122,30 +125,37 @@ const AP2Left = ({
   const handleCloseTimePicker = (e) => {
     const time = e.target.value;
     if (time && currentCell) {
-      setTableData((prevData) => {
-        const newData = [...prevData];
-        const formattedTime = parseTimeToAmPm(time);
-        if (currentCell.cellIndex === 2) {
-          const endTime = newData[currentCell.rowIndex][3];
-          if (parseTime(formattedTime) >= parseTime(endTime)) {
-            alert('시작시간은 종료시간보다 늦을 수 없습니다.');
-            setShowTimePicker(false);
-            return prevData;
+      setTimeout(() => {
+        // setTimeout을 사용하여 상태 업데이트를 비동기적으로 수행
+        setTableData((prevData) => {
+          const newData = [...prevData];
+          const formattedTime = parseTimeToAmPm(time);
+          if (currentCell.cellIndex === 2) {
+            const endTime = newData[currentCell.rowIndex][3];
+            if (parseTime(formattedTime) >= parseTime(endTime)) {
+              setAlertMessage('시작시간은 종료시간보다 늦을 수 없습니다.'); // alert 메시지 설정
+              setShowAlertModal(true); // 모달 표시
+              setShowTimePicker(false);
+              return prevData;
+            }
+          } else if (currentCell.cellIndex === 3) {
+            const startTime = newData[currentCell.rowIndex][2];
+            if (parseTime(formattedTime) <= parseTime(startTime)) {
+              setAlertMessage('종료시간은 시작시간보다 이를 수 없습니다.'); // alert 메시지 설정
+              setShowAlertModal(true); // 모달 표시
+              setShowTimePicker(false);
+              return prevData;
+            }
           }
-        } else if (currentCell.cellIndex === 3) {
-          const startTime = newData[currentCell.rowIndex][2];
-          if (parseTime(formattedTime) <= parseTime(startTime)) {
-            alert('종료시간은 시작시간보다 이를 수 없습니다.');
-            setShowTimePicker(false);
-            return prevData;
-          }
-        }
-        newData[currentCell.rowIndex][currentCell.cellIndex] = formattedTime;
-        handleTableDataChange(newData); // 변경된 데이터 전달
-        return newData;
-      });
+          newData[currentCell.rowIndex][currentCell.cellIndex] = formattedTime;
+          handleTableDataChange(newData); // 변경된 데이터 전달
+          return newData;
+        });
+        setShowTimePicker(false);
+      }, 0);
+    } else {
+      setShowTimePicker(false);
     }
-    setShowTimePicker(false);
   };
 
   return (
@@ -204,13 +214,12 @@ const AP2Left = ({
           <input type='time' defaultValue='10:00' onBlur={handleCloseTimePicker} autoFocus />
         </div>
       )}
-      <div>
-        <h3>전달된 지역 정보:</h3>
-        <p>Region: {selectedRegion !== undefined && selectedRegion !== null ? regionMap[selectedRegion] : '없음'}</p>
-        <p>Area: {selectedArea}</p>
-        <p>Start Date: {selectedDates.start ? selectedDates.start.toLocaleDateString() : '없음'}</p>
-        <p>End Date: {selectedDates.end ? selectedDates.end.toLocaleDateString() : '없음'}</p>
-      </div>
+      <TimeAlertModal
+        show={showAlertModal}
+        onHide={() => setShowAlertModal(false)}
+        onConfirm={() => setShowAlertModal(false)}
+        alertMessage={alertMessage} // alert 메시지 전달
+      />
     </>
   );
 };

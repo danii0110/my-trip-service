@@ -26,12 +26,7 @@ const MyTrip = () => {
     setSchedules(newSchedules);
   };
 
-  const filteredSchedules =
-    selected === 'share'
-      ? Array.isArray(schedules)
-        ? schedules.filter((schedule) => schedule.isShared)
-        : []
-      : schedules;
+  const filteredSchedules = schedules;
 
   return (
     <div className={styles.container}>
@@ -56,13 +51,13 @@ const MyTrip = () => {
             >
               전체 일정
             </button>
-            <button
+            {/* <button
               type='button'
               className={`${styles.scheduleBtn} ${selected === 'share' ? styles.selected : ''}`}
               onClick={() => setSelected('share')}
             >
               공유된 일정
-            </button>
+            </button> */}
           </div>
           {filteredSchedules.length > 0 ? (
             filteredSchedules.map((schedule, index) => (
