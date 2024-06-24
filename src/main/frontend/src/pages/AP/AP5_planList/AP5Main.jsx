@@ -135,13 +135,29 @@ const AP5Main = () => {
                   <strong>{date}:</strong>
                   {selectedPlaces[date].map((place, index) => (
                     <div key={index}>
-                      {place.title} - Duration: {place.duration}분
+                      {place.title} - Duration: {place.duration}분<div>Address: {place.addr1}</div>
+                      <div>Category: {place.category}</div>
+                      <div>Image: {place.firstimage}</div>
+                      <div>X Coordinate: {place.mapx}</div>
+                      <div>Y Coordinate: {place.mapy}</div>
                     </div>
                   ))}
                 </div>
               ))}
             </p>
-            <p>Selected Hotels: {JSON.stringify(selectedHotels)}</p>
+            <p>
+              Selected Hotels:
+              {selectedHotels.map((hotel, index) => (
+                <div key={index}>
+                  <strong>{hotel.date}:</strong>
+                  <div>Name: {hotel.name}</div>
+                  <div>Address: {hotel.address}</div>
+                  <div>Image: {hotel.image}</div>
+                  <div>X Coordinate: {hotel.xCoordinate}</div>
+                  <div>Y Coordinate: {hotel.yCoordinate}</div>
+                </div>
+              ))}
+            </p>
             <p>User ID: {userId}</p>
           </div>
         </div>
