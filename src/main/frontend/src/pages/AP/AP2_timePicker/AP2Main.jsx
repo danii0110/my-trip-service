@@ -137,16 +137,18 @@ const AP2Main = () => {
   };
 
   const handleTableDataChange = (newTableData) => {
-    setTableData(newTableData);
-    const times = {};
-    newTableData.forEach((row) => {
-      const date = row[0];
-      times[date] = {
-        start: row[2],
-        end: row[3],
-      };
-    });
-    setSelectedTimes(times);
+    setTimeout(() => {
+      setTableData(newTableData);
+      const times = {};
+      newTableData.forEach((row) => {
+        const date = row[0];
+        times[date] = {
+          start: row[2],
+          end: row[3],
+        };
+      });
+      setSelectedTimes(times);
+    }, 0);
   };
 
   const handleConfirm = () => {

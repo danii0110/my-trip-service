@@ -122,30 +122,37 @@ const AP2Left = ({
   const handleCloseTimePicker = (e) => {
     const time = e.target.value;
     if (time && currentCell) {
-      setTableData((prevData) => {
-        const newData = [...prevData];
-        const formattedTime = parseTimeToAmPm(time);
-        if (currentCell.cellIndex === 2) {
-          const endTime = newData[currentCell.rowIndex][3];
-          if (parseTime(formattedTime) >= parseTime(endTime)) {
-            alert('시작시간은 종료시간보다 늦을 수 없습니다.');
-            setShowTimePicker(false);
-            return prevData;
+      const updateTableData = () => {
+        setTableData((prevData) => {
+          const newData = [...prevData];
+          const formattedTime = parseTimeToAmPm(time);
+          if (currentCell.cellIndex === 2) {
+            const endTime = newData[currentCell.rowIndex][3];
+            if (parseTime(formattedTime) >= parseTime(endTime)) {
+              alert('시작시간은 종료시간보다 늦을 수 없습니다.');
+              setShowTimePicker(false);
+              return prevData;
+            }
+          } else if (currentCell.cellIndex === 3) {
+            const startTime = newData[currentCell.rowIndex][2];
+            if (parseTime(formattedTime) <= parseTime(startTime)) {
+              alert('종료시간은 시작시간보다 이를 수 없습니다.');
+              setShowTimePicker(false);
+              return prevData;
+            }
           }
-        } else if (currentCell.cellIndex === 3) {
-          const startTime = newData[currentCell.rowIndex][2];
-          if (parseTime(formattedTime) <= parseTime(startTime)) {
-            alert('종료시간은 시작시간보다 이를 수 없습니다.');
-            setShowTimePicker(false);
-            return prevData;
-          }
-        }
-        newData[currentCell.rowIndex][currentCell.cellIndex] = formattedTime;
-        handleTableDataChange(newData); // 변경된 데이터 전달
-        return newData;
-      });
+          newData[currentCell.rowIndex][currentCell.cellIndex] = formattedTime;
+          handleTableDataChange(newData); // 변경된 데이터 전달
+          return newData;
+        });
+        setShowTimePicker(false);
+      };
+
+      // 비동기적으로 상태 업데이트를 수행
+      setTimeout(updateTableData, 0);
+    } else {
+      setShowTimePicker(false);
     }
-    setShowTimePicker(false);
   };
 
   return (
@@ -204,13 +211,13 @@ const AP2Left = ({
           <input type='time' defaultValue='10:00' onBlur={handleCloseTimePicker} autoFocus />
         </div>
       )}
-      <div>
+      {/* <div>
         <h3>전달된 지역 정보:</h3>
         <p>Region: {selectedRegion !== undefined && selectedRegion !== null ? regionMap[selectedRegion] : '없음'}</p>
         <p>Area: {selectedArea}</p>
         <p>Start Date: {selectedDates.start ? selectedDates.start.toLocaleDateString() : '없음'}</p>
         <p>End Date: {selectedDates.end ? selectedDates.end.toLocaleDateString() : '없음'}</p>
-      </div>
+      </div> */}
     </>
   );
 };
