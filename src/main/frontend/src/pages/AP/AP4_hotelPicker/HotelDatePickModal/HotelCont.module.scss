@@ -5,6 +5,7 @@
   align-items: center;
   margin: 25px 0;
 }
+
 .date {
   background-color: #8ea05d;
   color: #fff;
@@ -17,6 +18,7 @@
   align-items: center;
   margin: 0 0 8px 0;
 }
+
 .btn {
   border: none;
   border-radius: 10px;
@@ -25,11 +27,18 @@
   background-color: transparent;
   cursor: pointer;
 }
+
 .addBtnIcon {
   width: 80px;
   height: 80px;
   border-radius: 10px;
 }
+
 .hotelName {
   font-size: 18px;
+  width: 100%; /* button의 너비와 일치시키기 위해 추가 */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: center; /* 텍스트를 중앙에 맞추기 위해 추가 */
 }

@@ -183,7 +183,7 @@ const AP4Left = ({
         hotelName={selectedHotel?.title}
         selectedHotel={selectedHotel}
       />
-      <div>
+      {/* <div>
         <h3>전달된 데이터 확인:</h3>
         <p>Region: {selectedRegion !== undefined && selectedRegion !== null ? regionMap[selectedRegion] : '없음'}</p>
         <p>Area: {selectedArea}</p>
@@ -207,7 +207,7 @@ const AP4Left = ({
             ))}
           </div>
         ))}
-      </div>
+      </div> */}
     </>
   );
 };

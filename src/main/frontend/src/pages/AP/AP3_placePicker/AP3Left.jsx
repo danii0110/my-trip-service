@@ -203,7 +203,7 @@ const AP3Left = ({
           )}
         </div>
         <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} />
-        <div className={styles.checkData}>
+        {/* <div className={styles.checkData}>
           <h3>전달된 데이터 확인:</h3>
           <p>Region: {selectedRegion !== undefined && selectedRegion !== null ? regionMap[selectedRegion] : '없음'}</p>
           <p>Area: {selectedArea}</p>
@@ -214,7 +214,7 @@ const AP3Left = ({
             {`${selectedTimes[currentSelectedDate]?.start || ''} ~ ${selectedTimes[currentSelectedDate]?.end || ''}`}
           </p>
           <p>Table Data: {JSON.stringify(tableData)}</p>
-        </div>
+        </div> */}
       </div>
       <TimeOverModal
         show={showTimeOverModal}
