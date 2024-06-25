@@ -89,6 +89,7 @@ const AP6Main = () => {
               : '날짜를 선택하세요'}
           </div>
           {!isUpArrow && <AIRouteModal planId={planId}/>}
+
           <PlanCont plans={plans} />
         </div>
         <div className={styles.rightCont}>
