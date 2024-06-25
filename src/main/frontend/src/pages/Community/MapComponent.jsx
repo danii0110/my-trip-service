@@ -8,8 +8,8 @@ const MapComponent = ({ scheduleForSelectedDate }) => {
     useEffect(() => {
         if (scheduleForSelectedDate.length > 0) {
             setCenter({
-                lat: Number(scheduleForSelectedDate[0].place.xCoordinate),
-                lng: Number(scheduleForSelectedDate[0].place.yCoordinate)
+                lat: Number(scheduleForSelectedDate[0].place.yCoordinate),
+                lng: Number(scheduleForSelectedDate[0].place.xCoordinate)
             });
         }
     }, [scheduleForSelectedDate]);
@@ -20,7 +20,7 @@ const MapComponent = ({ scheduleForSelectedDate }) => {
             {scheduleForSelectedDate.map((item, index) => (
                 <MapMarker
                     key={index}
-                    position={{ lat: Number(item.place.xCoordinate), lng: Number(item.place.yCoordinate) }}
+                    position={{ lat: Number(item.place.yCoordinate), lng: Number(item.place.xCoordinate) }}
                 ></MapMarker>
             ))}
         </Map>
