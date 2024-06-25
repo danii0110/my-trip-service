@@ -29,7 +29,7 @@ public class PlanService {
     }
 
     @Transactional
-    public void createCompletePlan(CompletePlanDTO completePlanDTO) {
+    public Long createCompletePlan(CompletePlanDTO completePlanDTO) {
         User user = userRepository.findByKakaoId(completePlanDTO.getUserId().toString())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
@@ -75,6 +75,8 @@ public class PlanService {
                 schedulePlaceRepository.save(schedulePlace);
             }
         }
+
+        return savedPlan.getPlanId();
     }
 
     public List<PlanDTO> getAllPlans() {

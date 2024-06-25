@@ -29,6 +29,22 @@ const TransportModal = ({ show, onHide }) => {
     console.log('User in TransportModal:', user);
   }, [user]);
 
+  const onClickHandler = async () => {
+    const planId = await goToAP6();
+    console.log(planId);
+    await optimizeSchedule(planId);
+    await calculateMoveTime(planId);
+    navigate('/itinerary/areaName', {
+      state: {
+        selectedDates,
+        selectedRegion,
+        selectedArea,
+        tableData,
+        selectedTransport,
+      },
+    });
+  }
+
   const goToAP6 = async () => {
     if (!user) {
       console.error('User not logged in');
@@ -96,21 +112,35 @@ const TransportModal = ({ show, onHide }) => {
     console.log('Request Data: ', planData);
 
     try {
-      await axios.post('http://localhost:8080/api/plans/complete', planData);
+      const response  = await axios.post('http://localhost:8080/api/plans/complete', planData);
       onHide();
-      navigate('/itinerary/areaName', {
-        state: {
-          selectedDates,
-          selectedRegion,
-          selectedArea,
-          tableData,
-          selectedTransport,
-        },
-      });
+      return response.data;
     } catch (error) {
       console.error('Error creating plan', error);
     }
   };
+
+  const optimizeSchedule = async (planId) => {
+    console.log("optimizeSchedule start");
+    try {
+      await axios.post(`http://localhost:8080/api/chatgpt/daily-schedules/plan/${planId}/optimize`);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      console.log("optimizeSchedule finish");
+    }
+  };
+
+  const calculateMoveTime = async (planId) => {
+    console.log("calculateSchedule start")
+    try {
+      await axios.post(`http://localhost:8080/api/move-times/calculate/${planId}`);
+    } catch (error) {
+      console.error('Error evaluating schedule:', error);
+    } finally {
+      console.log("optimizeSchedule finish");
+    }
+  }
 
   const handleTransportClick = (transport) => {
     setSelectedTransport(transport);
@@ -142,7 +172,7 @@ const TransportModal = ({ show, onHide }) => {
             <button className={styles.cancleBtn} type='button' onClick={onHide}>
               닫기
             </button>
-            <button className={styles.makePlanBtn} type='button' onClick={goToAP6}>
+            <button className={styles.makePlanBtn} type='button' onClick={onClickHandler}>
               일정생성
             </button>
           </div>
