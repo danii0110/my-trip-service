@@ -1,6 +1,8 @@
 package com.mytrip.mytripservice.controller;
 
+import com.mytrip.mytripservice.dto.DailyScheduleOtherDTO;
 import com.mytrip.mytripservice.dto.MoveTimeDTO;
+import com.mytrip.mytripservice.service.DailyScheduleService;
 import com.mytrip.mytripservice.service.MoveTimeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -13,10 +15,12 @@ import java.util.List;
 public class MoveTimeController {
 
     private final MoveTimeService moveTimeService;
+    private final DailyScheduleService dailyScheduleService;
 
     @Autowired
-    public MoveTimeController(MoveTimeService moveTimeService) {
+    public MoveTimeController(MoveTimeService moveTimeService, DailyScheduleService dailyScheduleService) {
         this.moveTimeService = moveTimeService;
+        this.dailyScheduleService = dailyScheduleService;
     }
 
     @GetMapping
@@ -36,6 +40,15 @@ public class MoveTimeController {
     public ResponseEntity<MoveTimeDTO> createMoveTime(@RequestBody MoveTimeDTO moveTimeDTO) {
         MoveTimeDTO createdMoveTime = moveTimeService.createMoveTime(moveTimeDTO);
         return ResponseEntity.ok(createdMoveTime);
+    }
+
+    //추가했어요
+    @PostMapping("/calculate/{planId}")
+    public ResponseEntity<List<MoveTimeDTO>> calculateMoveTimes(@PathVariable Long planId) {
+        List<DailyScheduleOtherDTO> schedules = dailyScheduleService.getDailyScheduleByPlanId(planId);
+        List<MoveTimeDTO> moveTimes = moveTimeService.calculateMoveTimes(schedules);
+        moveTimeService.saveMoveTimes(moveTimes);
+        return ResponseEntity.ok(moveTimes);
     }
 
     @PatchMapping("/{id}")
