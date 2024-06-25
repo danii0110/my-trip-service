@@ -56,6 +56,9 @@ const AP6Main = () => {
   };
 
   const calculateMoveTime = (endTime, startTime) => {
+    if (!endTime || !startTime) {
+      return '0분';
+    }
     const endMinutes = endTime[0] * 60 + endTime[1];
     const startMinutes = startTime[0] * 60 + startTime[1];
     const moveMinutes = startMinutes - endMinutes;

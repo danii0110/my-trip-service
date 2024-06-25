@@ -2,24 +2,26 @@ import styles from './MyTrip.module.scss';
 import QuestionIcon from '../../assets/questionIcon.svg';
 import { useState, useEffect } from 'react';
 import Schedule from './Schedule';
-import schedulesData from '../../data/schedules';
+import axios from 'axios';
 
 const MyTrip = () => {
   const [selected, setSelected] = useState('total');
   const [schedules, setSchedules] = useState([]);
 
   useEffect(() => {
-    const parseStartDate = (duration) => {
-      const [startDateStr] = duration.split('~');
-      return new Date(`20${startDateStr.split('.').join('-')}`);
+    const fetchPlans = async () => {
+      const userId = localStorage.getItem('userId'); // 또는 다른 방법으로 userId를 가져옵니다.
+
+      try {
+        const response = await axios.get(`/api/users/${userId}/plans`);
+        setSchedules(response.data);
+      } catch (error) {
+        console.error('Error fetching plans:', error);
+      }
     };
 
-    const sortedSchedules = [...schedulesData].sort((a, b) => {
-      return parseStartDate(b.duration) - parseStartDate(a.duration);
-    });
-
-    setSchedules(sortedSchedules);
-  }, []);
+    fetchPlans();
+  }, []); // 초기 렌더링 시 데이터 가져오기
 
   const handleDelete = (index) => {
     const newSchedules = schedules.filter((_, i) => i !== index);
@@ -51,17 +53,19 @@ const MyTrip = () => {
             >
               전체 일정
             </button>
-            {/* <button
-              type='button'
-              className={`${styles.scheduleBtn} ${selected === 'share' ? styles.selected : ''}`}
-              onClick={() => setSelected('share')}
-            >
-              공유된 일정
-            </button> */}
           </div>
           {filteredSchedules.length > 0 ? (
             filteredSchedules.map((schedule, index) => (
-              <Schedule key={index} data={schedule} onDelete={() => handleDelete(index)} />
+              <Schedule
+                key={index}
+                data={{
+                  tripTitle: schedule.title,
+                  areaName: schedule.region,
+                  duration: `${schedule.startDate} ~ ${schedule.endDate}`, // 수정된 부분: 일정 기간 설정
+                  lastEdited: new Date().toLocaleDateString(), // 예시로 현재 날짜 사용
+                }}
+                onDelete={() => handleDelete(index)}
+              />
             ))
           ) : (
             <div className={styles.noDataBox}>일정이 없습니다.</div>

@@ -1,5 +1,6 @@
 package com.mytrip.mytripservice.controller;
 
+import com.mytrip.mytripservice.dto.PlanDTO;
 import com.mytrip.mytripservice.dto.UserDTO;
 import com.mytrip.mytripservice.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,4 +49,12 @@ public class UserController {
         userService.deleteUser(id);
         return ResponseEntity.noContent().build();
     }
+
+    //플랜 조회 때문에 추가
+    @GetMapping("/{userId}/plans")
+    public ResponseEntity<List<PlanDTO>> getPlansByUserId(@PathVariable Long userId) {
+        List<PlanDTO> plans = userService.getPlansByUserId(userId);
+        return ResponseEntity.ok(plans);
+    }
+
 }
