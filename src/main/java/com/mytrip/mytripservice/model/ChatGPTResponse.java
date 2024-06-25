@@ -2,7 +2,6 @@ package com.mytrip.mytripservice.model;
 
 import lombok.Data;
 
-import java.net.ContentHandler;
 import java.util.List;
 
 @Data
