@@ -88,7 +88,7 @@ const AP6Main = () => {
               ? `${formatDate(selectedDates.start)} - ${formatDate(selectedDates.end)}`
               : '날짜를 선택하세요'}
           </div>
-          {!isUpArrow && <AIRouteModal />}
+          {!isUpArrow && <AIRouteModal planId={planId}/>}
           <PlanCont plans={plans} />
         </div>
         <div className={styles.rightCont}>

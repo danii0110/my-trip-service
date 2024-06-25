@@ -84,31 +84,35 @@ const TripPlanPage = () => {
     );
   }
   
-      function GreenButton(props) {
-        return (
-            <div>
-              <button type='button' className={`${styles.greenButton} ${props.className}`} onClick={props.onClick}>
-                {props.name}
-              </button>
-            </div>
-        );
-      }
+  function GreenButton(props) {
+    return (
+        <div>
+          <button type='button' className={`${styles.greenButton} ${props.className}`} onClick={props.onClick}>
+            {props.name}
+          </button>
+        </div>
+    );
+  }
+
+  const handleMakePlan = () => {
+        navigate('/planning/areaName', { state: { selectedRegion: areaCode, selectedArea: areaList[areaCode][sigunguCode] } });
+    }
       
-      const processLocationName = (name) => {
-        // 1. '도'를 포함하면 '도' 삭제
-        if (name.includes('도')) {
-          name = name.replace('도', '');
-        }
-        // 2. 1번 조건 수행 후 글자가 3자이면 가운데 글자 삭제
-        if (name.length === 3) {
-          name = name[0] + name[2];
-        }
-        // 3. 2번 조건 수행 후 글자가 3자 이상이면 앞에 2글자만 남기고 삭제
-        if (name.length > 2) {
-          name = name.slice(0, 2);
-        }
-        return name;
-      };
+  const processLocationName = (name) => {
+    // 1. '도'를 포함하면 '도' 삭제
+    if (name.includes('도')) {
+      name = name.replace('도', '');
+    }
+    // 2. 1번 조건 수행 후 글자가 3자이면 가운데 글자 삭제
+    if (name.length === 3) {
+      name = name[0] + name[2];
+    }
+    // 3. 2번 조건 수행 후 글자가 3자 이상이면 앞에 2글자만 남기고 삭제
+    if (name.length > 2) {
+      name = name.slice(0, 2);
+    }
+    return name;
+  };
   
       const Carousel = () => {
         const renderLocationButtons = () => {
@@ -181,9 +185,7 @@ const TripPlanPage = () => {
                 <button
                     type='button'
                     className={styles.greenBigButton}
-                    onClick={() => {
-                      alert('정상작동😋');
-                    }}
+                    onClick={handleMakePlan}
                 >
                   {locationName} {sigunguName} 플랜 생성하기 &gt;
                 </button>

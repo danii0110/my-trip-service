@@ -28,7 +28,7 @@ const ScheduleItem = ({ index, item, transportation, moveTimes }) => {
             <div className={styles.scheduleContent}>
                 <div className={styles.scheduleImage}>
                     {item.place.image ? (
-                        <img src={`path_to_image/${item.place.image}`} alt={item.place.name} className={styles.image} />
+                        <img src={`${item.place.image}`} alt={item.place.name} className={styles.image} />
                     ) : (
                         <LuImage size="50px"/>
                     )}
@@ -38,9 +38,15 @@ const ScheduleItem = ({ index, item, transportation, moveTimes }) => {
                     <p>{categoryMap[item.place.category]} | {item.place.address}</p>
                 </div>
                 <div className={styles.scheduleTime}>
-                    <p>{`${item.startTime[0]}:${String(item.startTime[1]).padStart(2, '0')} ~ 
-                        ${item.endTime[0]}:${String(item.endTime[1]).padStart(2, '0')}`}</p>
-                    <p>{transportationMap[transportation]} {moveTime && ` : ${moveTime.moveTime} 분`}</p>
+                    {item.place.category === 'ACCOMMODATION' ? (
+                        <p>숙소</p>
+                    ) : (
+                        <>
+                            <p>{`${item.startTime[0]}:${String(item.startTime[1]).padStart(2, '0')} ~ 
+                                ${item.endTime[0]}:${String(item.endTime[1]).padStart(2, '0')}`}</p>
+                            <p>{transportationMap[transportation]} {moveTime && ` : ${moveTime.moveTime} 분`}</p>
+                        </>
+                    )}
                 </div>
             </div>
         </div>

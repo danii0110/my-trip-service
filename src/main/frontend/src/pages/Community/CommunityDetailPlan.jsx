@@ -122,7 +122,7 @@ const CommunityDetailPlan = () => {
             <Header />
             <div className={styles.container}>
                 <div className={styles.mapContainer}>
-                    <MapComponent scheduleForSelectedDate={scheduleForSelectedDate} />
+                    <MapComponent scheduleForSelectedDate={scheduleForSelectedDate} level="8"/>
                 </div>
                 <div className={styles.info}>
                     <div className={styles.header}>
