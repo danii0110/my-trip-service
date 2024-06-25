@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Map, MapMarker } from 'react-kakao-maps-sdk';
 import styles from "./MapComponent.module.scss"
 
-const MapComponent = ({ scheduleForSelectedDate }) => {
+const MapComponent = ({ scheduleForSelectedDate, level }) => {
     const [center, setCenter] = useState({ lat: 37.5665, lng: 126.9780 });
 
     useEffect(() => {
@@ -16,7 +16,7 @@ const MapComponent = ({ scheduleForSelectedDate }) => {
     console.log(scheduleForSelectedDate);
 
     return (
-        <Map center={center} level={3} className={styles.map}>
+        <Map center={center} level={level} className={styles.map}>
             {scheduleForSelectedDate.map((item, index) => (
                 <MapMarker
                     key={index}

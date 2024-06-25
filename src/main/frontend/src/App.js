@@ -24,6 +24,9 @@ import CommunityDetailPlan from './pages/Community/CommunityDetailPlan';
 import Scrap from './pages/MyTrip/Scrap/Scrap';
 import axios from 'axios';
 import AIChatPage from './pages/AIChat/AIChatPage';
+import TripPlanner from "./pages/TripPlanner";
+import ProtectedRoute from "./modules/api/Login/ProtetctedRoutes";
+import Login from "./modules/api/Login/Login";
 
 // Axios 인터셉터 설정
 const refreshToken = async () => {
@@ -60,23 +63,34 @@ function App() {
     <div className='App'>
       <Routes>
         <Route path='/' element={<MainPage />} />
+        <Route path='/login' element={<Login />} />
         <Route path='/callback/kakao' element={<OAuth2Redirection />} />
-        <Route path='/planning' element={<APMain />} />
-        <Route path='planning/areaName' element={<AP2Main />} />
-        <Route path='plan-list/areaName' element={<AP5Main />} />
-        <Route path='itinerary/areaName' element={<AP6Main />} />
-        <Route path='my-trip' element={<MyTripMain />} />
-        <Route path='my-trip/profile' element={<Profile />} />
-        <Route path='my-trip/scrap' element={<Scrap />} />
+
         <Route path='/trip-plan' element={<TripPlanPage />}></Route>
         <Route path='/search' element={<SearchPage />}></Route>
-        <Route path='/ai-chat' element={<AIChatPage />}></Route>
         <Route path='/location' element={<LocationPage />}></Route>
+
         <Route path='/community' element={<CommunityMainPage />}></Route>
-        <Route path='/community/post' element={<CommunityPost />}></Route>
-        <Route path='/community/edit' element={<CommunityPost />}></Route>
         <Route path='/community/detail' element={<CommunityDetail />}></Route>
         <Route path='/community/detail/plan' element={<CommunityDetailPlan />}></Route>
+        <Route path='/tripplanner' element={<TripPlanner />}></Route>
+
+        <Route element={<ProtectedRoute />}>
+          <Route path='/planning' element={<APMain />} />
+          <Route path='planning/areaName' element={<AP2Main />} />
+          <Route path='plan-list/areaName' element={<AP5Main />} />
+          <Route path='itinerary/areaName' element={<AP6Main />} />
+
+          <Route path='my-trip' element={<MyTripMain />} />
+          <Route path='my-trip/profile' element={<Profile />} />
+          <Route path='my-trip/scrap' element={<Scrap />} />
+
+          <Route path="/ai-chat" element={<AIChatPage />} />
+
+          <Route path='/community/post' element={<CommunityPost />}></Route>
+          <Route path='/community/edit' element={<CommunityPost />}></Route>
+        </Route>
+
       </Routes>
     </div>
   );
