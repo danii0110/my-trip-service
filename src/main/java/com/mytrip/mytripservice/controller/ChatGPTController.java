@@ -3,6 +3,7 @@ package com.mytrip.mytripservice.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.mytrip.mytripservice.dto.DailyScheduleOtherDTO;
 import com.mytrip.mytripservice.dto.OptimizedScheduleDTO;
+import com.mytrip.mytripservice.dto.PlanDTO;
 import com.mytrip.mytripservice.entity.Plan;
 import com.mytrip.mytripservice.service.ChatGPTService;
 import com.mytrip.mytripservice.service.DailyScheduleService;
@@ -53,7 +54,7 @@ public class ChatGPTController {
                 .body(Mono.just(dailySchedules), List.class)
                 .retrieve()
                 .bodyToMono(String.class)
-                .map(response -> ResponseEntity.ok(response))
+                .map(ResponseEntity::ok)
                 .onErrorResume(e -> Mono.just(ResponseEntity.status(500).body(e.getMessage())));
     }
 
@@ -66,8 +67,9 @@ public class ChatGPTController {
     @PostMapping("/daily-schedules/plan/{planId}/optimize")
     public Mono<ResponseEntity<List<DailyScheduleOtherDTO>>> optimizeDailySchedules(@PathVariable Long planId) throws JsonProcessingException {
         List<DailyScheduleOtherDTO> dailySchedules = dailyScheduleService.getDailyScheduleByPlanId(planId);
+        Optional<Plan> plan = planService.getPlanByPlanId(planId);
 
-        return chatGPTService.callChatGPTAPI(dailySchedules)
+        return chatGPTService.callChatGPTAPI(dailySchedules, plan)
                 .flatMap(responseContent -> {
                     List<OptimizedScheduleDTO> optimizedSchedules = chatGPTService.parseResponse(responseContent);
                     List<DailyScheduleOtherDTO> updatedSchedules = chatGPTService.updateDailySchedules(dailySchedules, optimizedSchedules);
@@ -83,7 +85,7 @@ public class ChatGPTController {
 
         return chatGPTService.callChatGPTAPIForString(dailySchedules)
                 .doOnNext(response -> System.out.println("Evaluation Response: " + response))
-                .map(response -> ResponseEntity.ok(response))
+                .map(ResponseEntity::ok)
                 .onErrorResume(e -> Mono.just(ResponseEntity.status(500).body(e.getMessage())));
     }
 }
