@@ -90,6 +90,17 @@ public class DailyScheduleService {
         }).orElseThrow(() -> new RuntimeException("DailySchedule not found"));
     }
 
+    //추가했어요
+    public void updateDailySchedules(List<DailyScheduleOtherDTO> updatedSchedules) {
+        for (DailyScheduleOtherDTO dto : updatedSchedules) {
+            DailySchedule schedule = dailyScheduleRepository.findById(dto.getScheduleId())
+                    .orElseThrow(() -> new RuntimeException("Schedule not found"));
+            schedule.setDate(dto.getDate());
+            schedule.setSchedulePlaces(dto.getSchedulePlaces());
+            dailyScheduleRepository.save(schedule);
+        }
+    }
+
     @Transactional
     public void deleteDailySchedule(Long id) {
         dailyScheduleRepository.deleteById(id);

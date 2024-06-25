@@ -2,11 +2,13 @@ package com.mytrip.mytripservice.controller;
 
 import com.mytrip.mytripservice.dto.DailyScheduleDTO;
 import com.mytrip.mytripservice.dto.DailyScheduleOtherDTO;
+import com.mytrip.mytripservice.service.ChatGPTService;
 import com.mytrip.mytripservice.service.DailyScheduleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import reactor.core.publisher.Mono;
 
 import java.util.List;
 import java.util.Optional;
