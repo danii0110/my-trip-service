@@ -68,6 +68,7 @@ const PlanCont = ({ selectedDates, selectedRegion, selectedArea, selectedPlaces 
   };
 
   const handleAddToCart = async () => {
+    alert('장바구니에 추가되었습니다.');
     if (!userId) {
       console.error('User not logged in');
       return;

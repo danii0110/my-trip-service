@@ -56,9 +56,6 @@ const AP6Main = () => {
   };
 
   const calculateMoveTime = (endTime, startTime) => {
-    if (!endTime || !startTime) {
-      return '0분';
-    }
     const endMinutes = endTime[0] * 60 + endTime[1];
     const startMinutes = startTime[0] * 60 + startTime[1];
     const moveMinutes = startMinutes - endMinutes;
@@ -91,7 +88,7 @@ const AP6Main = () => {
               ? `${formatDate(selectedDates.start)} - ${formatDate(selectedDates.end)}`
               : '날짜를 선택하세요'}
           </div>
-          {!isUpArrow && <AIRouteModal />}
+          {!isUpArrow && <AIRouteModal planId={planId} />}
           <PlanCont plans={plans} />
         </div>
         <div className={styles.rightCont}>
