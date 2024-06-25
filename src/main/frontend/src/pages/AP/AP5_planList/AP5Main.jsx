@@ -35,12 +35,18 @@ const AP5Main = () => {
         console.log(`Fetching cart plans for user ID: ${userId}, region: ${selectedRegion}, area: ${selectedArea}`);
         try {
           const response = await axios.get(`/api/plans/cart/${userId}`);
-          const filteredPlans = response.data.filter(
-            (plan) => plan.region === `인천 미추홀구` && plan.planType === 'CART'
-          );
-          setCartPlans(filteredPlans);
+          const filteredPlans = response.data.filter((plan) => plan.planType === 'CART');
+
+          // endDate와 startDate가 문자열인지 확인하고, 문자열이 아니면 변환
+          const transformedPlans = filteredPlans.map((plan) => ({
+            ...plan,
+            endDate: typeof plan.endDate === 'string' ? plan.endDate : plan.endDate.toString(),
+            startDate: typeof plan.startDate === 'string' ? plan.startDate : plan.startDate.toString(),
+          }));
+
+          setCartPlans(transformedPlans);
           console.log('API Response:', response.data);
-          console.log('Filtered Plans:', filteredPlans);
+          console.log('Filtered Plans:', transformedPlans);
         } catch (error) {
           console.error('Error fetching cart plans:', error);
         }
@@ -48,7 +54,7 @@ const AP5Main = () => {
     };
 
     fetchCartPlans();
-  }, [userId, selectedRegion, selectedArea]);
+  }, [userId]);
 
   const handleRemove = async (planId) => {
     try {
@@ -98,8 +104,8 @@ const AP5Main = () => {
                   <CartModal
                     key={plan.planId}
                     content={{
-                      editDate: plan.endDate.join('. '),
-                      duration: `${plan.startDate.join('. ')} - ${plan.endDate.join('. ')}`,
+                      editDate: plan.endDate.split('-').join('. '), // YYYY-MM-DD 형식을 YYYY. MM. DD 형식으로 변환
+                      duration: `${plan.startDate.split('-').join('. ')} - ${plan.endDate.split('-').join('. ')}`, // 날짜 형식을 YYYY. MM. DD - YYYY. MM. DD로 변환
                       places: [`${plan.region}${index + 1}`],
                       placeCount: placeCount,
                     }}
@@ -119,7 +125,7 @@ const AP5Main = () => {
               userId={userId}
             />
           </div>
-          <div className={styles.divToCheck}>
+          {/* <div className={styles.divToCheck}>
             <h3>전달된 데이터 확인:</h3>
             <p>
               Region: {selectedRegion !== undefined && selectedRegion !== null ? regionMap[selectedRegion] : '없음'}
@@ -159,7 +165,7 @@ const AP5Main = () => {
               ))}
             </p>
             <p>User ID: {userId}</p>
-          </div>
+          </div> */}
         </div>
         <div className={styles.rightCont}>
           <KakakoMap selectedRegion={selectedRegion} selectedArea={selectedArea} regionMap={regionMap} />

@@ -81,31 +81,59 @@ const PlanCont = ({ selectedDates, selectedRegion, selectedArea, selectedPlaces 
       endDate: selectedDates.end.toISOString().split('T')[0],
       transportation: null,
       planType: 'CART',
-      dailySchedules: dateRange.map((date) => {
-        const formattedDate = formatDateForAPI(date);
-        const displayDate = formatDateForDisplay(date);
-        const placesForDay = selectedPlaces[displayDate] || [];
-        return {
-          date: formattedDate,
-          schedulePlaces: placesForDay.map((place) => {
-            const category = categoryMap[place.contenttypeid] || 'UNKNOWN';
-            return {
-              placeId: place.contentid,
-              place: {
-                name: place.title,
-                address: place.addr1,
-                category: category,
-                image: place.firstimage,
-                xCoordinate: place.mapx,
-                yCoordinate: place.mapy,
+      dailySchedules: dateRange
+        .map((date) => {
+          const formattedDate = formatDateForAPI(date);
+          const displayDate = formatDateForDisplay(date);
+          const placesForDay = selectedPlaces[displayDate] || [];
+          return {
+            date: formattedDate,
+            schedulePlaces: placesForDay.map((place) => {
+              const category = categoryMap[place.contenttypeid] || 'UNKNOWN';
+              return {
+                placeId: parseInt(place.contentid, 10),
+                place: {
+                  name: place.title,
+                  address: place.addr1,
+                  category: category,
+                  image: place.firstimage,
+                  xCoordinate: place.mapx,
+                  yCoordinate: place.mapy,
+                },
+                duration: place.duration,
+                startTime: place.startTime || null,
+                endTime: place.endTime || null,
+              };
+            }),
+          };
+        })
+        .concat(
+          selectedHotels.map((hotel, index) => ({
+            date: new Date(
+              selectedDates.start.getFullYear(),
+              selectedDates.start.getMonth(),
+              selectedDates.start.getDate() + index
+            )
+              .toISOString()
+              .split('T')[0],
+            schedulePlaces: [
+              {
+                placeId: userId + index, // placeId를 고유한 숫자 값으로 설정
+                place: {
+                  name: hotel.name,
+                  address: hotel.address || '',
+                  category: 'ACCOMMODATION',
+                  image: hotel.image,
+                  xCoordinate: hotel.xCoordinate || '',
+                  yCoordinate: hotel.yCoordinate || '',
+                },
+                duration: 0,
+                startTime: null,
+                endTime: null,
               },
-              duration: place.duration,
-              startTime: place.startTime || null,
-              endTime: place.endTime || null,
-            };
-          }),
-        };
-      }),
+            ],
+          }))
+        ),
     };
 
     console.log('Cart Data: ', cartData);
