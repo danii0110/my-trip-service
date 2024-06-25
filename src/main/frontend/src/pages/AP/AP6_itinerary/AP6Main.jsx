@@ -7,67 +7,39 @@ import { useState, useEffect } from 'react';
 import AIRouteModal from './AIRouteModal';
 import { useLocation } from 'react-router-dom';
 import regionMap from '../../../modules/utils/regionMap';
+import axios from 'axios';
 
 const AP6Main = () => {
   const location = useLocation();
-  const { selectedDates, selectedRegion, selectedArea, tableData, selectedTransport } = location.state || {};
+  const { selectedDates, selectedRegion, selectedArea, tableData, selectedTransport, planId } = location.state || {};
 
   const [isUpArrow, setIsUpArrow] = useState(true);
-  const [plans, setPlans] = useState([]);
+  const [plans, setPlans] = useState([]); // 빈 배열로 초기화
 
-  // 날짜 형식 변환 함수
+  useEffect(() => {
+    const fetchPlans = async () => {
+      try {
+        const response = await axios.get(`http://localhost:8080/api/plans/${planId}`);
+        setPlans(response.data); // 받아온 데이터를 설정
+      } catch (error) {
+        console.error('Error fetching plans: ', error);
+      }
+    };
+
+    if (planId) {
+      fetchPlans();
+    }
+  }, [planId]);
+
+  const handleClick = () => {
+    setIsUpArrow(!isUpArrow);
+  };
+
   const formatDate = (date) => {
     const d = new Date(date);
     const month = (d.getMonth() + 1).toString().padStart(2, '0');
     const day = d.getDate().toString().padStart(2, '0');
     return `24.${month}.${day}`;
-  };
-
-  // 모의 데이터 설정
-  useEffect(() => {
-    const mockPlans = [
-      {
-        date: '2024-06-23',
-        schedulePlaces: [
-          {
-            startTime: '09:00',
-            endTime: '11:00',
-            category: 'RESTAURANT',
-            name: '가마솥손두부',
-            moveTime: '30분',
-          },
-          {
-            startTime: '11:30',
-            endTime: '13:00',
-            category: 'SHOPPING',
-            name: '미추홀구 쇼핑몰',
-          },
-        ],
-      },
-      {
-        date: '2024-06-24',
-        schedulePlaces: [
-          {
-            startTime: '10:00',
-            endTime: '12:00',
-            category: 'ACCOMMODATION',
-            name: '로지호텔',
-            moveTime: '40분',
-          },
-          {
-            startTime: '12:40',
-            endTime: '14:00',
-            category: 'CULTURAL_FACILITY',
-            name: '미추홀구 박물관',
-          },
-        ],
-      },
-    ];
-    setPlans(mockPlans);
-  }, []);
-
-  const handleClick = () => {
-    setIsUpArrow(!isUpArrow);
   };
 
   return (

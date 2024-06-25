@@ -10,11 +10,22 @@ const PlanCont = ({ plans }) => {
     setShowModal(true);
   };
 
+  const addMinutes = (time, minsToAdd) => {
+    const [hours, minutes] = time.split(':').map(Number);
+    const date = new Date();
+    date.setHours(hours);
+    date.setMinutes(minutes + minsToAdd);
+
+    const newHours = date.getHours().toString().padStart(2, '0');
+    const newMinutes = date.getMinutes().toString().padStart(2, '0');
+    return `${newHours}:${newMinutes}`;
+  };
+
   useEffect(() => {
     console.log('Plans in PlanCont:', plans); // 데이터 확인용 로그
   }, [plans]);
 
-  if (!plans || plans.length === 0) {
+  if (!Array.isArray(plans) || plans.length === 0) {
     return <div className={styles.noPlans}>No plans available</div>;
   }
 
@@ -37,17 +48,6 @@ const PlanCont = ({ plans }) => {
 
     return { day, date, plans: dayPlans };
   });
-
-  const addMinutes = (time, minsToAdd) => {
-    const [hours, minutes] = time.split(':').map(Number);
-    const date = new Date();
-    date.setHours(hours);
-    date.setMinutes(minutes + minsToAdd);
-
-    const newHours = date.getHours().toString().padStart(2, '0');
-    const newMinutes = date.getMinutes().toString().padStart(2, '0');
-    return `${newHours}:${newMinutes}`;
-  };
 
   return (
     <div className={styles.container}>

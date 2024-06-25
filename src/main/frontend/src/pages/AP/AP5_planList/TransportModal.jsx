@@ -41,9 +41,10 @@ const TransportModal = ({ show, onHide }) => {
         selectedArea,
         tableData,
         selectedTransport,
+        planId, // 생성된 플랜 ID를 전달
       },
     });
-  }
+  };
 
   const goToAP6 = async () => {
     if (!user) {
@@ -112,7 +113,7 @@ const TransportModal = ({ show, onHide }) => {
     console.log('Request Data: ', planData);
 
     try {
-      const response  = await axios.post('http://localhost:8080/api/plans/complete', planData);
+      const response = await axios.post('http://localhost:8080/api/plans/complete', planData);
       onHide();
       return response.data;
     } catch (error) {
@@ -121,26 +122,26 @@ const TransportModal = ({ show, onHide }) => {
   };
 
   const optimizeSchedule = async (planId) => {
-    console.log("optimizeSchedule start");
+    console.log('optimizeSchedule start');
     try {
       await axios.post(`http://localhost:8080/api/chatgpt/daily-schedules/plan/${planId}/optimize`);
     } catch (error) {
       console.error(error);
     } finally {
-      console.log("optimizeSchedule finish");
+      console.log('optimizeSchedule finish');
     }
   };
 
   const calculateMoveTime = async (planId) => {
-    console.log("calculateSchedule start")
+    console.log('calculateSchedule start');
     try {
       await axios.post(`http://localhost:8080/api/move-times/calculate/${planId}`);
     } catch (error) {
       console.error('Error evaluating schedule:', error);
     } finally {
-      console.log("optimizeSchedule finish");
+      console.log('optimizeSchedule finish');
     }
-  }
+  };
 
   const handleTransportClick = (transport) => {
     setSelectedTransport(transport);
