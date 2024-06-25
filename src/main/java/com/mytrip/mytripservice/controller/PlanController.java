@@ -76,9 +76,9 @@ public class PlanController {
     }
 
     @PostMapping("/complete")
-    public ResponseEntity<Void> createCompletePlan(@RequestBody CompletePlanDTO completePlanDTO) {
-        planService.createCompletePlan(completePlanDTO);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+    public ResponseEntity<Long> createCompletePlan(@RequestBody CompletePlanDTO completePlanDTO) {
+        Long planId = planService.createCompletePlan(completePlanDTO);
+        return ResponseEntity.ok(planId);
     }
 
     @PostMapping("/cart")
