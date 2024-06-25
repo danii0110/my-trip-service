@@ -16,6 +16,16 @@ const AP6Main = () => {
   const [isUpArrow, setIsUpArrow] = useState(true);
   const [plans, setPlans] = useState([]);
 
+  // 날짜 형식을 변경하는 함수
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const year = date.getFullYear().toString().slice(2);
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const day = date.getDate().toString().padStart(2, '0');
+    const weekDay = ['일', '월', '화', '수', '목', '금', '토'][date.getDay()];
+    return `${year}.${month}.${day}(${weekDay})`;
+  };
+
   // 데이터 가져오기
   useEffect(() => {
     const fetchPlans = async () => {
@@ -75,7 +85,7 @@ const AP6Main = () => {
           </div>
           <div className={styles.showDate}>
             {selectedDates?.start && selectedDates?.end
-              ? `${selectedDates.start} - ${selectedDates.end}`
+              ? `${formatDate(selectedDates.start)} - ${formatDate(selectedDates.end)}`
               : '날짜를 선택하세요'}
           </div>
           {!isUpArrow && <AIRouteModal />}
