@@ -1,6 +1,8 @@
 package com.mytrip.mytripservice.service;
 
+import com.mytrip.mytripservice.dto.PlanDTO;
 import com.mytrip.mytripservice.dto.UserDTO;
+import com.mytrip.mytripservice.entity.Plan;
 import com.mytrip.mytripservice.entity.RoleType;
 import com.mytrip.mytripservice.entity.User;
 import com.mytrip.mytripservice.repository.UserRepository;
@@ -106,6 +108,28 @@ public class UserService {
         user.setUpdatedAt(userDTO.getUpdatedAt());
         user.setRoleType(userDTO.getRoleType());
         return user;
+    }
+
+    //MyTrip 조회
+    public List<PlanDTO> getPlansByUserId(Long userId) {
+        return userRepository.findById(userId)
+                .map(user -> user.getPlans().stream()
+                        .map(this::toPlanDTO)
+                        .collect(Collectors.toList()))
+                .orElseThrow(() -> new RuntimeException("User not found"));
+    }
+
+    private PlanDTO toPlanDTO(Plan plan) {
+        PlanDTO planDTO = new PlanDTO();
+        planDTO.setPlanId(plan.getPlanId());
+        planDTO.setUserId(plan.getUser().getUserId());
+        planDTO.setTitle(plan.getTitle());
+        planDTO.setRegion(plan.getRegion());
+        planDTO.setStartDate(plan.getStartDate());
+        planDTO.setEndDate(plan.getEndDate());
+        planDTO.setTransportation(plan.getTransportation());
+        planDTO.setPlanType(plan.getPlanType());
+        return planDTO;
     }
 }
 

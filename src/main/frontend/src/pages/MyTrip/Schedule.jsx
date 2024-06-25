@@ -15,21 +15,21 @@ const Schedule = ({ data, onDelete }) => {
   useEffect(() => {
     const calculateDDay = () => {
       const today = new Date();
-      const [startDateStr] = data.duration.split('~');
-      const startDate = new Date(`20${startDateStr.split('.').join('-')}`);
+      const startDate = new Date(data.duration.split(' ~ ')[0]); // 시작일을 파싱
+      const endDate = new Date(data.duration.split(' ~ ')[1]); // 종료일을 파싱
       const diffTime = startDate - today;
       const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
       let dDayText;
       if (diffDays > 0) {
         dDayText = `D-${diffDays}`;
-      } else if (diffDays < 0) {
-        dDayText = `D+${Math.abs(diffDays)}`;
+      } else if (diffDays < 0 && today > endDate) {
+        const pastDays = Math.ceil((today - endDate) / (1000 * 60 * 60 * 24));
+        dDayText = `D+${pastDays}`;
       } else {
         dDayText = 'D-day';
       }
 
-      // const items = diffDays > 0 ? ['일정보기', '공유하기', '삭제'] : ['일정보기', '글쓰기', '삭제'];
       const items = diffDays > 0 ? ['일정보기', '삭제'] : ['일정보기', '글쓰기', '삭제'];
 
       setDDay(dDayText);
@@ -87,9 +87,6 @@ const Schedule = ({ data, onDelete }) => {
     setShowShareModal(false); // 모달 닫기
   };
 
-  const handleButtonClick = () => {
-    setShowShareModal(true);
-  };
   return (
     <div className={styles.container}>
       <div className={styles.tripImg}></div>
@@ -109,20 +106,8 @@ const Schedule = ({ data, onDelete }) => {
               {tripTitle}
             </div>
           )}
-          {/* {!isEditingTitle && tripTitle !== '여행 이름 입력' && (
-            <div className={styles.edit} onClick={handleTitleClick}>
-              수정
-            </div>
-          )} */}
         </div>
         <div className={styles.duration}>{data.duration}</div>
-        {/* {data.isShared && (
-          <div className={styles.shareCont}>
-            {data.isHost && <div className={styles.hostCont}>호스트</div>}
-            <div className={styles.checkCont}>공유일정</div>
-            <div className={styles.partyCont}>일행+{data.partyCount}</div>
-          </div>
-        )} */}
       </div>
       <div className={styles.editDateCont}>최근수정일 {data.lastEdited}</div>
       <button className={styles.dotsIcon} onClick={handleDotsClick}>
