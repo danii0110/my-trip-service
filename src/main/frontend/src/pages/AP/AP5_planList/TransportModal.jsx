@@ -53,7 +53,7 @@ const TransportModal = ({ show, onHide }) => {
     }
 
     const planData = {
-      userId: user.id,
+      userId: user.userId, // userId 수정
       title: `${regionMap[selectedRegion] || 'unknown'} ${selectedArea || 'unknown'} 여행`,
       region: `${regionMap[selectedRegion] || 'unknown'} ${selectedArea || 'unknown'}`,
       startDate: selectedDates.start.toISOString().split('T')[0],
@@ -92,7 +92,7 @@ const TransportModal = ({ show, onHide }) => {
               .split('T')[0],
             schedulePlaces: [
               {
-                placeId: user.id + index, // placeId를 고유한 숫자 값으로 설정
+                placeId: user.userId + index, // placeId 수정
                 place: {
                   name: hotel.name,
                   address: hotel.address || '',
