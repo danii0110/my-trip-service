@@ -18,10 +18,14 @@
 .place {
   font-size: 0.9375rem;
 }
+
 .placeImg {
   width: 4.375rem;
   height: 4.375rem;
   border-radius: 0.625rem;
   margin-left: auto;
   background-color: #ffffff;
+  aspect-ratio: 1 / 1;
+  background-size: cover;
+  background-position: center;
 }

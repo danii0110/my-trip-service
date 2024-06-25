@@ -6,65 +6,61 @@ import whiteDownArrowIcon from '../../../assets/whiteDownArrowIcon.svg';
 import { useState, useEffect } from 'react';
 import AIRouteModal from './AIRouteModal';
 import { useLocation } from 'react-router-dom';
+import axios from 'axios';
 import regionMap from '../../../modules/utils/regionMap';
 
 const AP6Main = () => {
   const location = useLocation();
-  const { selectedDates, selectedRegion, selectedArea, tableData, selectedTransport } = location.state || {};
+  const { selectedDates, selectedRegion, selectedArea, tableData, selectedTransport, planId } = location.state || {};
 
   const [isUpArrow, setIsUpArrow] = useState(true);
   const [plans, setPlans] = useState([]);
 
-  // 날짜 형식 변환 함수
-  const formatDate = (date) => {
-    const d = new Date(date);
-    const month = (d.getMonth() + 1).toString().padStart(2, '0');
-    const day = d.getDate().toString().padStart(2, '0');
-    return `24.${month}.${day}`;
+  // 날짜 형식을 변경하는 함수
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const year = date.getFullYear().toString().slice(2);
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const day = date.getDate().toString().padStart(2, '0');
+    const weekDay = ['일', '월', '화', '수', '목', '금', '토'][date.getDay()];
+    return `${year}.${month}.${day}(${weekDay})`;
   };
 
-  // 모의 데이터 설정
+  // 데이터 가져오기
   useEffect(() => {
-    const mockPlans = [
-      {
-        date: '2024-06-23',
-        schedulePlaces: [
-          {
-            startTime: '09:00',
-            endTime: '11:00',
-            category: 'RESTAURANT',
-            name: '가마솥손두부',
-            moveTime: '30분',
-          },
-          {
-            startTime: '11:30',
-            endTime: '13:00',
-            category: 'SHOPPING',
-            name: '미추홀구 쇼핑몰',
-          },
-        ],
-      },
-      {
-        date: '2024-06-24',
-        schedulePlaces: [
-          {
-            startTime: '10:00',
-            endTime: '12:00',
-            category: 'ACCOMMODATION',
-            name: '로지호텔',
-            moveTime: '40분',
-          },
-          {
-            startTime: '12:40',
-            endTime: '14:00',
-            category: 'CULTURAL_FACILITY',
-            name: '미추홀구 박물관',
-          },
-        ],
-      },
-    ];
-    setPlans(mockPlans);
-  }, []);
+    const fetchPlans = async () => {
+      try {
+        const response = await axios.get(`http://localhost:8080/api/plans/${planId}`);
+        console.log('Fetched plans: ', response.data); // 데이터 확인용 로그
+        const updatedPlans = calculateMoveTimes(response.data);
+        setPlans(updatedPlans);
+      } catch (error) {
+        console.error('Error fetching plans:', error);
+      }
+    };
+
+    fetchPlans();
+  }, [planId]);
+
+  const calculateMoveTimes = (data) => {
+    // 각 schedulePlaces 사이의 moveTime을 계산하여 추가
+    data.dailySchedules.forEach((schedule) => {
+      for (let i = 0; i < schedule.schedulePlaces.length - 1; i++) {
+        const currentPlace = schedule.schedulePlaces[i];
+        const nextPlace = schedule.schedulePlaces[i + 1];
+        const moveTime = calculateMoveTime(currentPlace.endTime, nextPlace.startTime);
+        currentPlace.moveTime = moveTime;
+      }
+    });
+    return data;
+  };
+
+  const calculateMoveTime = (endTime, startTime) => {
+    const endMinutes = endTime[0] * 60 + endTime[1];
+    const startMinutes = startTime[0] * 60 + startTime[1];
+    const moveMinutes = startMinutes - endMinutes;
+    return `${moveMinutes}분`;
+  };
 
   const handleClick = () => {
     setIsUpArrow(!isUpArrow);
